@@ -1,4 +1,4 @@
-﻿namespace HospitalApi.Models.DTOs.Sala
+﻿namespace HospitalApi.Models.DTOs
 {
     public class SalaDTO
     {

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using HospitalApi.Models.DTOs.Sala;
+using HospitalApi.Models.DTOs;
 
 namespace HospitalApi.Models.Validators
 {

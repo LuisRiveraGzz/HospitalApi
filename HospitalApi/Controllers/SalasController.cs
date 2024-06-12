@@ -1,4 +1,4 @@
-﻿using HospitalApi.Models.DTOs.Sala;
+﻿using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
@@ -8,7 +8,7 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalasController(SalasRepository salasRepository) : ControllerBase
+    public class SalasController(SalasRepository salasRepository, UsuariosRepository usuariosRepository) : ControllerBase
     {
         [HttpGet("/GetSalas")]
         public IActionResult GetSalas()
@@ -37,9 +37,9 @@ namespace HospitalApi.Controllers
         [HttpPut("PutSala")]
         public IActionResult PutSala(SalaDTO dto)
         {
-            SalaDTOValidator validador = new();
             if (dto.Doctor != null)
             {
+                SalaDTOValidator validador = new();
                 var result = validador.Validate(dto);
                 if (result.IsValid)
                 {
@@ -61,12 +61,18 @@ namespace HospitalApi.Controllers
             {
                 if (sala.Doctor != null)
                 {
-                    return Conflict("La sala esta en uso");
+                    var doctor = usuariosRepository.Get(sala.Doctor ?? 0);
+                    //Eliminar el doctor
+                    if (doctor != null)
+                    {
+                        usuariosRepository.Delete(doctor);
+                        salasRepository.Delete(sala);
+                        return Ok("Se ah eliminado la sala");
+                    }
                 }
-                salasRepository.Delete(sala);
-                return Ok("Se ah eliminado la sala");
             }
             return NotFound("No se ah eliminado la sala");
         }
+
     }
 }

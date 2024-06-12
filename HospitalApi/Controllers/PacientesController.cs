@@ -1,0 +1,74 @@
+﻿using HospitalApi.Models.DTOs;
+using HospitalApi.Models.Entities;
+using HospitalApi.Repositories;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HospitalApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PacientesController(Repository<Paciente> pacientesRepos) : ControllerBase
+    {
+        [HttpGet("/")]
+        public IActionResult GetPacientes() => Ok(pacientesRepos.GetAll());
+
+        [HttpGet("Paciente/{id:int}")]
+        public IActionResult GetPacientebyId(int id)
+            => Ok(pacientesRepos.GetAll().FirstOrDefault(x => x.Id == id));
+
+        [HttpGet("Paciente/{nombre:string}")]
+        public IActionResult GetPacientebyName(string nombre)
+            => Ok(pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre == nombre));
+
+        [HttpPost("Paciente")]
+        public IActionResult Post(PacienteDTO dto)
+        {
+            if (!string.IsNullOrWhiteSpace(dto.Nombre))
+            {
+                if (dto != null)
+                {
+                    Paciente paciente = new()
+                    {
+                        Id = 0,
+                        Nombre = dto.Nombre
+                    };
+                    //se le asigna un is automaticamente
+                    pacientesRepos.Insert(paciente);
+                }
+            }
+            return BadRequest("Ingrese su nombre");
+        }
+
+        [HttpPut("Paciente")]
+        public IActionResult Put(PacienteDTO dto)
+        {
+            if (!string.IsNullOrWhiteSpace(dto.Nombre))
+            {
+                if (dto != null)
+                {
+                    var paciente = pacientesRepos.Get(dto.Id);
+                    if (paciente != null)
+                    {
+                        paciente.Nombre = dto.Nombre;
+                        pacientesRepos.Update(paciente);
+                        return Ok("Paciente Actualizado");
+                    }
+                }
+            }
+            return BadRequest("Ingrese su nombre");
+        }
+
+        [HttpDelete("Paciente/{id:int}")]
+        public IActionResult Delete(int id)
+        {
+
+            var paciente = pacientesRepos.Get(id);
+            if (paciente != null)
+            {
+                pacientesRepos.Delete(paciente);
+                return Ok("Paciente eliminado");
+            }
+            return BadRequest("Ingrese su nombre");
+        }
+    }
+}
