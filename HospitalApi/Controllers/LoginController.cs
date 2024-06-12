@@ -19,7 +19,8 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(login);
             if (result.IsValid)
             {
-                var user = UsuariosRepos.GetUsuario(login.Usuario);
+                var user = UsuariosRepos.GetAll().FirstOrDefault(x => x.Nombre == login.Usuario
+                            && x.Contraseña == Encriptacion.StringToSHA512(login.Contraseña));
 
                 if (user != null)
                 {

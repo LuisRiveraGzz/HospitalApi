@@ -6,7 +6,7 @@ namespace HospitalApi.Repositories
     public class UsuariosRepository(WebsitosHospitalbdContext context) : Repository<Usuario>(context)
     {
         private readonly WebsitosHospitalbdContext Context = context;
-        public IEnumerable<Usuario> GetUsers()
+        public IEnumerable<Usuario> GetUsuarios()
         {
             return Context.Usuario.Include(x => x.Sala);
         }
