@@ -8,12 +8,12 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalasController(SalasRepository salasRepository, UsuariosRepository usuariosRepository) : ControllerBase
+    public class SalasController(SalasRepository salasRepos, UsuariosRepository usuariosRepos) : ControllerBase
     {
         [HttpGet("/GetSalas")]
         public IActionResult GetSalas()
         {
-            var salas = salasRepository.GetSalas();
+            var salas = salasRepos.GetSalas();
             return Ok(salas);
         }
         [HttpPost("PostSala")]
@@ -28,7 +28,7 @@ namespace HospitalApi.Controllers
                     Id = 0,
                     NumeroSala = dto.NumeroSala
                 };
-                salasRepository.Insert(newSala);
+                salasRepos.Insert(newSala);
                 return Ok("Se ah agregado la sala");
             }
             return NotFound("La sala no es valida");
@@ -43,10 +43,10 @@ namespace HospitalApi.Controllers
                 var result = validador.Validate(dto);
                 if (result.IsValid)
                 {
-                    var sala = salasRepository.GetSala(dto.NumeroSala);
+                    var sala = salasRepos.GetSala(dto.NumeroSala);
                     if (sala != null)
                     {
-                        salasRepository.Update(sala);
+                        salasRepos.Update(sala);
                         return Ok("Se ah agregado la sala");
                     }
                 }
@@ -56,17 +56,17 @@ namespace HospitalApi.Controllers
         [HttpDelete("DeleteSala/{id:int}")]
         public IActionResult DeleteSala(int id)
         {
-            var sala = salasRepository.Get(id);
+            var sala = salasRepos.Get(id);
             if (sala != null)
             {
                 if (sala.Doctor != null)
                 {
-                    var doctor = usuariosRepository.Get(sala.Doctor ?? 0);
+                    var doctor = usuariosRepos.Get(sala.Doctor ?? 0);
                     //Eliminar el doctor
                     if (doctor != null)
                     {
-                        usuariosRepository.Delete(doctor);
-                        salasRepository.Delete(sala);
+                        usuariosRepos.Delete(doctor);
+                        salasRepos.Delete(sala);
                         return Ok("Se ah eliminado la sala");
                     }
                 }
