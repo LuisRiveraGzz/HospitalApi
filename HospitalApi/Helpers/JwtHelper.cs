@@ -5,13 +5,9 @@ using System.Text;
 
 namespace HospitalApi.Helpers
 {
-    public class JwtHelper
+    public class JwtHelper(IConfiguration configuration)
     {
-        IConfiguration? Configuration { get; set; }
-        public JwtHelper(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        IConfiguration? Configuration { get; set; } = configuration;
         public string GetToken(string username, string role, int id)
         {
             JwtSecurityTokenHandler handler = new();
