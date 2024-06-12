@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalApi.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class LoginController(UsuariosRepository usuariosRepository, JwtHelper helper) : Controller
     {
         public UsuariosRepository UsuariosRepos { get; } = usuariosRepository;
