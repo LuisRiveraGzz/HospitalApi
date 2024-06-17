@@ -52,14 +52,13 @@ namespace HospitalApi.Controllers
                 {
                     anterior.Nombre = dto.Nombre;
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
-
-
                     usuariosRepos.Insert(anterior);
                     return Ok("Usuario agregado");
                 }
             }
             return BadRequest("Ingresa un Usuario Valido");
         }
+
         [HttpDelete("Eliminar/{id:int}")]
         public IActionResult Delete(int id)
         {

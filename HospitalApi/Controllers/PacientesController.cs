@@ -16,17 +16,10 @@ namespace HospitalApi.Controllers
             return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
         }
 
-        [HttpGet("Paciente/{id:int}")]
-        public IActionResult GetPacientebyId(int id)
-        {
-            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Id == id);
-            return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
-        }
-
-        [HttpGet("Paciente/{nombre:string}")]
+        [HttpGet("Paciente/{nombre}")]
         public IActionResult GetPacientebyName(string nombre)
         {
-            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre == nombre);
+            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre.Equals(nombre, StringComparison.CurrentCultureIgnoreCase));
             return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
         }
         [HttpPost("Agregar")]

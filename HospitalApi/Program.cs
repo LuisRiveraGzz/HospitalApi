@@ -20,6 +20,7 @@ builder.Services.AddCors();
 #endregion
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
@@ -63,10 +64,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
         }
 );
+
 builder.Services.AddSignalR();
+
 builder.Services.AddSingleton<JwtHelper>();
-builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+
+//builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddTransient<SalasRepository>();
+builder.Services.AddTransient<Repository<Paciente>>();
 builder.Services.AddTransient<UsuariosRepository>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
