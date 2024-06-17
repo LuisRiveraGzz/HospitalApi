@@ -6,19 +6,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region Conexion a DB
 string? Db = builder.Configuration.GetConnectionString("DbConnectionString");
-
 builder.Services.AddDbContext<WebsitosHospitalbdContext>(x =>
 {
     x.UseMySql(Db, ServerVersion.AutoDetect(Db));
 });
 builder.Services.AddCors();
 #endregion
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>

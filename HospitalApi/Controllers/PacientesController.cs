@@ -19,12 +19,14 @@ namespace HospitalApi.Controllers
         [HttpGet("Paciente/{nombre}")]
         public IActionResult GetPacientebyName(string nombre)
         {
-            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre.Equals(nombre, StringComparison.CurrentCultureIgnoreCase));
+            var paciente = pacientesRepos.GetAll()
+                .FirstOrDefault(x => x.Nombre == nombre.ToUpper());
             return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
         }
         [HttpPost("Agregar")]
         public IActionResult Post(PacienteDTO dto)
         {
+
             if (!string.IsNullOrWhiteSpace(dto.Nombre))
             {
                 if (dto != null)
@@ -32,10 +34,11 @@ namespace HospitalApi.Controllers
                     Paciente paciente = new()
                     {
                         Id = 0,
-                        Nombre = dto.Nombre
+                        Nombre = dto.Nombre.ToUpper()
                     };
                     //se le asigna un is automaticamente
                     pacientesRepos.Insert(paciente);
+                    return Ok("Paciente Agregado");
                 }
             }
             return BadRequest("Ingrese su nombre");
@@ -50,7 +53,7 @@ namespace HospitalApi.Controllers
                     var paciente = pacientesRepos.Get(dto.Id);
                     if (paciente != null)
                     {
-                        paciente.Nombre = dto.Nombre;
+                        paciente.Nombre = dto.Nombre.ToUpper();
                         pacientesRepos.Update(paciente);
                         return Ok("Paciente Actualizado");
                     }

@@ -40,7 +40,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido");
         }
-        [HttpPost("/Editar")]
+        [HttpPut("/Editar")]
         public IActionResult Put(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
