@@ -1,4 +1,5 @@
 using HospitalApi.Helpers;
+using HospitalApi.Hubs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,10 +19,11 @@ builder.Services.AddDbContext<WebsitosHospitalbdContext>(x =>
 });
 builder.Services.AddCors();
 #endregion
-builder.Services.AddControllers()
-    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+#region Services
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 
+#region Swagger con JWT
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
@@ -49,6 +51,8 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+#endregion
+#region JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
         x =>
         {
@@ -65,23 +69,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
         }
 );
-
+#endregion
+#region SignalR
 builder.Services.AddSignalR();
 
+#endregion
+#region Singleton
 builder.Services.AddSingleton<JwtHelper>();
-
+#endregion
+#region Transients
 //builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<SalasRepository>();
 builder.Services.AddTransient<Repository<Paciente>>();
 builder.Services.AddTransient<UsuariosRepository>();
-
+#endregion
+#endregion
 var app = builder.Build();
-
+#region Uso de Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+#endregion
+#region Configuracion de la API
 app.UseCors(x =>
 {
     x.AllowAnyHeader();
@@ -90,5 +101,7 @@ app.UseCors(x =>
 });
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.MapHub<NotificacionHub>("/NotificacionHub");
 app.MapControllers();
 app.Run();
+#endregion

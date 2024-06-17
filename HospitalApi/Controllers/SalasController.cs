@@ -3,12 +3,14 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos, UsuariosRepository usuariosRepository) : ControllerBase
+    public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
+        UsuariosRepository usuariosRepository, IHubContext<NotificationHub> _hubContext) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetSalas()
@@ -139,7 +141,7 @@ namespace HospitalApi.Controllers
             return NotFound("No hay doctor en la sala");
         }
         [HttpPut("AsignarPaciente")]
-        public IActionResult AsignarPaciente(int idsala, int idpaciente)
+        public async Task<IActionResult> AsignarPaciente(int idsala, int idpaciente)
         {
             var sala = salasRepos.Get(idsala);
             if (sala == null)
@@ -152,10 +154,14 @@ namespace HospitalApi.Controllers
                 return NotFound("No se ah encontrado al paciente");
             }
 
+
             if (sala.Estado == 0)//Inactiva
             {
                 sala.Paciente = idpaciente;
                 salasRepos.Update(sala);
+                //Enviar notificacion al cliente
+                await _hubContext.Clients.User(paciente.Id.ToString()).
+                    SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
                 return Ok("");
             }
             return Conflict("La sala esta en uso");
