@@ -26,7 +26,15 @@ namespace HospitalApi.Controllers
                 var anterior = usuariosRepos.GetUsuario(dto.Nombre);
                 if (anterior != null)
                 {
-                    return Conflict("Ya hay un usuario registrado con ese nombre");
+                    //verificar que el rol sea diferente, si es el mismo rol
+                    //entonces mostrar un mensaje que diga que hay un usuario con ese rol registrado
+                    if (anterior.Rol == dto.Rol)
+                    {
+
+                        return anterior.Rol == 1 ?
+                            Conflict("Ya hay un administrador registrado con ese nombre") :
+                            Conflict("Ya hay un doctor registrado con ese nombre");
+                    }
                 }
                 Usuario user = new()
                 {
@@ -36,7 +44,7 @@ namespace HospitalApi.Controllers
                     Rol = dto.Rol
                 };
                 usuariosRepos.Insert(user);
-                return Ok("Usuario agregado");
+                return user.Rol == 1 ? Ok("Administrador agregado") : Ok("Doctor agregado");
             }
             return BadRequest("Ingresa un Usuario Valido");
         }
