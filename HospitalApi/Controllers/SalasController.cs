@@ -89,11 +89,7 @@ namespace HospitalApi.Controllers
             {
                 if (sala.Doctor != null)
                 {
-                    var doctor = usuariosRepos.Get(sala.Doctor ?? 0);
-                    if (doctor != null)
-                    {
-                        QuitarDoctor(sala.Id);
-                    }
+                    QuitarDoctor(sala.Id);
                 }
                 salasRepos.Delete(sala);
                 return Ok("Se ha eliminado la sala");
