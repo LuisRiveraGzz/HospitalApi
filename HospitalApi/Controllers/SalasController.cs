@@ -8,7 +8,7 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalasController(SalasRepository salasRepos, UsuariosRepository usuariosRepos) : ControllerBase
+    public class SalasController(SalasRepository salasRepos) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetSalas()
