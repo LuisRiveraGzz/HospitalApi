@@ -8,7 +8,7 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalasController(SalasRepository salasRepos) : ControllerBase
+    public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos, UsuariosRepository usuariosRepository) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetSalas()
@@ -66,6 +66,63 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
+        [HttpPut("UtilizarSala/{id}")]
+        public IActionResult UtilizarSala(int id)
+        {
+            var sala = salasRepos.Get(id);
+            if (sala != null)
+            {
+                if (sala.Estado == 0)//Inactiva
+                {
+                    sala.Estado++;//Activa
+                    salasRepos.Update(sala);
+                    return Ok("La sala se esta utilizando correctamente");
+                }
+                return BadRequest("La sala esta siendo utilizada");
+            }
+            return NotFound("No se ah encontrado la sala");
+        }
+        [HttpPut("InutilizarSala/{id}")]
+        public IActionResult InutilizarSala(int id)
+        {
+            var sala = salasRepos.Get(id);
+            if (sala != null)
+            {
+                if (sala.Estado == 1)//Activa
+                {
+                    sala.Estado--;//Inactiva
+                    salasRepos.Update(sala);
+                    return Ok("La sala se esta disponible");
+                }
+                return BadRequest("La sala esta siendo utilizada");
+            }
+            return NotFound("No se ah encontrado la sala");
+        }
+        [HttpPut("Sala/{idSala:int}/AsignarDoctor/{doctor:int}")]
+        public IActionResult AsignarDoctor(int idSala, int doctor)
+        {
+            var sala = salasRepos.Get(idSala);
+            if (sala != null)
+            {
+                if (sala.Doctor != null)
+                {
+                    if (sala.Estado == 0)
+                    {
+                        var doc = usuariosRepository.Get(doctor);
+                        if (doc != null && doc.Rol == 2)
+                        {
+
+                            sala.Doctor = doctor;
+                            salasRepos.Update(sala);
+                            return Ok("Se ha asignado el doctor de la sala");
+                        }
+                    }
+                    return Conflict("La sala esta en uso");
+                }
+                return NotFound("No se ah encontrado al doctor");
+            }
+            return NotFound("No se ah asignado el doctor a la sala");
+        }
         [HttpPut("QuitarDoctor/{id:int}")]
         public IActionResult QuitarDoctor(int id)
         {
@@ -80,6 +137,40 @@ namespace HospitalApi.Controllers
                 }
             }
             return NotFound("No hay doctor en la sala");
+        }
+        [HttpPut("AsignarPaciente")]
+        public IActionResult AsignarPaciente(int idsala, int idpaciente)
+        {
+            var sala = salasRepos.Get(idsala);
+            if (sala == null)
+            {
+                return NotFound("No se ah encontrado la sala");
+            }
+            var paciente = pacientesRepos.Get(idpaciente);
+            if (paciente == null)
+            {
+                return NotFound("No se ah encontrado al paciente");
+            }
+
+            if (sala.Estado == 0)//Inactiva
+            {
+                sala.Paciente = idpaciente;
+                salasRepos.Update(sala);
+                return Ok("");
+            }
+            return Conflict("La sala esta en uso");
+        }
+        [HttpPut("QuitarPaciente/{idsala:int}")]
+        public IActionResult QuitarPaciente(int idsala)
+        {
+            var sala = salasRepos.Get(idsala);
+            if (sala == null)
+            {
+                return NotFound("No se ah encontrado la sala");
+            }
+            sala.Paciente = null!;
+            salasRepos.Update(sala);
+            return Ok("");
         }
         [HttpDelete("Eliminar/{id:int}")]
         public IActionResult DeleteSala(int id)

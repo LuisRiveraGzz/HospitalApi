@@ -11,5 +11,11 @@ public partial class Sala
 
     public int? Doctor { get; set; }
 
+    public int? Paciente { get; set; }
+
+    public sbyte Estado { get; set; }
+
     public virtual Usuario? DoctorNavigation { get; set; }
+
+    public virtual Paciente? PacienteNavigation { get; set; }
 }

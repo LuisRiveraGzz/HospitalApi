@@ -43,13 +43,21 @@ public partial class WebsitosHospitalbdContext : DbContext
 
             entity.HasIndex(e => e.Doctor, "fk_Sala_Doctor_idx");
 
+            entity.HasIndex(e => e.Paciente, "fk_Sala_Paciente_idx");
+
             entity.Property(e => e.Id).HasColumnType("int(11)");
             entity.Property(e => e.Doctor).HasColumnType("int(11)");
+            entity.Property(e => e.Estado).HasColumnType("tinyint(4)");
             entity.Property(e => e.NumeroSala).HasMaxLength(45);
+            entity.Property(e => e.Paciente).HasColumnType("int(11)");
 
             entity.HasOne(d => d.DoctorNavigation).WithMany(p => p.Sala)
                 .HasForeignKey(d => d.Doctor)
                 .HasConstraintName("fk_Sala_Doctor");
+
+            entity.HasOne(d => d.PacienteNavigation).WithMany(p => p.Sala)
+                .HasForeignKey(d => d.Paciente)
+                .HasConstraintName("fk_Sala_Paciente");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
