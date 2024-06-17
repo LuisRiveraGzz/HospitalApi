@@ -60,7 +60,7 @@ namespace HospitalApi.Controllers
                 {
                     anterior.Nombre = dto.Nombre;
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
-                    usuariosRepos.Insert(anterior);
+                    usuariosRepos.Update(anterior);
                     return Ok("Usuario agregado");
                 }
             }
