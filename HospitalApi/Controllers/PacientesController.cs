@@ -9,18 +9,27 @@ namespace HospitalApi.Controllers
     [ApiController]
     public class PacientesController(Repository<Paciente> pacientesRepos) : ControllerBase
     {
-        [HttpGet("/")]
-        public IActionResult GetPacientes() => Ok(pacientesRepos.GetAll());
+        [HttpGet]
+        public IActionResult GetPacientes()
+        {
+            var pacientes = pacientesRepos.GetAll();
+            return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
+        }
 
         [HttpGet("Paciente/{id:int}")]
         public IActionResult GetPacientebyId(int id)
-            => Ok(pacientesRepos.GetAll().FirstOrDefault(x => x.Id == id));
+        {
+            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Id == id);
+            return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
+        }
 
         [HttpGet("Paciente/{nombre:string}")]
         public IActionResult GetPacientebyName(string nombre)
-            => Ok(pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre == nombre));
-
-        [HttpPost("Paciente")]
+        {
+            var paciente = pacientesRepos.GetAll().FirstOrDefault(x => x.Nombre == nombre);
+            return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
+        }
+        [HttpPost("Agregar")]
         public IActionResult Post(PacienteDTO dto)
         {
             if (!string.IsNullOrWhiteSpace(dto.Nombre))
@@ -38,8 +47,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
-
-        [HttpPut("Paciente")]
+        [HttpPut("Editar")]
         public IActionResult Put(PacienteDTO dto)
         {
             if (!string.IsNullOrWhiteSpace(dto.Nombre))
@@ -58,10 +66,9 @@ namespace HospitalApi.Controllers
             return BadRequest("Ingrese su nombre");
         }
 
-        [HttpDelete("Paciente/{id:int}")]
+        [HttpDelete("Eliminar/{id:int}")]
         public IActionResult Delete(int id)
         {
-
             var paciente = pacientesRepos.Get(id);
             if (paciente != null)
             {

@@ -12,7 +12,7 @@ namespace HospitalApi.Controllers
     {
         public UsuariosRepository UsuariosRepos { get; } = usuariosRepository;
 
-        [HttpPost("Login")]
+        [HttpPost]
         public IActionResult Login(LoginDTO login)
         {
             LoginDTOValidator validador = new();

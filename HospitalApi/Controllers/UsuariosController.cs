@@ -11,12 +11,12 @@ namespace HospitalApi.Controllers
     [ApiController]
     public class UsuariosController(UsuariosRepository usuariosRepos) : ControllerBase
     {
-        [HttpGet("/")]
+        [HttpGet]
         public IActionResult GetUsuarios() => Ok(usuariosRepos.GetUsuarios());
         [HttpGet("{id:int}")]
         public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
 
-        [HttpPost("/Post")]
+        [HttpPost("/Agregar")]
         public IActionResult Post(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
@@ -40,7 +40,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido");
         }
-        [HttpPost("/Put")]
+        [HttpPost("/Editar")]
         public IActionResult Put(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
@@ -60,7 +60,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido");
         }
-        [HttpDelete("Delete/{id:int}")]
+        [HttpDelete("Eliminar/{id:int}")]
         public IActionResult Delete(int id)
         {
             var user = usuariosRepos.Get(id);

@@ -10,13 +10,19 @@ namespace HospitalApi.Controllers
     [ApiController]
     public class SalasController(SalasRepository salasRepos, UsuariosRepository usuariosRepos) : ControllerBase
     {
-        [HttpGet("/GetSalas")]
+        [HttpGet]
         public IActionResult GetSalas()
         {
             var salas = salasRepos.GetSalas();
-            return Ok(salas);
+            return salas != null ? Ok(salas) : NotFound("No hay salas disponibles");
         }
-        [HttpPost("PostSala")]
+        [HttpGet("{numerosala:string}")]
+        public IActionResult GetSalas(string numerosala)
+        {
+            var sala = salasRepos.GetSala(numerosala);
+            return sala != null ? Ok(sala) : NotFound("No existe la sala");
+        }
+        [HttpPost("Agregar")]
         public IActionResult PostSala(SalaDTO dto)
         {
             SalaDTOValidator validador = new();
@@ -34,7 +40,7 @@ namespace HospitalApi.Controllers
             return NotFound("La sala no es valida");
         }
 
-        [HttpPut("PutSala")]
+        [HttpPut("Editar")]
         public IActionResult PutSala(SalaDTO dto)
         {
             if (dto.Doctor != null)
@@ -53,7 +59,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
-        [HttpDelete("DeleteSala/{id:int}")]
+        [HttpDelete("Eliminar/{id:int}")]
         public IActionResult DeleteSala(int id)
         {
             var sala = salasRepos.Get(id);
