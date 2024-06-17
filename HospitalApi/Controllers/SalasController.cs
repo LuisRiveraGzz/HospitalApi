@@ -16,14 +16,12 @@ namespace HospitalApi.Controllers
             var salas = salasRepos.GetSalas();
             return salas != null ? Ok(salas) : NotFound("No hay salas disponibles");
         }
-
         [HttpGet("{numerosala}")]
-        public IActionResult GetSalas(string numerosala)
+        public IActionResult GetSala(string numerosala)
         {
             var sala = salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
-
         [HttpPost("Agregar")]
         public IActionResult PostSala(SalaDTO dto)
         {
@@ -31,6 +29,11 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
+                var anterior = salasRepos.GetSala(dto.NumeroSala);
+                if (anterior != null)
+                {
+                    return Conflict("Ya hay una sala con el mismo numero de sala");
+                }
                 Sala newSala = new()
                 {
                     Id = 0,
@@ -41,7 +44,6 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("La sala no es valida");
         }
-
         [HttpPut("Editar")]
         public IActionResult PutSala(SalaDTO dto)
         {
@@ -49,9 +51,14 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var sala = salasRepos.GetSala(dto.NumeroSala);
+                var sala = salasRepos.Get(dto.id);
                 if (sala != null)
                 {
+                    if (dto.Doctor == 1)
+                    {
+                        return BadRequest("No puedes asignar administradores a las salas");
+                    }
+                    sala.NumeroSala = dto.NumeroSala;
                     sala.Doctor = dto.Doctor;
                     salasRepos.Update(sala);
                     return Ok("Sala actualizada");
@@ -59,7 +66,21 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
-
+        [HttpPut("QuitarDoctor/{id:int}")]
+        public IActionResult QuitarDoctor(int id)
+        {
+            var sala = salasRepos.Get(id);
+            if (sala != null)
+            {
+                if (sala.Doctor != null)
+                {
+                    sala.Doctor = null!;
+                    salasRepos.Update(sala);
+                    return Ok("Se ha sacado al doctor de la sala");
+                }
+            }
+            return NotFound("No hay doctor en la sala");
+        }
         [HttpDelete("Eliminar/{id:int}")]
         public IActionResult DeleteSala(int id)
         {

@@ -13,9 +13,12 @@ namespace HospitalApi.Controllers
     {
         [HttpGet]
         public IActionResult GetUsuarios() => Ok(usuariosRepos.GetUsuarios());
+        [HttpGet("Doctores")]
+        public IActionResult GetDoctores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 2));
+        [HttpGet("Administradores")]
+        public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
         [HttpGet("{id:int}")]
         public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
-
         [HttpPost("/Agregar")]
         public IActionResult Post(UsuarioDTO dto)
         {
@@ -30,7 +33,8 @@ namespace HospitalApi.Controllers
                     //entonces mostrar un mensaje que diga que hay un usuario con ese rol registrado
                     if (anterior.Rol == dto.Rol)
                     {
-
+                        //1 = Administrador
+                        //2 = Doctor
                         return anterior.Rol == 1 ?
                             Conflict("Ya hay un administrador registrado con ese nombre.") :
                             Conflict("Ya hay un doctor registrado con ese nombre.");
@@ -68,7 +72,6 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
-
         [HttpDelete("Eliminar/{id:int}")]
         public IActionResult Delete(int id)
         {

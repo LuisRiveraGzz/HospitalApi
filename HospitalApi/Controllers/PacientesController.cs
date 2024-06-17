@@ -26,7 +26,6 @@ namespace HospitalApi.Controllers
         [HttpPost("Agregar")]
         public IActionResult Post(PacienteDTO dto)
         {
-
             if (!string.IsNullOrWhiteSpace(dto.Nombre))
             {
                 if (dto != null)
@@ -61,7 +60,6 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
-
         [HttpDelete("Eliminar/{id:int}")]
         public IActionResult Delete(int id)
         {
