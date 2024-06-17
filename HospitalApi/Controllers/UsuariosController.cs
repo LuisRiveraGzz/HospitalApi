@@ -32,8 +32,8 @@ namespace HospitalApi.Controllers
                     {
 
                         return anterior.Rol == 1 ?
-                            Conflict("Ya hay un administrador registrado con ese nombre") :
-                            Conflict("Ya hay un doctor registrado con ese nombre");
+                            Conflict("Ya hay un administrador registrado con ese nombre.") :
+                            Conflict("Ya hay un doctor registrado con ese nombre.");
                     }
                 }
                 Usuario user = new()
@@ -44,9 +44,9 @@ namespace HospitalApi.Controllers
                     Rol = dto.Rol
                 };
                 usuariosRepos.Insert(user);
-                return user.Rol == 1 ? Ok("Administrador agregado") : Ok("Doctor agregado");
+                return user.Rol == 1 ? Ok("Administrador agregado.") : Ok("Doctor agregado.");
             }
-            return BadRequest("Ingresa un Usuario Valido");
+            return BadRequest("Ingresa un Usuario Valido.");
         }
         [HttpPut("/Editar")]
         public IActionResult Put(UsuarioDTO dto)
@@ -63,10 +63,10 @@ namespace HospitalApi.Controllers
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
                     usuariosRepos.Update(anterior);
 
-                    return anterior.Rol == 1 ? Ok("Administrador editado") : Ok("Doctor editado");
+                    return anterior.Rol == 1 ? Ok("Administrador editado.") : Ok("Doctor editado.");
                 }
             }
-            return BadRequest("Ingresa un Usuario Valido");
+            return BadRequest("Ingresa un Usuario Valido.");
         }
 
         [HttpDelete("Eliminar/{id:int}")]
@@ -75,10 +75,11 @@ namespace HospitalApi.Controllers
             var user = usuariosRepos.Get(id);
             if (user != null)
             {
+                sbyte rol = user.Rol;
                 usuariosRepos.Delete(user);
-                return Ok("Usuario eliminado.");
+                return rol == 1 ? Ok("Administrador eliminado.") : Ok("Doctor eliminado.");
             }
-            return NotFound("Usuario no eliminado");
+            return NotFound("Usuario no eliminado.");
         }
     }
 }
