@@ -15,7 +15,6 @@ namespace HospitalApi.Controllers
             var pacientes = pacientesRepos.GetAll();
             return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
         }
-
         [HttpGet("Paciente/{nombre}")]
         public IActionResult GetPacientebyName(string nombre)
         {
@@ -35,7 +34,7 @@ namespace HospitalApi.Controllers
                         Id = 0,
                         Nombre = dto.Nombre.ToUpper()
                     };
-                    //se le asigna un is automaticamente
+                    //se le asigna un id automaticamente
                     pacientesRepos.Insert(paciente);
                     return Ok("Paciente Agregado");
                 }

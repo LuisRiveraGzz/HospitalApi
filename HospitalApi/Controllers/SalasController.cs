@@ -51,7 +51,7 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var sala = salasRepos.Get(dto.id);
+                var sala = salasRepos.Get(dto.Id);
                 if (sala != null)
                 {
                     if (dto.Doctor == 1)
@@ -92,11 +92,11 @@ namespace HospitalApi.Controllers
                     var doctor = usuariosRepos.Get(sala.Doctor ?? 0);
                     if (doctor != null)
                     {
-                        usuariosRepos.Delete(doctor);
-                        salasRepos.Delete(sala);
-                        return Ok("Se ha eliminado la sala");
+                        QuitarDoctor(sala.Id);
                     }
                 }
+                salasRepos.Delete(sala);
+                return Ok("Se ha eliminado la sala");
             }
             return NotFound("No se ha eliminado la sala");
         }
