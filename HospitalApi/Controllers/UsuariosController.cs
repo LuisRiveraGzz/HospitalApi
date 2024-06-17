@@ -55,13 +55,15 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = usuariosRepos.GetUsuario(dto.Nombre);
+                var anterior = usuariosRepos.Get(dto.Id);
                 if (anterior != null)
                 {
+
                     anterior.Nombre = dto.Nombre;
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
                     usuariosRepos.Update(anterior);
-                    return Ok("Usuario agregado");
+
+                    return anterior.Rol == 1 ? Ok("Administrador editado") : Ok("Doctor editado");
                 }
             }
             return BadRequest("Ingresa un Usuario Valido");
