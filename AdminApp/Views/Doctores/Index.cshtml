@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<UsuarioViewModel>
 @{
     Layout = "Layout";
 }
@@ -11,85 +11,20 @@
         <span class="table-cell">Pacientes por atender</span>
         <span class="table-cell">Pacientes atendidos</span>
     </li>
-
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDeleteDR(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDelete(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDelete(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDelete(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDelete(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-    <li class="table-row">
-        <span class="table-cell doctor-name">
-            Pedro Hermenegildo Echevarría
-            <a href="#">
-                <img src="/Vistasadmin/images/editar.png" alt="Editar" class="icon">
-            </a>
-            <a href="#" onclick="confirmDelete(event)">
-                <img src="/Vistasadmin/images/eliminar.png" alt="Eliminar" class="delete-icon">
-            </a>
-        </span>
-        <span class="table-cell">20</span>
-        <span class="table-cell">5</span>
-    </li>
-
+    @foreach (var doctor in Model)
+    {
+        <li class="table-row">
+            <span class="table-cell doctor-name">
+                Pedro Hermenegildo Echevarría
+                <a href="#">
+                    <img src="~/Assets/images/editar.png" alt="Editar" class="icon">
+                </a>
+                <a href="#" onclick="confirmDeleteDR(event)">
+                    <img src="~/Assets/images/eliminar.png" alt="Eliminar" class="delete-icon">
+                </a>
+            </span>
+            <span class="table-cell">20</span>
+            <span class="table-cell">5</span>
+        </li>
+    }
 </ul>

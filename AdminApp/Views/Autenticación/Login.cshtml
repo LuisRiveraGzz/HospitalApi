@@ -1,24 +1,36 @@
 ﻿@model LoginViewModel
-<div class="v9_5">
-    <div class="v9_25"></div>
-    <div class="v9_31"></div>
-    <span class="v9_33">Inicio de sesión</span>
-    <span class="v10_34">Bienvenido/a</span>
-    <div class="v10_35">
-        <form class="form-container" asp-action="Login" asp-controller="Autenticación" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <label class="v10_44" for="Usuario">Usuario:</label>
-            <span asp-validation-for="Usuario" class="text-danger"></span>
-            <input class="v10_39" type="text" asp-for="Usuario" placeholder="Nombre">
-            <br />
-            <label class="v10_45" for="Contraseña">Contraseña:</label>
-            <span asp-validation-for="Contraseña" class="text-danger"></span>
-            <br />
-            <input class="v10_46" type="password" asp-for="Contraseña" placeholder="Contraseña">
-            <input class="v10_52" type="submit" value="Confirmar">
-        </form>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="~/Assets/Login/main.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+<body>
+    <main>
+    <div class="v9_5">
+        <div class="v9_25"></div>
+        <div class="v9_31"></div>
+        <span class="v9_33">Inicio de sesión</span>
+        <span class="v10_34">Bienvenido/a</span>
+        <div class="v10_35">
+            <form class="form-container" asp-action="Login" asp-controller="Autenticación" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <label class="v10_44" for="Usuario">Usuario:</label>
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+                <input class="v10_39" type="text" asp-for="Usuario" placeholder="Nombre">   
+                <br />
+                <label class="v10_45" for="Contraseña">Contraseña:</label>
+                <span asp-validation-for="Contraseña" class="text-danger"></span>
+                <br />
+                <input class="v10_46" type="password" asp-for="Contraseña" placeholder="Contraseña">
+                <input class="v10_52" type="submit" value="Confirmar">
+            </form>
+        </div>
     </div>
-</div>
-
-<script src="/_framework/aspnetcore-browser-refresh.js"></script>
+    </main>
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+</body>
+</html>
