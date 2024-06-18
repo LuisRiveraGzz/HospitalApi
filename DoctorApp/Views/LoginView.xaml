@@ -24,6 +24,7 @@
 
                 <TextBlock Text="Inicio de sesión" FontFamily="Inter" FontWeight="ExtraBold" FontSize="24" Foreground="Black"
                            HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Width="200" Margin="10,0,0,0"/>
+                <Label Content="Errores" Foreground="Red"></Label>
             </StackPanel>
         </DockPanel>
 
