@@ -38,4 +38,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Admin\Doctores\" />
+    <Folder Include="Views\Admin\Salas\" />
+  </ItemGroup>
+
 </Project>
