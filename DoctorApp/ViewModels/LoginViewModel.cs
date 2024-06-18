@@ -1,31 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Models.Validators;
-using DoctorApp.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using DoctorApp.Properties;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using DoctorApp.Services;
 using DoctorApp.Views;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DoctorApp.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
-        private string usuario;
-        private string contraseña;
-        private string error;
+        private string usuario = "";
+        private string contraseña = "";
+        private string error = "";
         private readonly ApiService api;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
         public LoginViewModel()
         {
             api = new ApiService();
@@ -68,7 +60,7 @@ namespace DoctorApp.ViewModels
                 Usuario = Usuario,
                 Contraseña = Contraseña
             };
-            var result =  LoginValidator.Validate(dto);
+            var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
                 var token = await api.Login(dto);
@@ -89,11 +81,11 @@ namespace DoctorApp.ViewModels
                     Error = "Contraseña o Usuario incorrecto/a";
                 }
             }
-                else
-                {
+            else
+            {
 
                 Error = string.Join("\n", result.Errors.Select(x => x.ErrorMessage));
-                }
+            }
         }
 
         public ICommand ConfirmarCommand { get; }
