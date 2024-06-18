@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,14 @@ namespace DoctorApp.Views
         public LoginView()
         {
             InitializeComponent();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.Contraseña = ((PasswordBox)sender).Password;
+            }
         }
     }
 }
