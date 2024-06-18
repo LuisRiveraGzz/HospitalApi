@@ -5,6 +5,8 @@ using DoctorApp.Models.Validators;
 using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
@@ -47,6 +49,7 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Error));
             }
         }
+
         [RelayCommand]
         private async Task Confirmar()
         {
@@ -67,8 +70,23 @@ namespace DoctorApp.ViewModels
                     Settings.Default.Save();
                     var turnosViews = new TurnosView();
                     turnosViews.Show();
-                    var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginView);
-                    loginWindow?.Close();
+
+                    token = Settings.Default.Token;
+
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                    var rolClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+                    //Administrador
+                    if (rolClaim?.Value == "Administrador")
+                    {
+
+                    }
+                    //Doctores
+                    else
+                    {
+                        var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginView);
+                        loginWindow?.Close();
+                    }
                 }
                 else
                 {

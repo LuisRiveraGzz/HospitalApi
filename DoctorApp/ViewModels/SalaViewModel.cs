@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DoctorApp.ViewModels
+﻿namespace DoctorApp.ViewModels
 {
-    internal class SalaViewModel
+    public class SalaViewModel
     {
+
     }
 }
