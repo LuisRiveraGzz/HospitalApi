@@ -1,36 +1,24 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Models.Validators;
-using DoctorApp.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using DoctorApp.Properties;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using DoctorApp.Services;
 using DoctorApp.Views;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public partial class LoginViewModel : ObservableObject
     {
-        private string usuario;
-        private string contraseña;
-        private string error;
+        private string usuario = "";
+        private string contraseña = "";
+        private string error = "";
         private readonly ApiService api;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         public LoginViewModel()
         {
             api = new ApiService();
-            ConfirmarCommand = new RelayCommand(Confirmar);
-
         }
         public string Usuario
         {
@@ -60,7 +48,8 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Error));
             }
         }
-        private async void Confirmar()
+        [RelayCommand]
+        private async Task Confirmar()
         {
             Error = "";
             var dto = new LoginDTO
@@ -68,7 +57,8 @@ namespace DoctorApp.ViewModels
                 Usuario = Usuario,
                 Contraseña = Contraseña
             };
-            var result =  LoginValidator.Validate(dto);
+
+            var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
                 var token = await api.Login(dto);
@@ -79,27 +69,18 @@ namespace DoctorApp.ViewModels
                     var turnosViews = new TurnosView();
                     turnosViews.Show();
                     var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginView);
-                    if (loginWindow != null)
-                    {
-                        loginWindow.Close();
-                    }
+                    loginWindow?.Close();
                 }
                 else
                 {
                     Error = "Contraseña o Usuario incorrecto/a";
                 }
             }
-                else
-                {
+            else
+            {
 
                 Error = string.Join("\n", result.Errors.Select(x => x.ErrorMessage));
-                }
-        }
-
-        public ICommand ConfirmarCommand { get; }
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
