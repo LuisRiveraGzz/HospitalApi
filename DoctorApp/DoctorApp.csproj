@@ -10,6 +10,16 @@
 
   <ItemGroup>
     <None Remove="Assets\Logo.jpg" />
+    <None Remove="Assets\Vistasadmin\images\Agregar.png" />
+    <None Remove="Assets\Vistasadmin\images\editar.png" />
+    <None Remove="Assets\Vistasadmin\images\eliminar.png" />
+    <None Remove="Assets\Vistasadmin\images\Logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Vistasadmin\images\editar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +29,15 @@
 
   <ItemGroup>
     <Resource Include="Assets\Logo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Vistasadmin\images\Agregar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Vistasadmin\images\eliminar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Vistasadmin\images\Logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -40,7 +59,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\Doctores\" />
-    <Folder Include="Views\Admin\Salas\" />
   </ItemGroup>
 
 </Project>

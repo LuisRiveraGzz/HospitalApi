@@ -1,0 +1,41 @@
+﻿<Window x:Class="DoctorApp.Views.Admin.Salas.AgregarView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DoctorApp.Views.Admin.Salas"
+        mc:Ignorable="d"
+        Title="AgregarView" Height="450" Width="800">
+    <Grid Background="#f9f9f9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Background="#176428" Height="70" VerticalAlignment="Top">
+            <Image Source="/Assets/Vistasadmin/Images/Logo.jpg" Width="50" Height="50" Margin="20,10,0,10"/>
+            <TextBlock Text="Hospital General de la Región Carbonífera" Foreground="White" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+        </StackPanel>
+        
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="400" Height="364">
+            <TextBlock Text="Agregar Sala" FontSize="40" Margin="0,20"/>
+            <TextBlock Text="Número de sala:" FontSize="24" Margin="0,10"/>
+            <TextBox FontSize="24" Width="350" Margin="0,0,0,10" Text="Sala 1"/>
+
+            <TextBlock Text="Doctor asignado:" FontSize="24" Margin="0,10"/>
+            <ComboBox FontSize="24" Width="350" Margin="0,0,0,20">
+                <ComboBoxItem Content="Dr. Juan Pérez"/>
+                <ComboBoxItem Content="Dr. Ana García"/>
+                <ComboBoxItem Content="Dr. Luis Martínez"/>
+                <ComboBoxItem Content="Dr. María Rodríguez"/>
+                <ComboBoxItem Content="Dr. Pedro Sánchez"/>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="350">
+                <Button Content="Confirmar" Background="#0BDC54" Foreground="White" Width="150" Height="40" Margin="10"/>
+                <Button Content="Cancelar" Background="Red" Foreground="White" Width="150" Height="40" Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
