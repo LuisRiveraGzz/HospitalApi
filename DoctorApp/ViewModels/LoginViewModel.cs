@@ -71,10 +71,7 @@ namespace DoctorApp.ViewModels
                     var turnosViews = new TurnosView();
                     turnosViews.Show();
                     var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginView);
-                    if (loginWindow != null)
-                    {
-                        loginWindow.Close();
-                    }
+                    loginWindow?.Close();
                 }
                 else
                 {
