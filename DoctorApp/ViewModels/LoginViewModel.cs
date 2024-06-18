@@ -68,8 +68,7 @@ namespace DoctorApp.ViewModels
                 {
                     Settings.Default.Token = token;
                     Settings.Default.Save();
-                    var turnosViews = new TurnosView();
-                    turnosViews.Show();
+                    
 
                     token = Settings.Default.Token;
 
@@ -84,6 +83,8 @@ namespace DoctorApp.ViewModels
                     //Doctores
                     else
                     {
+                        var turnosViews = new TurnosView();
+                        turnosViews.Show();
                         var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginView);
                         loginWindow?.Close();
                     }
