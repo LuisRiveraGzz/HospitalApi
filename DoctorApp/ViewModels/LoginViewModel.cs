@@ -66,11 +66,8 @@ namespace DoctorApp.ViewModels
                 var token = await api.Login(dto);
                 if (token != null)
                 {
-                    Settings.Default.Token = token;
+                    Settings.Default.Token = token.Replace("\"", "");
                     Settings.Default.Save();
-                    
-
-                    token = Settings.Default.Token;
 
                     var handler = new JwtSecurityTokenHandler();
                     var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
