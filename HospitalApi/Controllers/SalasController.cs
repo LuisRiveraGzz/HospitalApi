@@ -1,4 +1,5 @@
-﻿using HospitalApi.Models.DTOs;
+﻿using HospitalApi.Hubs;
+using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
@@ -10,28 +11,28 @@ namespace HospitalApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, IHubContext<NotificationHub> _hubContext) : ControllerBase
+        UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> _hubContext) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetSalas()
+        public async Task<IActionResult> GetSalas()
         {
-            var salas = salasRepos.GetSalas();
+            var salas = await salasRepos.GetSalas();
             return salas != null ? Ok(salas) : NotFound("No hay salas disponibles");
         }
         [HttpGet("{numerosala}")]
-        public IActionResult GetSala(string numerosala)
+        public async Task<IActionResult> GetSala(string numerosala)
         {
-            var sala = salasRepos.GetSala(numerosala);
+            var sala = await salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
         [HttpPost("Agregar")]
-        public IActionResult PostSala(SalaDTO dto)
+        public async Task<IActionResult> PostSala(SalaDTO dto)
         {
             SalaDTOValidator validador = new();
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = salasRepos.GetSala(dto.NumeroSala);
+                var anterior = await salasRepos.GetSala(dto.NumeroSala);
                 if (anterior != null)
                 {
                     return Conflict("Ya hay una sala con el mismo numero de sala");
@@ -41,19 +42,19 @@ namespace HospitalApi.Controllers
                     Id = 0,
                     NumeroSala = dto.NumeroSala
                 };
-                salasRepos.Insert(newSala);
+                await salasRepos.Insert(newSala);
                 return Ok("Se ha agregado la sala");
             }
             return BadRequest("La sala no es valida");
         }
         [HttpPut("Editar")]
-        public IActionResult PutSala(SalaDTO dto)
+        public async Task<IActionResult> PutSala(SalaDTO dto)
         {
             SalaDTOValidator validador = new();
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var sala = salasRepos.Get(dto.Id);
+                var sala = await salasRepos.Get(dto.Id);
                 if (sala != null)
                 {
                     if (dto.Doctor == 1)
@@ -62,22 +63,22 @@ namespace HospitalApi.Controllers
                     }
                     sala.NumeroSala = dto.NumeroSala;
                     sala.Doctor = dto.Doctor;
-                    salasRepos.Update(sala);
+                    await salasRepos.Update(sala);
                     return Ok("Sala actualizada");
                 }
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
         [HttpPut("UtilizarSala/{id}")]
-        public IActionResult UtilizarSala(int id)
+        public async Task<IActionResult> UtilizarSala(int id)
         {
-            var sala = salasRepos.Get(id);
+            var sala = await salasRepos.Get(id);
             if (sala != null)
             {
                 if (sala.Estado == 0)//Inactiva
                 {
                     sala.Estado++;//Activa
-                    salasRepos.Update(sala);
+                    await salasRepos.Update(sala);
                     return Ok("La sala se esta utilizando correctamente");
                 }
                 return BadRequest("La sala esta siendo utilizada");
@@ -85,15 +86,15 @@ namespace HospitalApi.Controllers
             return NotFound("No se ah encontrado la sala");
         }
         [HttpPut("InutilizarSala/{id}")]
-        public IActionResult InutilizarSala(int id)
+        public async Task<IActionResult> InutilizarSala(int id)
         {
-            var sala = salasRepos.Get(id);
+            var sala = await salasRepos.Get(id);
             if (sala != null)
             {
                 if (sala.Estado == 1)//Activa
                 {
                     sala.Estado--;//Inactiva
-                    salasRepos.Update(sala);
+                    await salasRepos.Update(sala);
                     return Ok("La sala se esta disponible");
                 }
                 return BadRequest("La sala esta siendo utilizada");
@@ -101,21 +102,21 @@ namespace HospitalApi.Controllers
             return NotFound("No se ah encontrado la sala");
         }
         [HttpPut("Sala/{idSala:int}/AsignarDoctor/{doctor:int}")]
-        public IActionResult AsignarDoctor(int idSala, int doctor)
+        public async Task<IActionResult> AsignarDoctor(int idSala, int doctor)
         {
-            var sala = salasRepos.Get(idSala);
+            var sala = await salasRepos.Get(idSala);
             if (sala != null)
             {
                 if (sala.Doctor != null)
                 {
                     if (sala.Estado == 0)
                     {
-                        var doc = usuariosRepository.Get(doctor);
+                        var doc = await usuariosRepository.Get(doctor);
                         if (doc != null && doc.Rol == 2)
                         {
 
                             sala.Doctor = doctor;
-                            salasRepos.Update(sala);
+                            await salasRepos.Update(sala);
                             return Ok("Se ha asignado el doctor de la sala");
                         }
                     }
@@ -126,69 +127,71 @@ namespace HospitalApi.Controllers
             return NotFound("No se ah asignado el doctor a la sala");
         }
         [HttpPut("QuitarDoctor/{id:int}")]
-        public IActionResult QuitarDoctor(int id)
+        public async Task<IActionResult> QuitarDoctor(int id)
         {
-            var sala = salasRepos.Get(id);
+            var sala = await salasRepos.Get(id);
             if (sala != null)
             {
                 if (sala.Doctor != null)
                 {
                     sala.Doctor = null!;
-                    salasRepos.Update(sala);
+                    await salasRepos.Update(sala);
                     return Ok("Se ha sacado al doctor de la sala");
                 }
             }
             return NotFound("No hay doctor en la sala");
         }
-        [HttpPut("AsignarPaciente")]
+        [HttpPut("{idsala:int}/AsignarPaciente/{idpaciente:int}")]
         public async Task<IActionResult> AsignarPaciente(int idsala, int idpaciente)
         {
-            var sala = salasRepos.Get(idsala);
+            var sala = await salasRepos.Get(idsala);
             if (sala == null)
             {
                 return NotFound("No se ah encontrado la sala");
             }
-            var paciente = pacientesRepos.Get(idpaciente);
+            var paciente = await pacientesRepos.Get(idpaciente);
             if (paciente == null)
             {
                 return NotFound("No se ah encontrado al paciente");
             }
-
-
             if (sala.Estado == 0)//Inactiva
             {
-                sala.Paciente = idpaciente;
-                salasRepos.Update(sala);
-                //Enviar notificacion al cliente
-                await _hubContext.Clients.User(paciente.Id.ToString()).
+                if (sala.Paciente == null)
+                {
+                    sala.Paciente = idpaciente;
+                    await salasRepos.Update(sala);
+                    //Enviar notificacion al cliente
+                    await _hubContext.Clients.User(paciente.Id.ToString()).
                     SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
-                return Ok("");
+                }
+                return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
+                    : Conflict("Ya hay otro paciente en la sala");
             }
             return Conflict("La sala esta en uso");
         }
         [HttpPut("QuitarPaciente/{idsala:int}")]
-        public IActionResult QuitarPaciente(int idsala)
+        public async Task<IActionResult> QuitarPaciente(int idsala)
         {
-            var sala = salasRepos.Get(idsala);
+            var sala = await salasRepos.Get(idsala);
             if (sala == null)
             {
                 return NotFound("No se ah encontrado la sala");
             }
             sala.Paciente = null!;
-            salasRepos.Update(sala);
+            await salasRepos.Update(sala);
             return Ok("");
         }
         [HttpDelete("Eliminar/{id:int}")]
-        public IActionResult DeleteSala(int id)
+        public async Task<IActionResult> DeleteSala(int id)
         {
-            var sala = salasRepos.Get(id);
+            var sala = await salasRepos.Get(id);
             if (sala != null)
             {
                 if (sala.Doctor != null)
                 {
-                    QuitarDoctor(sala.Id);
+                    await QuitarDoctor(sala.Id);
                 }
-                salasRepos.Delete(sala);
+                await salasRepos.Delete(sala);
                 return Ok("Se ha eliminado la sala");
             }
             return NotFound("No se ha eliminado la sala");

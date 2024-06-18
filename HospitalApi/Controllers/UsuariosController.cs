@@ -20,13 +20,13 @@ namespace HospitalApi.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
         [HttpPost("/Agregar")]
-        public IActionResult Post(UsuarioDTO dto)
+        public async Task<IActionResult> Post(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = usuariosRepos.GetUsuario(dto.Nombre);
+                var anterior = await usuariosRepos.GetUsuario(dto.Nombre);
                 if (anterior != null)
                 {
                     //verificar que el rol sea diferente, si es el mismo rol
@@ -47,39 +47,37 @@ namespace HospitalApi.Controllers
                     Contraseña = Encriptacion.StringToSHA512(dto.Contraseña),
                     Rol = dto.Rol
                 };
-                usuariosRepos.Insert(user);
+                await usuariosRepos.Insert(user);
                 return user.Rol == 1 ? Ok("Administrador agregado.") : Ok("Doctor agregado.");
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
         [HttpPut("/Editar")]
-        public IActionResult Put(UsuarioDTO dto)
+        public async Task<IActionResult> Put(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = usuariosRepos.Get(dto.Id);
+                var anterior = await usuariosRepos.Get(dto.Id);
                 if (anterior != null)
                 {
-
                     anterior.Nombre = dto.Nombre;
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
-                    usuariosRepos.Update(anterior);
-
+                    await usuariosRepos.Update(anterior);
                     return anterior.Rol == 1 ? Ok("Administrador editado.") : Ok("Doctor editado.");
                 }
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
         [HttpDelete("Eliminar/{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var user = usuariosRepos.Get(id);
+            var user = await usuariosRepos.Get(id);
             if (user != null)
             {
                 sbyte rol = user.Rol;
-                usuariosRepos.Delete(user);
+                await usuariosRepos.Delete(user);
                 return rol == 1 ? Ok("Administrador eliminado.") : Ok("Doctor eliminado.");
             }
             return NotFound("Usuario no eliminado.");

@@ -4,10 +4,11 @@ namespace HospitalApi.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        void Delete(T entity);
-        T? Get(int id);
+
+        Task<T?> Get(int id);
         DbSet<T> GetAll();
-        void Insert(T entity);
-        void Update(T entity);
+        Task Insert(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
     }
 }

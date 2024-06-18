@@ -6,13 +6,13 @@ namespace HospitalApi.Repositories
     public class SalasRepository(WebsitosHospitalbdContext context) : Repository<Sala>(context)
     {
         private readonly WebsitosHospitalbdContext Context = context;
-        public IEnumerable<Sala> GetSalas()
+        public async Task<List<Sala>> GetSalas()
         {
-            return Context.Sala.Include(x => x.DoctorNavigation).OrderBy(x => x.NumeroSala);
+            return await Context.Sala.ToListAsync();
         }
-        public Sala? GetSala(string numero)
+        public async Task<Sala?> GetSala(string numero)
         {
-            return Context.Sala.Include(x => x.DoctorNavigation).FirstOrDefault(x => x.NumeroSala == numero);
+            return await Context.Sala.Include(x => x.DoctorNavigation).FirstOrDefaultAsync(x => x.NumeroSala == numero);
         }
     }
 }

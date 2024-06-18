@@ -11,24 +11,24 @@ namespace HospitalApi.Repositories
         {
             return context.Set<T>();
         }
-        public virtual T? Get(int id)
+        public async Task<T?> Get(int id)
         {
-            return context.Find<T>(id);
+            return await context.FindAsync<T>(id);
         }
-        public void Insert(T entity)
+        public async Task Insert(T entity)
         {
-            context.Add(entity);
-            context.SaveChanges();
+            await context.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             context.Update(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-        public void Delete(T entity)
+        public async Task Delete(T entity)
         {
             context.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }
