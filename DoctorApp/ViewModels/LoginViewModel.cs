@@ -1,28 +1,24 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Models.Validators;
 using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
-using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
 
 namespace DoctorApp.ViewModels
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public partial class LoginViewModel : ObservableObject
     {
         private string usuario = "";
         private string contraseña = "";
         private string error = "";
         private readonly ApiService api;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
         public LoginViewModel()
         {
             api = new ApiService();
-            ConfirmarCommand = new RelayCommand(Confirmar);
-
         }
         public string Usuario
         {
@@ -52,7 +48,8 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Error));
             }
         }
-        private async void Confirmar()
+        [RelayCommand]
+        private async Task Confirmar()
         {
             Error = "";
             var dto = new LoginDTO
@@ -60,6 +57,7 @@ namespace DoctorApp.ViewModels
                 Usuario = Usuario,
                 Contraseña = Contraseña
             };
+
             var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
@@ -83,12 +81,6 @@ namespace DoctorApp.ViewModels
 
                 Error = string.Join("\n", result.Errors.Select(x => x.ErrorMessage));
             }
-        }
-
-        public ICommand ConfirmarCommand { get; }
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
