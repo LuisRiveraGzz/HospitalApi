@@ -15,7 +15,6 @@ namespace DoctorApp.ViewModels
         private string contraseña = "";
         private string error = "";
         private readonly ApiService api;
-
         public LoginViewModel()
         {
             api = new ApiService();
