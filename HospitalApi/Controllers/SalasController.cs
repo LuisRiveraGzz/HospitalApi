@@ -40,7 +40,8 @@ namespace HospitalApi.Controllers
                 Sala newSala = new()
                 {
                     Id = 0,
-                    NumeroSala = dto.NumeroSala
+                    NumeroSala = dto.NumeroSala,
+                    Doctor = dto.Doctor
                 };
                 await salasRepos.Insert(newSala);
                 return Ok("Se ha agregado la sala");
@@ -126,6 +127,7 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah asignado el doctor a la sala");
         }
+
         [HttpPut("QuitarDoctor/{id:int}")]
         public async Task<IActionResult> QuitarDoctor(int id)
         {
@@ -188,7 +190,7 @@ namespace HospitalApi.Controllers
         {
             var sala = await salasRepos.Get(id);
             //si la sala esta activa, quitar al doctor y al paciente, despues eliminarla
-            if (sala != null && sala.Estado == 1)
+            if (sala != null && sala.Estado == 0)
             {
                 if (sala.Doctor != null)
                 {

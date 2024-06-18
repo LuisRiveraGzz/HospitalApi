@@ -8,6 +8,7 @@ namespace HospitalApi.Models.Validators
         public SalaDTOValidator()
         {
             RuleFor(x => x.NumeroSala).NotEmpty().NotNull().WithMessage("Ingresa el numero de la sala");
+            RuleFor(x => x.Doctor).NotNull().NotEmpty().WithMessage("Ingresa el doctor a la sala");
         }
     }
 }
