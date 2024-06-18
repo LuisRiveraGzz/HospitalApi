@@ -20,10 +20,11 @@ namespace HospitalApi.Controllers
         public async Task<IActionResult> GetPacientebyName(string nombre)
         {
             var paciente = await pacientesRepos.GetAll()
-                .FirstOrDefaultAsync(x => x.Nombre == nombre.ToUpper());
-            return paciente != null ? Ok(paciente) : NotFound("No se encontro el paciente");
+                .FirstOrDefaultAsync(x => x.Nombre
+                == nombre.ToUpper());
+            return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
-        //pese a que el metodo es asincronico, no se debe agregar el await si no se obtiene el paciente anterior
+        //pese a que el metodo es asincrónico, no se debe agregar el await si no se obtiene el paciente anterior
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(PacienteDTO dto)
         {
@@ -37,7 +38,7 @@ namespace HospitalApi.Controllers
                         Id = 0,
                         Nombre = dto.Nombre.ToUpper()
                     };
-                    //se le asigna un id automaticamente
+                    //se le asigna un id automáticamente
                     await pacientesRepos.Insert(paciente);
                     return Ok("Paciente Agregado");
                 }

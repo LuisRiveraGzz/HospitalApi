@@ -160,7 +160,7 @@ namespace HospitalApi.Controllers
                 {
                     sala.Paciente = idpaciente;
                     await salasRepos.Update(sala);
-                    //Enviar notificacion al cliente
+                    //Enviar notificación al cliente
                     await _hubContext.Clients.User(paciente.Id.ToString()).
                     SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
                 }

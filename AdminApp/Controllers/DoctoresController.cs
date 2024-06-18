@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AdminApp.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AdminApp.Controllers
 {
@@ -7,6 +8,15 @@ namespace AdminApp.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Agregar()
+        {
+            return View();
+        }
+        public IActionResult Agregar(UsuarioViewModel vm)
+        {
+            return View(vm);
         }
     }
 }
