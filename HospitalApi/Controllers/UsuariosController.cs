@@ -64,6 +64,10 @@ namespace HospitalApi.Controllers
                 {
                     anterior.Nombre = dto.Nombre;
                     anterior.Contraseña = Encriptacion.StringToSHA512(dto.Contraseña);
+                    if (anterior.Rol != dto.Rol)
+                    {
+                        return BadRequest("No puedes cambiar el rol de un usuario");
+                    }
                     await usuariosRepos.Update(anterior);
                     return anterior.Rol == 1 ? Ok("Administrador editado.") : Ok("Doctor editado.");
                 }

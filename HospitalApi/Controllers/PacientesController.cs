@@ -24,7 +24,6 @@ namespace HospitalApi.Controllers
                 == nombre.ToUpper());
             return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
-        //pese a que el metodo es asincrónico, no se debe agregar el await si no se obtiene el paciente anterior
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(PacienteDTO dto)
         {
@@ -32,7 +31,6 @@ namespace HospitalApi.Controllers
             {
                 if (dto != null)
                 {
-
                     Paciente paciente = new()
                     {
                         Id = 0,
@@ -69,6 +67,10 @@ namespace HospitalApi.Controllers
             var paciente = await pacientesRepos.Get(id);
             if (paciente != null)
             {
+                if (paciente.Sala.Count != 0)
+                {
+                    return BadRequest("No puedes eliminar un paciente que esta siendo atendido");
+                }
                 await pacientesRepos.Delete(paciente);
                 return Ok("Paciente eliminado");
             }
