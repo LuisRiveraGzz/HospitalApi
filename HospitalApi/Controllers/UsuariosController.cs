@@ -19,7 +19,7 @@ namespace HospitalApi.Controllers
         public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
         [HttpGet("{id:int}")]
         public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
-        [HttpPost("/Agregar")]
+        [HttpPost("Agregar")]
         public async Task<IActionResult> Post(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
@@ -52,7 +52,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
-        [HttpPut("/Editar")]
+        [HttpPut("Editar")]
         public async Task<IActionResult> Put(UsuarioDTO dto)
         {
             UsuarioDTOValidator validador = new();
