@@ -162,7 +162,8 @@ namespace HospitalApi.Controllers
                     await salasRepos.Update(sala);
                     //Enviar notificación al cliente
                     await _hubContext.Clients.User(paciente.Id.ToString()).
-                    SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
+                        SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
+                    return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
                     : Conflict("Ya hay otro paciente en la sala");
