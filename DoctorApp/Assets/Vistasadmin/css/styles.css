@@ -1,0 +1,207 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    background-color: #176428;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 45px;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 20px;
+}
+
+.nav-bar {
+    display: flex;
+    background-color: #0BDC54;
+}
+
+.nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    background-color: #47F863;
+}
+
+.main-content {
+    padding: 20px;
+    position: relative;
+}
+.delete-icon{
+     margin-left: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+.doctor-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+.table-header {
+    background-color: #f0f0f0;
+    display: flex;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.table-row {
+    display: flex;
+    padding: 10px;
+}
+
+.table-row:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+
+.table-row:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.table-cell {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.icon {
+    margin-left: 10px;
+}
+
+.floating-button {
+    position: fixed;
+    bottom: 25px;
+    right: 20px;
+    background-color: #ffffff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-button img {
+    width: 50px;
+    height: 50px;
+}
+
+.context-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 100px;
+}
+
+.context-menu ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.context-menu ul li {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.context-menu ul li:hover {
+    background-color: red;
+    color: white;
+}
+
+.main-content {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    background-color: #e6e6e6;
+}
+
+.add-user-form {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width:100%;
+    
+    text-align: center;
+    
+}
+
+.add-user-form h2 {
+    margin-top: 0;
+    font-size: 40px;
+}
+
+.add-user-form label {
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+    font-size: 24px;
+}
+
+.add-user-form input,.add-user-form select {
+    width: calc(100% - 16px); 
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 24px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.confirm-button,
+.cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    width: 45%;
+    font-size: 24px;
+
+}
+
+.confirm-button {
+    background-color: #0BDC54;
+}
+
+.cancel-button {
+    background-color: red;
+}
+
+.confirm-button:hover {
+    background-color: #0aa94c;
+}
+
+.cancel-button:hover {
+    background-color: #cc0000;
+}
