@@ -57,7 +57,8 @@ namespace HospitalApi.Controllers
                 var sala = await salasRepos.Get(dto.Id);
                 if (sala != null)
                 {
-                    if (dto.Doctor == 1)
+                    var doc = await usuariosRepository.Get(dto.Doctor);
+                    if (doc != null && doc.Rol == 1)
                     {
                         return BadRequest("No puedes asignar administradores a las salas");
                     }
@@ -114,7 +115,6 @@ namespace HospitalApi.Controllers
                         var doc = await usuariosRepository.Get(doctor);
                         if (doc != null && doc.Rol == 2)
                         {
-
                             sala.Doctor = doctor;
                             await salasRepos.Update(sala);
                             return Ok("Se ha asignado el doctor de la sala");
@@ -135,6 +135,7 @@ namespace HospitalApi.Controllers
                 if (sala.Doctor != null)
                 {
                     sala.Doctor = null!;
+                    await InutilizarSala(sala.Id);
                     await salasRepos.Update(sala);
                     return Ok("Se ha sacado al doctor de la sala");
                 }
@@ -180,17 +181,22 @@ namespace HospitalApi.Controllers
             }
             sala.Paciente = null!;
             await salasRepos.Update(sala);
-            return Ok("");
+            return Ok("Se ah quitado al paciente de la sala.");
         }
         [HttpDelete("Eliminar/{id:int}")]
         public async Task<IActionResult> DeleteSala(int id)
         {
             var sala = await salasRepos.Get(id);
-            if (sala != null)
+            //si la sala esta activa, quitar al doctor y al paciente, despues eliminarla
+            if (sala != null && sala.Estado == 1)
             {
                 if (sala.Doctor != null)
                 {
                     await QuitarDoctor(sala.Id);
+                }
+                if (sala.Paciente != null)
+                {
+                    await QuitarPaciente(sala.Paciente ?? 0);
                 }
                 await salasRepos.Delete(sala);
                 return Ok("Se ha eliminado la sala");
