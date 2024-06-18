@@ -5,10 +5,11 @@
         Background="#EFEFEF">
     <DockPanel>
 
-        <WrapPanel DockPanel.Dock="Top" Background="#176428" Height="60">
+        <WrapPanel DockPanel.Dock="Top" Background="#176428">
             <Image Source="/Assets/Logo.jpg" Height="40" Margin="10"/>
             <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="24" Margin="10,0">Hospital General de la Región Carbonífera</TextBlock>
-            <Button Content="cerrar sesión" HorizontalAlignment="Right"  Margin="180,10,0,10" Background="White"/>
+            <TextBlock VerticalAlignment="Center" Foreground="White" Margin="20" TextWrapping="Wrap" Width="100" FontSize="12">Hospital General de la Región Carbonífera</TextBlock>
+            <Button Content="cerrar sesión" HorizontalAlignment="Right" Margin="20" Height="50"  Background="White"/>
         </WrapPanel>
 
 

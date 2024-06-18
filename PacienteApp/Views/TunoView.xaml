@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PacienteApp.Views.TunoView"
+             Title="TurnoView"
+             Background="White">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="85*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+
+        <Frame BackgroundColor="#176428"
+                   HorizontalOptions="FillAndExpand"
+                   CornerRadius="0"
+                   HasShadow="True"
+                   Padding="0"
+                   Grid.Row="0"
+                   >
+            <Label Text="HGRC"
+                       TextColor="White"
+                       FontSize="Large"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0"/>
+        </Frame>
+
+        <Frame Grid.Row="1"
+                   BackgroundColor="White"
+                   Opacity="0.8"
+                    BorderColor="Transparent"
+                   Padding="20"
+                   Margin="10,20,10,20"
+               
+                   HasShadow="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*"></RowDefinition>
+                    <RowDefinition Height="80*"></RowDefinition>
+                    <RowDefinition Height="15*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Frame Grid.Row="1" BackgroundColor="#0BDC54">
+                    <StackLayout VerticalOptions="Center">
+                        <Label Text="Turno" HorizontalOptions="Center" FontAttributes="Bold" FontSize="60"></Label>
+                        <Label Text="1" HorizontalOptions="Center" FontAttributes="Bold" FontSize="70"></Label>
+                    </StackLayout>
+                </Frame>
+                <StackLayout Margin="0,10"  Grid.Row="2">
+                    <Label TextColor="Black" Text="Tiempo promedio de espera:"></Label>
+                    <Label TextColor="Black" FontSize="20" HorizontalOptions="Center" Text="5"></Label>
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+        <Frame Grid.Row="2" CornerRadius="0" BackgroundColor="#176428">
+           
+        </Frame>
+
+        
+    </Grid>
+</ContentPage>
