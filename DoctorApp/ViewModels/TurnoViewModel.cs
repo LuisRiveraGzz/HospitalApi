@@ -51,18 +51,18 @@ namespace DoctorApp.ViewModels
             var doctores = await usuariosService.GetUsuarios();
             var nombre = doctores.FirstOrDefault(x=>x.Nombre == Nombre);
             var salas = await _salaservice.GetSalas();
-            //if (salas!= null)
-            //{
-            //    var salausuario = salas.Where(x=>x.Doctor == nombre.Id).Select(x=>x.Doctor).ToString();
-            //    if (salausuario != null)
-            //    {
-            //        Sala = salausuario;
-            //    }
-            //    else
-            //    {
-            //        Sala = "El doctor no tiene ninguna sala asignada";
-            //    }
-            //}
+            if (salas != null)
+            {
+                var salausuario = salas.Where(x => x.Doctor == nombre.Id).Select(x => x.Doctor).ToString();
+                if (salausuario != null)
+                {
+                    Sala = salausuario;
+                }
+                else
+                {
+                    Sala = "El doctor no tiene ninguna sala asignada";
+                }
+            }
         }
         [RelayCommand]
         public async Task Siguiente()
