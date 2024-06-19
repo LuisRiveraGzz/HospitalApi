@@ -34,6 +34,21 @@ namespace DoctorApp.Services
                 return [];
             }
         }
+        public async Task<UsuarioDTO> GetUsuario(int id)
+        {
+            try
+            {
+                var response = await Client.GetAsync($"{id}");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var usuarios = JsonConvert.DeserializeObject<UsuarioDTO>(json);
+                return usuarios ?? new();
+            }
+            catch
+            {
+                return new();
+            }
+        }
         public async Task Agregar(UsuarioDTO dto)
         {
             try
@@ -56,7 +71,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.DeleteAsync($"Eliminar/{dto.Id}");
+                var response = await Client.DeleteAsync($"Eliminar/{dto.id}");
                 response.EnsureSuccessStatusCode();
             }
             catch { }

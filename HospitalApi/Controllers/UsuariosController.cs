@@ -18,7 +18,7 @@ namespace HospitalApi.Controllers
         [HttpGet("Administradores")]
         public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
         [HttpGet("{id:int}")]
-        public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
+        public IActionResult GetUsuario(int id) => Ok(usuariosRepos.GetUsuario(id));
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(UsuarioDTO dto)
         {
@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = await usuariosRepos.GetUsuario(dto.Nombre);
+                var anterior = await usuariosRepos.GetUsuarioByName(dto.Nombre);
                 if (anterior != null)
                 {
                     //verificar que el rol sea diferente, si es el mismo rol
