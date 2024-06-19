@@ -10,9 +10,9 @@ namespace HospitalApi.Repositories
         {
             return Context.Usuario.Include(x => x.Sala).AsAsyncEnumerable();
         }
-        public Task<Usuario?> GetUsuario(int id)
+        public Usuario? GetUsuario(int id)
         {
-            return Context.Usuario.Include(x => x.Sala).FirstOrDefaultAsync(x => x.Id == id);
+            return Context.Usuario.Include(x => x.Sala).FirstOrDefault(x => x.Id == id);
         }
         public Task<Usuario?> GetUsuarioByName(string nombre)
         {

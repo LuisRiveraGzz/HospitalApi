@@ -2,11 +2,11 @@
 {
     public class UsuarioDTO
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string nombre { get; set; } = null!;
-        public string contraseña { get; set; } = null!;
-        public sbyte rol { get; set; }
-        public IEnumerable<SalaDTO> sala { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
+        public string Contraseña { get; set; } = null!;
+        public sbyte Rol { get; set; }
+        public IEnumerable<SalaDTO> Sala { get; set; } = null!;
     }
 }

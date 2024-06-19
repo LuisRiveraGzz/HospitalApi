@@ -47,7 +47,7 @@ namespace DoctorApp.ViewModels
             int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
 
             var doctor = await usuariosService.GetUsuario(iduser);
-            var salas = doctor.sala;
+            var salas = doctor.Sala;
             if (salas != null)
             {
                 if (salas != null)
@@ -66,6 +66,7 @@ namespace DoctorApp.ViewModels
         {
 
         }
+
         [RelayCommand]
         public void CerrarSesion()
         {

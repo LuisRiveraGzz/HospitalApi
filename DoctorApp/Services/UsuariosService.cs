@@ -38,6 +38,7 @@ namespace DoctorApp.Services
         {
             try
             {
+
                 var response = await Client.GetAsync($"{id}");
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
