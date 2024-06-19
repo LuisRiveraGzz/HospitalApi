@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DoctorApp.Views.Doctor.TurnosView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Hospital General de la Región Carbonífera" Height="450" Width="800"
+        Title="Hospital General de la Región Carbonífera" Height="450" Width="850"
         xmlns:vm="clr-namespace:DoctorApp.ViewModels"
         Background="#EFEFEF">
     <Window.DataContext>

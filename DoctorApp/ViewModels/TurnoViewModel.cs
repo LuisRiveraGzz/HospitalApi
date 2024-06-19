@@ -24,6 +24,7 @@ namespace DoctorApp.ViewModels
         public TurnoViewModel()
         {
             _salaservice = new();
+            usuariosService = new();
             ObtenerUsuario();
         }
         
@@ -41,14 +42,22 @@ namespace DoctorApp.ViewModels
             var token = Settings.Default.Token;
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-            var nombreClaim = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+            string nombreClaim = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value ;
             Nombre = nombreClaim.ToString();
             var doctores = await usuariosService.GetUsuarios();
             var nombre = doctores.FirstOrDefault(x=>x.Nombre == Nombre);
             var salas = await _salaservice.GetSalas();
             if (salas!= null)
             {
-                Sala = salas.FirstOrDefault(x => x.Doctor == nombre.Id).ToString();
+                var salausuario = salas.Where(x=>x.Doctor == nombre.Id).Select(x=>x.Doctor).ToString();
+                if (salausuario != null)
+                {
+                    Sala = salausuario;
+                }
+                else
+                {
+                    Sala = "El doctor no tiene ninguna sala asignada";
+                }
             }
         }
         [RelayCommand]
