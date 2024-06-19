@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
             var result = validador.Validate(dto);
             if (result.IsValid)
             {
-                var anterior = await usuariosRepos.GetUsuario(dto.Nombre);
+                var anterior = await usuariosRepos.GetUsuarioByName(dto.Nombre);
                 if (anterior != null)
                 {
                     //verificar que el rol sea diferente, si es el mismo rol

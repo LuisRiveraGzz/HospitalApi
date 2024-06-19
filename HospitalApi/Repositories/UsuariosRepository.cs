@@ -14,6 +14,10 @@ namespace HospitalApi.Repositories
         {
             return Context.Usuario.Include(x => x.Sala).FirstOrDefaultAsync(x => x.Id == id);
         }
+        public Task<Usuario?> GetUsuarioByName(string nombre)
+        {
+            return Context.Usuario.Include(x => x.Sala).FirstOrDefaultAsync(x => x.Nombre == nombre);
+        }
 
     }
 }
