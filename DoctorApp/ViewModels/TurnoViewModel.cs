@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DoctorApp.Models.DTOs;
 using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
@@ -17,12 +16,10 @@ namespace DoctorApp.ViewModels
         string sala = "";
         string turno = "";
         string paciente = "";
-        private readonly SalasService _salaservice;
-        private readonly UsuariosService usuariosService;
+        private readonly UsuariosService usuariosService = new();
+        private readonly SalasService salasService = new();
         public TurnoViewModel()
         {
-            _salaservice = new();
-            usuariosService = new();
             _ = ObtenerUsuario();
         }
 
@@ -46,20 +43,13 @@ namespace DoctorApp.ViewModels
             Nombre = nombreClaim.ToString();
             int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
 
-            var doctor = await usuariosService.GetUsuario(iduser);
-            var salas = doctor.Sala;
-            if (salas != null)
+            var salabydoc = await salasService.GetSalaByDoctor(iduser);
+            Sala = salabydoc.NumeroSala;
+            if (string.IsNullOrWhiteSpace(Sala))
             {
-                if (salas != null)
-                {
-                    SalaDTO sala = salas.FirstOrDefault() ?? new();
-                    Sala = sala.NumeroSala;
-                }
-                else
-                {
-                    Sala = "El doctor no tiene ninguna sala asignada";
-                }
+                Sala = "El doctor no tiene ninguna sala asignada";
             }
+
         }
         [RelayCommand]
         public async Task Siguiente()
@@ -74,8 +64,8 @@ namespace DoctorApp.ViewModels
             Settings.Default.Save();
             var LoginViews = new LoginView();
             LoginViews.Show();
-            var TurnosWIndow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);
-            TurnosWIndow?.Close();
+            var TurnosWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);
+            TurnosWindow?.Close();
         }
 
     }

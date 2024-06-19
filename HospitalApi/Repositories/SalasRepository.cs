@@ -14,5 +14,10 @@ namespace HospitalApi.Repositories
         {
             return await Context.Sala.Include(x => x.DoctorNavigation).FirstOrDefaultAsync(x => x.NumeroSala == numero);
         }
+        public async Task<Sala> GetSalaByDoctor(int iddoctor)
+        {
+            return await Context.Sala.Include(x => x.DoctorNavigation).FirstOrDefaultAsync(x => x.DoctorNavigation
+            != null && x.DoctorNavigation.Id == iddoctor) ?? new();
+        }
     }
 }

@@ -25,6 +25,20 @@ namespace HospitalApi.Controllers
             var sala = await salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
+
+        [HttpGet("{iddoctor:int}")]
+        public async Task<IActionResult> GetSala(int iddoctor)
+        {
+            var salabydoctor = await salasRepos.GetSalaByDoctor(iddoctor);
+            var sala = new SalaDTO()
+            {
+                Doctor = salabydoctor.Doctor ?? 0,
+                Id = salabydoctor.Id,
+                NumeroSala = salabydoctor.NumeroSala
+            };
+            return sala != null ? Ok(sala) : NotFound("No existe la sala");
+        }
+
         [HttpPost("Agregar")]
         public async Task<IActionResult> PostSala(SalaDTO dto)
         {

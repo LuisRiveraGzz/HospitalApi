@@ -100,6 +100,21 @@ namespace DoctorApp.Services
             }
             catch { }
         }
-
+        //Get: /api/Salas/1
+        public async Task<SalaDTO> GetSalaByDoctor(int iddoctor)
+        {
+            try
+            {
+                var response = await Client.GetAsync($"{iddoctor}");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var sala = JsonConvert.DeserializeObject<SalaDTO>(json);
+                return sala ?? new();
+            }
+            catch
+            {
+                return new();
+            }
+        }
     }
 }

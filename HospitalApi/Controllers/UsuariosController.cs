@@ -21,7 +21,24 @@ namespace HospitalApi.Controllers
         public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
 
         [HttpGet("{id:int}")]
-        public IActionResult GetUsuario(int id) => Ok(usuariosRepos.GetUsuario(id));
+        public IActionResult GetUsuario(int id)
+        {
+
+            var usuarioGet = usuariosRepos.GetUsuario(id);
+            if (usuarioGet != null)
+            {
+                var usuario = new UsuarioGet()
+                {
+                    Contraseña = usuarioGet.Contraseña,
+                    Id = usuarioGet.Id,
+                    Nombre = usuarioGet.Nombre,
+                    Rol = usuarioGet.Rol,
+                    Sala = usuarioGet.Sala.First().NumeroSala
+                };
+                return Ok(usuario);
+            }
+            return NotFound("Usuario no encontrado");
+        }
 
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(UsuarioDTO dto)
