@@ -13,12 +13,16 @@ namespace HospitalApi.Controllers
     {
         [HttpGet]
         public IActionResult GetUsuarios() => Ok(usuariosRepos.GetUsuarios());
+
         [HttpGet("Doctores")]
         public IActionResult GetDoctores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 2));
+
         [HttpGet("Administradores")]
         public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
+
         [HttpGet("{id:int}")]
         public IActionResult GetUsuario(int id) => Ok(usuariosRepos.GetUsuario(id));
+
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(UsuarioDTO dto)
         {
@@ -52,6 +56,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
+
         [HttpPut("Editar")]
         public async Task<IActionResult> Put(UsuarioDTO dto)
         {
@@ -74,6 +79,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa un Usuario Valido.");
         }
+
         [HttpDelete("Eliminar/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
