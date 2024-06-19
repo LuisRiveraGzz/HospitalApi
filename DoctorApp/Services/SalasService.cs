@@ -22,10 +22,24 @@ namespace DoctorApp.Services
         //Get: /
         public async Task<IEnumerable<SalaDTO>> GetSalas()
         {
-
             try
             {
                 var response = await Client.GetAsync("");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var Salas = JsonConvert.DeserializeObject<IEnumerable<SalaDTO>>(json);
+                return Salas ?? [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
+        public async Task<IEnumerable<SalaDTO>> GetSala(string NumSala)
+        {
+            try
+            {
+                var response = await Client.GetAsync($"{NumSala}");
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 var Salas = JsonConvert.DeserializeObject<IEnumerable<SalaDTO>>(json);

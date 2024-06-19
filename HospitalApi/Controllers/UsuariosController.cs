@@ -18,7 +18,7 @@ namespace HospitalApi.Controllers
         [HttpGet("Administradores")]
         public IActionResult GetAdministradores() => Ok(usuariosRepos.GetAll().Where(x => x.Rol == 1));
         [HttpGet("{id:int}")]
-        public IActionResult GetUsuario(int id) => Ok(usuariosRepos.Get(id));
+        public IActionResult GetUsuario(int id) => Ok(usuariosRepos.GetUsuario(id));
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(UsuarioDTO dto)
         {
