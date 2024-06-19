@@ -48,10 +48,10 @@ namespace HospitalApi.Controllers
                 Pacientes.Enqueue(paciente);
             }
         }
-
-        public Dictionary<int, EstadisticaDTO> ObtenerEstadisticas()
+        [HttpGet("")]
+        public async Task<IActionResult> ObtenerEstadisticas()
         {
-            return Estadisticas;
+            return await Task.FromResult(Ok(Estadisticas));
         }
         public EstadisticaDTO ObtenerEstadistica(int doctorId)
         {
@@ -61,7 +61,7 @@ namespace HospitalApi.Controllers
             }
             throw new KeyNotFoundException("Doctor no encontrado.");
         }
-        public async Task<ActionResult> AtenderPaciente(int doctorId)
+        public async Task<IActionResult> AtenderPaciente(int doctorId)
         {
             if (!Estadisticas.ContainsKey(doctorId))
             {
@@ -73,7 +73,7 @@ namespace HospitalApi.Controllers
             }
             var paciente = Pacientes.Dequeue();
             EstadisticaDTO estadisticas = Estadisticas[doctorId];
-            var tiempoAtencion = SimularAtencion();
+            var tiempoAtencion = await SimularAtencion();
             estadisticas.PacientesAtendidos++;
             //Promedio de tiempo de atencion al cliente
             estadisticas.TiempoAtencion = (estadisticas.TiempoAtencion + tiempoAtencion) / estadisticas.PacientesAtendidos;
@@ -86,12 +86,12 @@ namespace HospitalApi.Controllers
 
             return Ok($"se ah atendido al cliente {paciente.Nombre} en {tiempoAtencion}");
         }
-        private static TimeSpan SimularAtencion()
+        private async Task<TimeSpan> SimularAtencion()
         {
             // Simula el tiempo de atención, por ejemplo, entre 10 y 30 minutos
             var random = new Random();
             int minutos = random.Next(3, 10);
-            return TimeSpan.FromMinutes(minutos);
+            return await Task.FromResult(TimeSpan.FromMinutes(minutos));
         }
     }
 }
