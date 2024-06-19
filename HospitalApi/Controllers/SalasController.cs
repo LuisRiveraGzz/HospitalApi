@@ -103,7 +103,7 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah encontrado la sala");
         }
-        [HttpPut("Sala/{idSala:int}/AsignarDoctor/{doctor:int}")]
+        [HttpPut("{idSala:int}/AsignarDoctor/{doctor:int}")]
         public async Task<IActionResult> AsignarDoctor(int idSala, int doctor)
         {
             var sala = await salasRepos.Get(idSala);
@@ -127,7 +127,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah asignado el doctor a la sala");
         }
-
         [HttpPut("QuitarDoctor/{id:int}")]
         public async Task<IActionResult> QuitarDoctor(int id)
         {

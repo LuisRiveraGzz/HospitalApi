@@ -19,6 +19,7 @@ namespace DoctorApp.Services
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
         }
 
+        //Get: /
         public async Task<IEnumerable<SalaDTO>> GetSalas()
         {
             try
@@ -34,7 +35,7 @@ namespace DoctorApp.Services
                 return [];
             }
         }
-
+        //Post: /api/Salas/Agregar
         public async Task Agregar(SalaDTO dto)
         {
             try
@@ -44,6 +45,7 @@ namespace DoctorApp.Services
             }
             catch { }
         }
+        //Put: /api/Salas/Editar
         public async Task Editar(SalaDTO dto)
         {
             try
@@ -53,6 +55,7 @@ namespace DoctorApp.Services
             }
             catch { }
         }
+        //Delete: /api/Salas/Eliminar
         public async Task Eliminar(SalaDTO dto)
         {
             try
@@ -62,5 +65,26 @@ namespace DoctorApp.Services
             }
             catch { }
         }
+        //Put: /api/Salas/1/paciente/1
+        public async Task AsignarPaciente(int idSala, int idPaciente)
+        {
+            try
+            {
+                var response = await Client.PutAsync($"{idSala}/Paciente/{idPaciente}", null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch { }
+        }
+        //Put: /api/Salas/1
+        public async Task QuitarPaciente(int idSala)
+        {
+            try
+            {
+                var response = await Client.PutAsync($"{idSala}", null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch { }
+        }
+
     }
 }
