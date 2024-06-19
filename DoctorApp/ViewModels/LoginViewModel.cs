@@ -5,6 +5,7 @@ using DoctorApp.Models.Validators;
 using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
+using DoctorApp.Views.Doctor;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Windows;
@@ -59,7 +60,7 @@ namespace DoctorApp.ViewModels
                 Usuario = Usuario,
                 Contraseña = Contraseña
             };
-
+           
             var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
@@ -68,7 +69,7 @@ namespace DoctorApp.ViewModels
                 {
                     Settings.Default.Token = token.Replace("\"", "");
                     Settings.Default.Save();
-
+                   
                     var handler = new JwtSecurityTokenHandler();
                     var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
                     var rolClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);

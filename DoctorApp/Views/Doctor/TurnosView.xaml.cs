@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DoctorApp.Views
+namespace DoctorApp.Views.Doctor
 {
     /// <summary>
     /// Interaction logic for TurnosView.xaml
