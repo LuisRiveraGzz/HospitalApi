@@ -13,7 +13,7 @@
             <Image Source="/Assets/Logo.jpg" Height="40" Margin="10"/>
             <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="24" Margin="10,0">Hospital General de la Región Carbonífera</TextBlock>
             <TextBlock VerticalAlignment="Center" Foreground="White" Text="{Binding Nombre}"  Margin="20" TextWrapping="Wrap" Width="100" FontSize="12"></TextBlock>
-            <Button Content="cerrar sesión" Padding="10" Foreground="White" FontWeight="Black" HorizontalAlignment="Right" Margin="15" Height="50"  Background="Red"/>
+            <Button Command="{Binding CerrarSesionCommand}" Content="cerrar sesión" Padding="10" Foreground="White" FontWeight="Black" HorizontalAlignment="Right" Margin="15" Height="50"  Background="Red"/>
         </WrapPanel>
 
 

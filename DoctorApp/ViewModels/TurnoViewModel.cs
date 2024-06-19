@@ -2,14 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Properties;
 using DoctorApp.Services;
+using DoctorApp.Views.Doctor;
+using DoctorApp.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DoctorApp.ViewModels
 {
@@ -47,23 +51,33 @@ namespace DoctorApp.ViewModels
             var doctores = await usuariosService.GetUsuarios();
             var nombre = doctores.FirstOrDefault(x=>x.Nombre == Nombre);
             var salas = await _salaservice.GetSalas();
-            if (salas!= null)
-            {
-                var salausuario = salas.Where(x=>x.Doctor == nombre.Id).Select(x=>x.Doctor).ToString();
-                if (salausuario != null)
-                {
-                    Sala = salausuario;
-                }
-                else
-                {
-                    Sala = "El doctor no tiene ninguna sala asignada";
-                }
-            }
+            //if (salas!= null)
+            //{
+            //    var salausuario = salas.Where(x=>x.Doctor == nombre.Id).Select(x=>x.Doctor).ToString();
+            //    if (salausuario != null)
+            //    {
+            //        Sala = salausuario;
+            //    }
+            //    else
+            //    {
+            //        Sala = "El doctor no tiene ninguna sala asignada";
+            //    }
+            //}
         }
         [RelayCommand]
         public async Task Siguiente()
         {
 
+        }
+        [RelayCommand]
+        public void CerrarSesion()
+        {
+            Settings.Default.Token = "";
+            Settings.Default.Save();
+            var LoginViews = new LoginView();
+            LoginViews.Show();
+            var TurnosWIndow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);
+            TurnosWIndow?.Close();
         }
        
     }

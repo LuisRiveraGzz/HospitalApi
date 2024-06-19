@@ -22,6 +22,7 @@ namespace DoctorApp.Services
         //Get: /
         public async Task<IEnumerable<SalaDTO>> GetSalas()
         {
+
             try
             {
                 var response = await Client.GetAsync("");
