@@ -1,5 +1,6 @@
 ﻿using DoctorApp.Models.DTOs;
 using DoctorApp.Properties;
+using DoctorApp.Views;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -19,6 +20,17 @@ namespace DoctorApp.Services
             };
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
         }
+        public async Task CerrarSesion()
+        {
+            //Quitar token el token a la configuración
+            Settings.Default.Token = null;
+            //Quitar token al cliente http
+            Client.DefaultRequestHeaders.Authorization = null;
+            //Mostrar Login
+            LoginView login = new();
+            login.Show();
+            await Task.CompletedTask;
+        }
 
         public async Task<IEnumerable<UsuarioDTO>> GetUsuarios()
         {
@@ -33,7 +45,10 @@ namespace DoctorApp.Services
             catch (HttpRequestException ex)
             {
                 if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
                     MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+                    await CerrarSesion();
+                }
             }
             return [];
         }
@@ -50,7 +65,10 @@ namespace DoctorApp.Services
             catch (HttpRequestException ex)
             {
                 if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
                     MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+                    await CerrarSesion();
+                }
             }
             return new();
         }
@@ -86,7 +104,10 @@ namespace DoctorApp.Services
             catch (HttpRequestException ex)
             {
                 if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
                     MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+                    await CerrarSesion();
+                }
             }
         }
     }
