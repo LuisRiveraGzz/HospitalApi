@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Windows;
 
 namespace DoctorApp.Services
 {
@@ -30,10 +31,12 @@ namespace DoctorApp.Services
                 var Salas = JsonConvert.DeserializeObject<IEnumerable<SalaDTO>>(json);
                 return Salas ?? [];
             }
-            catch
+            catch (HttpRequestException ex)
             {
-                return [];
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
             }
+            return [];
         }
         public async Task<IEnumerable<SalaDTO>> GetSala(string NumSala)
         {
@@ -45,10 +48,12 @@ namespace DoctorApp.Services
                 var Salas = JsonConvert.DeserializeObject<IEnumerable<SalaDTO>>(json);
                 return Salas ?? [];
             }
-            catch
+            catch (HttpRequestException ex)
             {
-                return [];
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
             }
+            return [];
         }
         //Post: /api/Salas/Agregar
         public async Task Agregar(SalaDTO dto)
@@ -58,7 +63,11 @@ namespace DoctorApp.Services
                 var response = await Client.PostAsJsonAsync("Agregar", dto);
                 response.EnsureSuccessStatusCode();
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+            }
         }
         //Put: /api/Salas/Editar
         public async Task Editar(SalaDTO dto)
@@ -68,7 +77,11 @@ namespace DoctorApp.Services
                 var response = await Client.PutAsJsonAsync("Editar", dto);
                 response.EnsureSuccessStatusCode();
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+            }
         }
         //Delete: /api/Salas/Eliminar
         public async Task Eliminar(SalaDTO dto)
@@ -78,7 +91,11 @@ namespace DoctorApp.Services
                 var response = await Client.DeleteAsync($"Eliminar {dto.Id}");
                 response.EnsureSuccessStatusCode();
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+            }
         }
         //Put: /api/Salas/1/paciente/1
         public async Task AsignarPaciente(int idSala, int idPaciente)
@@ -88,7 +105,11 @@ namespace DoctorApp.Services
                 var response = await Client.PutAsync($"{idSala}/Paciente/{idPaciente}", null);
                 response.EnsureSuccessStatusCode();
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+            }
         }
         //Put: /api/Salas/1
         public async Task QuitarPaciente(int idSala)
@@ -98,7 +119,11 @@ namespace DoctorApp.Services
                 var response = await Client.PutAsync($"{idSala}", null);
                 response.EnsureSuccessStatusCode();
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+            }
         }
         //Get: /api/Salas/1
         public async Task<SalaDTO> GetSalaByDoctor(int iddoctor)
@@ -111,10 +136,12 @@ namespace DoctorApp.Services
                 var sala = JsonConvert.DeserializeObject<SalaDTO>(json);
                 return sala ?? new();
             }
-            catch
+            catch (HttpRequestException ex)
             {
-                return new();
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
             }
+            return new();
         }
     }
 }
