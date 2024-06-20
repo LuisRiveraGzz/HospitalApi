@@ -13,8 +13,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
                 <ColumnDefinition Width="60*"></ColumnDefinition>
-                <ColumnDefinition Width="20*" ></ColumnDefinition>
-                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="18*" ></ColumnDefinition>
+                <ColumnDefinition Width="12*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0"  Source="/Assets/Logo.jpg" Height="40" Margin="10"/>
             <TextBlock Padding="5" Grid.Column="1" VerticalAlignment="Center" Foreground="White" FontSize="24" Margin="10,0">Hospital General de la Región Carbonífera</TextBlock>

@@ -16,6 +16,7 @@ namespace DoctorApp.ViewModels
         string sala = "";
         string turno = "";
         string paciente = "";
+        string estadosala = "";
         private readonly UsuariosService usuariosService = new();
         private readonly SalasService salasService = new();
         public TurnoViewModel()
