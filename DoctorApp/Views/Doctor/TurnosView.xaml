@@ -9,12 +9,19 @@
     </Window.DataContext>
     <DockPanel>
 
-        <WrapPanel DockPanel.Dock="Top" Background="#176428">
-            <Image Source="/Assets/Logo.jpg" Height="40" Margin="10"/>
-            <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="24" Margin="10,0">Hospital General de la Región Carbonífera</TextBlock>
-            <TextBlock VerticalAlignment="Center" Foreground="White" Text="{Binding Nombre}"  Margin="20" TextWrapping="Wrap" Width="100" FontSize="12"></TextBlock>
-            <Button Command="{Binding CerrarSesionCommand}" Content="cerrar sesión" Padding="10" Foreground="White" FontWeight="Black" HorizontalAlignment="Right" Margin="15" Height="50"  Background="Red"/>
-        </WrapPanel>
+        <Grid DockPanel.Dock="Top" Background="#176428">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="60*"></ColumnDefinition>
+                <ColumnDefinition Width="20*" ></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0"  Source="/Assets/Logo.jpg" Height="40" Margin="10"/>
+            <TextBlock Padding="5" Grid.Column="1" VerticalAlignment="Center" Foreground="White" FontSize="24" Margin="10,0">Hospital General de la Región Carbonífera</TextBlock>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White" Text="{Binding Nombre}"  Margin="20" TextWrapping="Wrap" Width="100" FontSize="12"></TextBlock>
+            <Button Grid.Column="3" Command="{Binding CerrarSesionCommand}" Content="cerrar sesión" Padding="10" Foreground="White" FontWeight="Black"  Height="50"  Background="Red"/>
+
+        </Grid>
 
 
         <Border DockPanel.Dock="Bottom" Background="#176428" Height="20"/>

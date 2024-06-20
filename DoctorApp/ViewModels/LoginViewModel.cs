@@ -18,9 +18,11 @@ namespace DoctorApp.ViewModels
         private string contraseña = "";
         private string error = "";
         private readonly ApiService api;
+  
         public LoginViewModel()
         {
             api = new ApiService();
+            
         }
         public string Usuario
         {
@@ -64,8 +66,9 @@ namespace DoctorApp.ViewModels
             var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
+              
                 var token = await api.Login(dto);
-                if (token != null)
+                if (!string.IsNullOrWhiteSpace(token))
                 {
                     token = token.Replace("\"", "");
                     Settings.Default.Token = token;
