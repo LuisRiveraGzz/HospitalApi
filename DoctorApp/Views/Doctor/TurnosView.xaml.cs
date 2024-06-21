@@ -32,16 +32,6 @@ namespace DoctorApp.Views.Doctor
             this.DataContext = new TurnoViewModel() ;
         }
 
-        private async void Window_Closed(object sender, EventArgs e)
-        {
-            SalasService salasService = new SalasService();
-            var token = Settings.Default.Token;
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-            string nombreClaim = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value ?? "";
-            int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
-            var salabydoc = await salasService.GetSalaByDoctor(iduser);
-            await salasService.DesactivarSala(salabydoc.Id);
-        }
+   
     }
 }

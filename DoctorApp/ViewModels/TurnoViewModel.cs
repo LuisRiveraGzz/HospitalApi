@@ -81,7 +81,10 @@ namespace DoctorApp.ViewModels
         public async Task Siguiente()
         {
             //Agregar id sala id paciente
+            var salabyDoct = ObtenerSala();
             //Obtener pacientes
+            //Agregar id sala id paciente
+           
         }
         [RelayCommand]
         public async Task CambiarEstado()
@@ -104,10 +107,13 @@ namespace DoctorApp.ViewModels
         }
 
         [RelayCommand]
-        public void CerrarSesion()
+        public async Task CerrarSesion()
         {
             Settings.Default.Token = "";
             Settings.Default.Save();
+             var salabyDoct =ObtenerSala();
+            await salasService.DesactivarSala(salabyDoct.Id);
+
             var LoginViews = new LoginView();
             LoginViews.Show();
             var TurnosWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);

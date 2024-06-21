@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Hospital General de la Región Carbonífera" Height="450" Width="850"
         xmlns:vm="clr-namespace:DoctorApp.ViewModels"
-        Closed="Window_Closed"
+        WindowStyle="None"
+
         Background="#EFEFEF">
     
     <DockPanel>
