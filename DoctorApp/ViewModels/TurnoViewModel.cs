@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DoctorApp.Models.DTOs;
 using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
@@ -18,15 +19,26 @@ namespace DoctorApp.ViewModels
         string sala = "";
         string turno = "";
         string paciente = "";
-        string estadoSala = ""; public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
+        string estadoSala = "";
+        public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
         public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
-        public string EstadoSala { get => estadoSala; set { estadoSala = value; OnPropertyChanged(nameof(EstadoSala)); } }
+        public string EstadoSala
+        {
+            get => estadoSala; set
+            {
+                estadoSala = value;
+                OnPropertyChanged(nameof(EstadoSala));
+                OnPropertyChanged(nameof(BotonSalaText));
+                OnPropertyChanged(nameof(BotonSalaBackground));
+            }
+        }
         #endregion
         private readonly SalasService salasService = new();
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
+            
         }
         public string Nombre
         {
@@ -36,24 +48,13 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Nombre));
             }
         }
-        public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
-        public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
-        public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
-        public string EstadoSala
-        {
-            get => estadosala; set
-            {
-                estadosala = value;
-                OnPropertyChanged(nameof(EstadoSala));
-                OnPropertyChanged(nameof(BotonSalaText));
-                OnPropertyChanged(nameof(BotonSalaBackground));
-            }
-        }
+       
+       
 
         public string BotonSalaText => EstadoSala == "Activa" ? "Desactivar Sala" : "Activar Sala";
-        public Brush BotonSalaBackground => EstadoSala == "Activa" ? Brushes.Red : (Brush)new BrushConverter().ConvertFromString("#0BDC54");
+        public Brush? BotonSalaBackground => (EstadoSala == "Activa" )? (Brushes.Red): (Brushes.Green);
 
-        public async Task ObtenerUsuario()
+        public async Task<SalaDTO> ObtenerSala()
         {
             var token = Settings.Default.Token;
             var handler = new JwtSecurityTokenHandler();
@@ -62,7 +63,14 @@ namespace DoctorApp.ViewModels
             Nombre = nombreClaim.ToString();
             int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
             var salabydoc = await salasService.GetSalaByDoctor(iduser);
-            Sala = salabydoc.NumeroSala;
+            return salabydoc;
+        }
+
+        public async Task ObtenerUsuario()
+        {
+             var salabyDoct = await   ObtenerSala();
+            EstadoSala = salabyDoct.Estado == 0? "Inactiva": "Activa";
+            Sala = salabyDoct.NumeroSala;
             if (string.IsNullOrWhiteSpace(Sala))
             {
                 Sala = "El doctor no tiene ninguna sala asignada";
@@ -72,25 +80,23 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task Siguiente()
         {
-
+            //Agregar id sala id paciente
+            //Obtener pacientes
         }
         [RelayCommand]
         public async Task CambiarEstado()
         {
-            var token = Settings.Default.Token;
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-            int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
-            var salabydoc = await salasService.GetSalaByDoctor(iduser);
+            var salabyDoct = await ObtenerSala();
+            Sala = salabyDoct.NumeroSala;
 
-            if (salabydoc.estado == 0)
+            if (salabyDoct.Estado == 0)
             {
-                await salasService.ActivarSala(salabydoc.id);
+                await salasService.ActivarSala(salabyDoct.Id);
                 EstadoSala = "Activa";
             }
-            else if (salabydoc.estado == 1)
+            else if (salabyDoct.Estado == 1)
             {
-                await salasService.DesactivarSala(salabydoc.id);
+                await salasService.DesactivarSala(salabyDoct.Id);
                 EstadoSala = "Inactiva";
             }
            

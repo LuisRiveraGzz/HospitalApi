@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Hospital General de la Región Carbonífera" Height="450" Width="850"
         xmlns:vm="clr-namespace:DoctorApp.ViewModels"
+        Closed="Window_Closed"
         Background="#EFEFEF">
-    <Window.DataContext>
-        <vm:TurnoViewModel></vm:TurnoViewModel>
-    </Window.DataContext>
+    
     <DockPanel>
 
         <Grid DockPanel.Dock="Top" Background="#176428">
@@ -74,7 +73,7 @@
                        
 
                         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="219,0,0,0" Height="60" Width="240">
-                            <Button Content="Siguiente" Command="{Binding SiguienteCommand}" Background="#0BDC54" Foreground="White" Width="100" Height="40" Margin="10">
+                            <Button Content="Siguiente" Command="{Binding SiguienteCommand}" Background="Green" Foreground="White" Width="100" Height="40" Margin="10">
                                 <Button.Style>
                                     <Style TargetType="Button">
                                         <Setter Property="IsEnabled" Value="True"/>

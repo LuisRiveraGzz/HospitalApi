@@ -19,6 +19,7 @@ namespace DoctorApp.Services
                 BaseAddress = new Uri("https://hospitalapi.websitos256.com/api/Salas/")
             };
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
+            Client.Timeout = TimeSpan.FromMinutes(10);
         }
         public async Task CerrarSesion()
         {
