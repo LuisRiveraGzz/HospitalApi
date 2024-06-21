@@ -36,7 +36,8 @@ namespace HospitalApi.Controllers
                 Doctor = salabydoctor.Doctor ?? 0,
                 Id = salabydoctor.Id,
                 NumeroSala = salabydoctor.NumeroSala,
-                Estado = salabydoctor.Estado
+                Estado = salabydoctor.Estado,
+                Paciente = salabydoctor.Paciente??0
             };
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }

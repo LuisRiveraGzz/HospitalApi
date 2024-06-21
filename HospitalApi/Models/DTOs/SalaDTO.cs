@@ -6,5 +6,6 @@
         public string NumeroSala { get; set; } = null!;
         public int Doctor { get; set; }
         public sbyte Estado { get; set; }
+        public int Paciente { get; set; }
     }
 }
