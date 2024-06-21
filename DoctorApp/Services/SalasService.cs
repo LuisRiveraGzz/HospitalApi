@@ -126,7 +126,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.PutAsync($"{idSala}/Paciente/{idPaciente}", null);
+                var response = await Client.PutAsync($"{idSala}/AsignarPaciente/{idPaciente}", null);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)

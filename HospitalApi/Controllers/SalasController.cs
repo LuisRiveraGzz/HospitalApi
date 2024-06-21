@@ -178,7 +178,7 @@ namespace HospitalApi.Controllers
             {
                 return NotFound("No se ah encontrado al paciente");
             }
-            if (sala.Estado == 0)//Inactiva
+            if (sala.Estado == 1)//Inactiva
             {
                 if (sala.Paciente == null)
                 {
@@ -192,7 +192,7 @@ namespace HospitalApi.Controllers
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
                     : Conflict("Ya hay otro paciente en la sala");
             }
-            return Conflict("La sala esta en uso");
+            return Conflict("La sala está cerrada");
         }
 
         [HttpPut("QuitarPaciente/{idsala:int}")]
