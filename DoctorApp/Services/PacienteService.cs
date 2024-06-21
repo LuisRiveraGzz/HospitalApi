@@ -16,7 +16,7 @@ namespace DoctorApp.Services
         {
             Client = new()
             {
-                BaseAddress = new Uri("https://hospitalapi.websitos256.com/api/Pacientes/")
+                BaseAddress = new Uri("https://hospitalapi.websitos256.com/api/Salas/")
             };
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
         }
@@ -106,11 +106,11 @@ namespace DoctorApp.Services
                 }
             }
         }
-        public async Task Eliminar(int id)
+        public async Task Eliminar(int Id)
         {
             try
             {
-                var response = await Client.DeleteAsync($"Eliminar/{id}", null);
+                var response = await Client.DeleteAsync($"Eliminar {Id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)

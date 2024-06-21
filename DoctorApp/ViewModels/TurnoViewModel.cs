@@ -39,7 +39,6 @@ namespace DoctorApp.ViewModels
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
-            
         }
         public string Nombre
         {
@@ -49,11 +48,11 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Nombre));
             }
         }
-       
-       
+
+
 
         public string BotonSalaText => EstadoSala == "Activa" ? "Desactivar Sala" : "Activar Sala";
-        public Brush? BotonSalaBackground => (EstadoSala == "Activa" )? (Brushes.Red): (Brushes.Green);
+        public Brush? BotonSalaBackground => (EstadoSala == "Activa") ? (Brushes.Red) : (Brushes.Green);
 
         public async Task<SalaDTO> ObtenerSala()
         {
@@ -69,8 +68,8 @@ namespace DoctorApp.ViewModels
 
         public async Task ObtenerUsuario()
         {
-             var salabyDoct = await   ObtenerSala();
-            EstadoSala = salabyDoct.Estado == 0? "Inactiva": "Activa";
+            var salabyDoct = await ObtenerSala();
+            EstadoSala = salabyDoct.Estado == 0 ? "Inactiva" : "Activa";
             Sala = salabyDoct.NumeroSala;
             if (string.IsNullOrWhiteSpace(Sala))
             {
@@ -79,9 +78,9 @@ namespace DoctorApp.ViewModels
 
         }
         [RelayCommand]
-        public  async Task Siguiente()
+        public async Task Siguiente()
         {
-           
+
             var salabyDoct = await ObtenerSala();
             if (salabyDoct != null)
             {
@@ -92,7 +91,7 @@ namespace DoctorApp.ViewModels
                     var pacienteAsignar = pacientes.FirstOrDefault();
                     if (salabyDoct.Paciente == 0)
                     {
-                        if (pacienteAsignar!=null)
+                        if (pacienteAsignar != null)
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
@@ -106,7 +105,7 @@ namespace DoctorApp.ViewModels
                         if (pacienteAsignar != null)
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
-                            Paciente= pacienteAsignar.Nombre;
+                            Paciente = pacienteAsignar.Nombre;
                             await pacienteService.Eliminar(pacienteAsignar.Id);
                         }
                     }
@@ -117,9 +116,9 @@ namespace DoctorApp.ViewModels
                 }
 
             }
-          
+
             //Agregar id sala id paciente
-           
+
         }
         [RelayCommand]
         public async Task CambiarEstado()
@@ -137,8 +136,8 @@ namespace DoctorApp.ViewModels
                 await salasService.DesactivarSala(salabyDoct.Id);
                 EstadoSala = "Inactiva";
             }
-           
-           
+
+
         }
 
         [RelayCommand]
@@ -146,7 +145,7 @@ namespace DoctorApp.ViewModels
         {
             Settings.Default.Token = "";
             Settings.Default.Save();
-             var salabyDoct =ObtenerSala();
+            var salabyDoct = ObtenerSala();
             await salasService.DesactivarSala(salabyDoct.Id);
 
             var LoginViews = new LoginView();
