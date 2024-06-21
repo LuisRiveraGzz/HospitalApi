@@ -82,6 +82,7 @@ builder.Services.AddSingleton<JwtHelper>();
 builder.Services.AddTransient<SalasRepository>();
 builder.Services.AddTransient<Repository<Paciente>>();
 builder.Services.AddTransient<UsuariosRepository>();
+builder.Services.AddTransient<PacientesRepository>();
 #endregion
 #endregion
 var app = builder.Build();
