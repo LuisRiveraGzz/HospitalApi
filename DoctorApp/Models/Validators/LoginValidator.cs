@@ -14,8 +14,8 @@ namespace DoctorApp.Models.Validators
         public static ValidationResult Validate (LoginDTO login)
         {
             var validator = new InlineValidator<LoginDTO>();
-            validator.RuleFor(x => x.Contraseña).NotEmpty().WithMessage("La contraseña no puede estar vacía");
-            validator.RuleFor(x => x.Usuario).NotEmpty().WithMessage("El nombre de usuario no puede estar vacío");
+            validator.RuleFor(x => x.contraseña).NotEmpty().WithMessage("La contraseña no puede estar vacía");
+            validator.RuleFor(x => x.usuario).NotEmpty().WithMessage("El nombre de usuario no puede estar vacío");
 
             return validator.Validate(login);
 

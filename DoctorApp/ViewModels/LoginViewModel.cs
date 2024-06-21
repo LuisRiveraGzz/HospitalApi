@@ -59,8 +59,8 @@ namespace DoctorApp.ViewModels
             Error = "";
             var dto = new LoginDTO
             {
-                Usuario = Usuario,
-                Contraseña = Contraseña
+                usuario = Usuario,
+                contraseña = Contraseña
             };
            
             var result = LoginValidator.Validate(dto);

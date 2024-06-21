@@ -46,7 +46,7 @@ namespace DoctorApp.ViewModels
             int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
 
             var salabydoc = await salasService.GetSalaByDoctor(iduser);
-            Sala = salabydoc.NumeroSala;
+            Sala = salabydoc.numeroSala;
             if (string.IsNullOrWhiteSpace(Sala))
             {
                 Sala = "El doctor no tiene ninguna sala asignada";

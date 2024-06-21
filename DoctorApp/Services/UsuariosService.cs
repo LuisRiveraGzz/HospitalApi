@@ -98,7 +98,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.DeleteAsync($"Eliminar/{dto.Id}");
+                var response = await Client.DeleteAsync($"Eliminar/{dto.id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
