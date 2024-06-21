@@ -106,13 +106,13 @@ namespace DoctorApp.Services
                 }
             }
         }
-        public async Task Eliminar(int Id)
+        public async Task Eliminar(PacienteDTO dto)
         {
             try
             {
                 //https://hospitalapi.websitos256.com/api/Pacientes/Eliminar/1
                 //var response = await client.DeleteAsync($"Departamento/Eliminar?id={IdDepartamento}");
-                var response = await Client.PostAsync($"Eliminar/{Id}", null);
+                var response = await Client.PostAsJsonAsync("Eliminar", dto);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)

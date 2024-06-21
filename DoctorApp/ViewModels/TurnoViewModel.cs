@@ -95,7 +95,7 @@ namespace DoctorApp.ViewModels
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            await pacienteService.Eliminar(pacienteAsignar.Id);
+                            await pacienteService.Eliminar(pacienteAsignar);
                         }
                     }
                     else
@@ -106,7 +106,7 @@ namespace DoctorApp.ViewModels
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            await pacienteService.Eliminar(pacienteAsignar.Id);
+                            await pacienteService.Eliminar(pacienteAsignar);
                         }
                     }
                 }
