@@ -10,5 +10,10 @@ namespace HospitalApi.Repositories
         {
             return await Context.Paciente.ToListAsync();
         }
+
+        public async Task<Paciente?> GetPaciente(int id)
+        {
+            return await Context.Paciente.Include(x => x.Sala).FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

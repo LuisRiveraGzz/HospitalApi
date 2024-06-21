@@ -3,7 +3,6 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml;
 
 namespace HospitalApi.Controllers
 {
@@ -65,15 +64,15 @@ namespace HospitalApi.Controllers
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Delete(PacienteDTO dto)
         {
-            if ( dto.Id ==0)
+            if (dto.Id == 0)
             {
                 return BadRequest();
             }
-                var paciente = await pacientesRepos.Get(dto.Id);
-            
+            var paciente = await pacientesRepos.GetPaciente(dto.Id);
+
             if (paciente != null)
             {
-                if (paciente.Sala.Count != 0)
+                if (paciente.Sala.Count > 0)
                 {
                     return BadRequest("No puedes eliminar un paciente que esta siendo atendido");
                 }
