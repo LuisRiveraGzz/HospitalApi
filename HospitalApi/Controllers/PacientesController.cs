@@ -3,6 +3,7 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 namespace HospitalApi.Controllers
 {
@@ -61,10 +62,15 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
-        [HttpPost("Eliminar/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost("Eliminar")]
+        public async Task<IActionResult> Delete(PacienteDTO dto)
         {
-            var paciente = await pacientesRepos.Get(id);
+            if ( dto.Id ==0)
+            {
+                return BadRequest();
+            }
+                var paciente = await pacientesRepos.Get(dto.Id);
+            
             if (paciente != null)
             {
                 if (paciente.Sala.Count != 0)

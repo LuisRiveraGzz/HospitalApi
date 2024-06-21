@@ -112,7 +112,7 @@ namespace DoctorApp.Services
             {
                 //https://hospitalapi.websitos256.com/api/Pacientes/Eliminar/1
                 //var response = await client.DeleteAsync($"Departamento/Eliminar?id={IdDepartamento}");
-                var response = await Client.DeleteAsync($"?id={Id}");
+                var response = await Client.PostAsync($"Eliminar/{Id}", null);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
