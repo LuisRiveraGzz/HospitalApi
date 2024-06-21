@@ -2,10 +2,10 @@
 {
     public class SalaDTO
     {
-        public int Id { get; set; }
-        public string NumeroSala { get; set; } = null!;
-        public int? Doctor { get; set; }
-        public int? Paciente { get; set; }
-        public sbyte Estado { get; set; }
+        public int id { get; set; }
+        public string numeroSala { get; set; } = null!;
+        public int? doctor { get; set; }
+        public int? paciente { get; set; }
+        public sbyte estado { get; set; }
     }
 }

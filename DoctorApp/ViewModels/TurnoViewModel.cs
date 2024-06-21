@@ -35,6 +35,7 @@ namespace DoctorApp.ViewModels
         public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
         public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
+        public string EstadoSala {  get => estadosala; set {  estadosala = value; OnPropertyChanged( nameof(EstadoSala)); } }
         public async Task ObtenerUsuario()
         {
             var token = Settings.Default.Token;
@@ -57,7 +58,16 @@ namespace DoctorApp.ViewModels
         {
 
         }
+        [RelayCommand]
+        public async Task AbrirSala()
+        {
 
+        }
+        [RelayCommand]
+        public async Task CerrarSala()
+        {
+
+        }
         [RelayCommand]
         public void CerrarSesion()
         {

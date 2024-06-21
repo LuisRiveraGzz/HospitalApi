@@ -176,5 +176,53 @@ namespace DoctorApp.Services
             }
             return new();
         }
+        public async Task ActivarSala(int idSala)
+        {
+            try
+            {
+                var response = await Client.PutAsync($"UtilizarSala/{idSala}", null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+                    await CerrarSesion();
+                }
+            }
+        }
+        public async Task DesactivarSala(int idSala)
+        {
+            try
+            {
+                var response = await Client.PutAsync($"InutilizarSala/{idSala}", null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
+                    await CerrarSesion();
+                }
+            }
+        }
+        //[HttpPut("InutilizarSala/{id}")]
+        //public async Task<IActionResult> InutilizarSala(int id)
+        //{
+        //    var sala = await salasRepos.Get(id);
+        //    if (sala != null)
+        //    {
+        //        if (sala.Estado == 1)//Activa
+        //        {
+        //            sala.Estado--;//Inactiva
+        //            await salasRepos.Update(sala);
+        //            return Ok("La sala se esta disponible");
+        //        }
+        //        return BadRequest("La sala esta siendo utilizada");
+        //    }
+        //    return NotFound("No se ah encontrado la sala");
+        //}
     }
 }
