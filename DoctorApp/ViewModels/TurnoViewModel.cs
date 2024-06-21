@@ -80,7 +80,6 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task Siguiente()
         {
-
             var salabyDoct = await ObtenerSala();
             if (salabyDoct != null)
             {
@@ -95,7 +94,6 @@ namespace DoctorApp.ViewModels
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            await pacienteService.Eliminar(pacienteAsignar);
                         }
                     }
                     else
@@ -104,9 +102,9 @@ namespace DoctorApp.ViewModels
                         await salasService.QuitarPaciente(salabyDoct.Id);
                         if (pacienteAsignar != null)
                         {
+                            await pacienteService.Eliminar(pacienteAsignar);
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            await pacienteService.Eliminar(pacienteAsignar);
                         }
                     }
                 }
@@ -114,7 +112,6 @@ namespace DoctorApp.ViewModels
                 {
                     MessageBox.Show("Sin pacientes en la cola");
                 }
-
             }
 
             //Agregar id sala id paciente
