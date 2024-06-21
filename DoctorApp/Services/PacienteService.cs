@@ -16,7 +16,7 @@ namespace DoctorApp.Services
         {
             Client = new()
             {
-                BaseAddress = new Uri("https://hospitalapi.websitos256.com/api/Salas/")
+                BaseAddress = new Uri("https://hospitalapi.websitos256.com/api/Pacientes/")
             };
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
         }

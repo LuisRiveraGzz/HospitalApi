@@ -65,8 +65,8 @@
                                 <TextBlock FontSize="24" Foreground="White" TextAlignment="Center">
                                     turno <Run Text="1"/>
                                 </TextBlock>
-                                <TextBlock FontSize="20" Foreground="White" TextWrapping="Wrap" TextAlignment="Center" Margin="10,5,10,0">
-                                    Hermenehildo
+                                <TextBlock FontSize="20" Foreground="White" Text="{Binding Paciente}" TextWrapping="Wrap" TextAlignment="Center" Margin="10,5,10,0">
+                                    
                                 </TextBlock>
                             </StackPanel>
                         </Border>

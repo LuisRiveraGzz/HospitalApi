@@ -35,6 +35,7 @@ namespace DoctorApp.ViewModels
         }
         #endregion
         private readonly SalasService salasService = new();
+        private readonly PacienteService pacienteService = new();
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
@@ -78,11 +79,42 @@ namespace DoctorApp.ViewModels
 
         }
         [RelayCommand]
-        public async Task Siguiente()
+        public  async Task Siguiente()
         {
-            //Agregar id sala id paciente
-            var salabyDoct = ObtenerSala();
-            //Obtener pacientes
+           
+            var salabyDoct = await ObtenerSala();
+            if (salabyDoct != null)
+            {
+                //Obtener pacientes
+                var pacientes = await pacienteService.GetPacientes();
+                if (pacientes != null)
+                {
+                    var pacienteAsignar = pacientes.FirstOrDefault();
+                    if (salabyDoct.Paciente == null)
+                    {
+                        if (pacienteAsignar!=null)
+                        {
+                            await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
+                            Paciente = pacienteAsignar.Nombre;
+                        }
+                    }
+                    else
+                    {
+                        await salasService.QuitarPaciente(salabyDoct.Id);
+                        if (pacienteAsignar != null)
+                        {
+                            await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
+                            Paciente= pacienteAsignar.Nombre;
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Sin pacientes en la cola");
+                }
+
+            }
+          
             //Agregar id sala id paciente
            
         }
