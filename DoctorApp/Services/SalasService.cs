@@ -208,21 +208,6 @@ namespace DoctorApp.Services
                 }
             }
         }
-        //[HttpPut("InutilizarSala/{id}")]
-        //public async Task<IActionResult> InutilizarSala(int id)
-        //{
-        //    var sala = await salasRepos.Get(id);
-        //    if (sala != null)
-        //    {
-        //        if (sala.Estado == 1)//Activa
-        //        {
-        //            sala.Estado--;//Inactiva
-        //            await salasRepos.Update(sala);
-        //            return Ok("La sala se esta disponible");
-        //        }
-        //        return BadRequest("La sala esta siendo utilizada");
-        //    }
-        //    return NotFound("No se ah encontrado la sala");
-        //}
+        
     }
 }

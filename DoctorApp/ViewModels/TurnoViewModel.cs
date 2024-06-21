@@ -7,6 +7,7 @@ using DoctorApp.Views.Doctor;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Windows;
+using System.Windows.Media;
 
 namespace DoctorApp.ViewModels
 {
@@ -35,7 +36,20 @@ namespace DoctorApp.ViewModels
         public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
         public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
-        public string EstadoSala {  get => estadosala; set {  estadosala = value; OnPropertyChanged( nameof(EstadoSala)); } }
+        public string EstadoSala
+        {
+            get => estadosala; set
+            {
+                estadosala = value;
+                OnPropertyChanged(nameof(EstadoSala));
+                OnPropertyChanged(nameof(BotonSalaText));
+                OnPropertyChanged(nameof(BotonSalaBackground));
+            }
+        }
+
+        public string BotonSalaText => EstadoSala == "Activa" ? "Desactivar Sala" : "Activar Sala";
+        public Brush BotonSalaBackground => EstadoSala == "Activa" ? Brushes.Red : (Brush)new BrushConverter().ConvertFromString("#0BDC54");
+
         public async Task ObtenerUsuario()
         {
             var token = Settings.Default.Token;
@@ -59,15 +73,28 @@ namespace DoctorApp.ViewModels
 
         }
         [RelayCommand]
-        public async Task AbrirSala()
+        public async Task CambiarEstado()
         {
+            var token = Settings.Default.Token;
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
+            var salabydoc = await salasService.GetSalaByDoctor(iduser);
 
+            if (salabydoc.estado == 0)
+            {
+                await salasService.ActivarSala(salabydoc.id);
+                EstadoSala = "Activa";
+            }
+            else if (salabydoc.estado == 1)
+            {
+                await salasService.DesactivarSala(salabydoc.id);
+                EstadoSala = "Inactiva";
+            }
+           
+           
         }
-        [RelayCommand]
-        public async Task CerrarSala()
-        {
 
-        }
         [RelayCommand]
         public void CerrarSesion()
         {
