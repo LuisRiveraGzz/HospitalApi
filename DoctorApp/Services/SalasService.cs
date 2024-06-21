@@ -143,7 +143,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.PutAsync($"{idSala}", null);
+                var response = await Client.PutAsync($"QuitarPaciente/{idSala}", null);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
@@ -208,6 +208,6 @@ namespace DoctorApp.Services
                 }
             }
         }
-        
+
     }
 }
