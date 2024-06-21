@@ -35,7 +35,9 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerAgregar()
         {
+            //Crea un usuario
             Usuario = new();
+            //Limpia errores
             Error = "";
             //Muestra la nueva ventana
             AgregarView agregarView = new();
@@ -48,11 +50,25 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerEditar()
         {
+            Error = "";
+            //Muestra la nueva ventana
+            EditarView editarView = new();
+            editarView.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
+            doctoresWindow?.Close();
             await Task.CompletedTask;
         }
         [RelayCommand]
         public async Task VerEliminar()
         {
+            Error = "";
+            //Muestra la nueva ventana
+            EliminarView agregarView = new();
+            agregarView.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
+            doctoresWindow?.Close();
             await Task.CompletedTask;
         }
     }
