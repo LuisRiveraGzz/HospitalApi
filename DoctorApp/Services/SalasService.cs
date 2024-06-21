@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace DoctorApp.Services
 {
-    internal class SalasService
+    public class SalasService
     {
         private readonly HttpClient Client;
         public SalasService()
@@ -20,7 +20,6 @@ namespace DoctorApp.Services
             };
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Settings.Default.Token);
         }
-
         public async Task CerrarSesion()
         {
             //Quitar token el token a la configuración
@@ -112,7 +111,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.DeleteAsync($"Eliminar {dto.id}");
+                var response = await Client.DeleteAsync($"Eliminar {dto.Id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)

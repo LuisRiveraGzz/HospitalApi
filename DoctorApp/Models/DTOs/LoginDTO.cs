@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace DoctorApp.Models.DTOs
 {
     public class LoginDTO
     {
-        public string usuario { get; set; } = null!;
-        public string contraseña { get; set; } = null!;
+        [JsonProperty("usuario")]
+        public string Usuario { get; set; } = null!;
+        [JsonProperty("contraseña")]
+        public string Contraseña { get; set; } = null!;
     }
 }

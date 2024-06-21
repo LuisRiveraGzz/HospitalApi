@@ -2,29 +2,3 @@
 @{
     Layout = "Layout";
 }
-<a href="#" class="floating-button">
-    <img src="~/" alt="Agregar">
-</a>
-<ul class="doctor-list">
-    <li class="table-header">
-        <span class="table-cell">Doctores</span>
-        <span class="table-cell">Pacientes por atender</span>
-        <span class="table-cell">Pacientes atendidos</span>
-    </li>
-    @foreach (var doctor in Model)
-    {
-        <li class="table-row">
-            <span class="table-cell doctor-name">
-                Pedro Hermenegildo Echevarría
-                <a href="#">
-                    <img src="~/Assets/images/editar.png" alt="Editar" class="icon">
-                </a>
-                <a href="#" onclick="confirmDeleteDR(event)">
-                    <img src="~/Assets/images/eliminar.png" alt="Eliminar" class="delete-icon">
-                </a>
-            </span>
-            <span class="table-cell">20</span>
-            <span class="table-cell">5</span>
-        </li>
-    }
-</ul>
