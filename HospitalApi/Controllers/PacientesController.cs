@@ -61,7 +61,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
-        [HttpDelete("Eliminar/{id}")]
+        [HttpPost("Eliminar/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var paciente = await pacientesRepos.Get(id);
