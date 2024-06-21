@@ -90,21 +90,24 @@ namespace DoctorApp.ViewModels
                 if (pacientes != null)
                 {
                     var pacienteAsignar = pacientes.FirstOrDefault();
-                    if (salabyDoct.Paciente == null)
+                    if (salabyDoct.Paciente == 0)
                     {
                         if (pacienteAsignar!=null)
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
+                            await pacienteService.Eliminar(pacienteAsignar.Id);
                         }
                     }
                     else
                     {
+                        pacienteAsignar = pacientes.FirstOrDefault();
                         await salasService.QuitarPaciente(salabyDoct.Id);
                         if (pacienteAsignar != null)
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente= pacienteAsignar.Nombre;
+                            await pacienteService.Eliminar(pacienteAsignar.Id);
                         }
                     }
                 }

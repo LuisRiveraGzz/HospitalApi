@@ -106,11 +106,11 @@ namespace DoctorApp.Services
                 }
             }
         }
-        public async Task Eliminar(PacienteDTO dto)
+        public async Task Eliminar(int id)
         {
             try
             {
-                var response = await Client.DeleteAsync($"Eliminar {dto.Id}");
+                var response = await Client.DeleteAsync($"Eliminar/{id}", null);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
