@@ -13,18 +13,21 @@ namespace DoctorApp.ViewModels
 {
     public partial class TurnoViewModel : ObservableObject
     {
+        #region Propiedades
         string nombre = "";
         string sala = "";
         string turno = "";
         string paciente = "";
-        string estadosala = "";
-        private readonly UsuariosService usuariosService = new();
+        string estadoSala = ""; public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
+        public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
+        public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
+        public string EstadoSala { get => estadoSala; set { estadoSala = value; OnPropertyChanged(nameof(EstadoSala)); } }
+        #endregion
         private readonly SalasService salasService = new();
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
         }
-
         public string Nombre
         {
             get => nombre; set
@@ -58,9 +61,8 @@ namespace DoctorApp.ViewModels
             string nombreClaim = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value ?? "";
             Nombre = nombreClaim.ToString();
             int iduser = int.Parse(jsonToken?.Claims.FirstOrDefault(x => x.Type == "id")?.Value ?? "0");
-
             var salabydoc = await salasService.GetSalaByDoctor(iduser);
-            Sala = salabydoc.numeroSala;
+            Sala = salabydoc.NumeroSala;
             if (string.IsNullOrWhiteSpace(Sala))
             {
                 Sala = "El doctor no tiene ninguna sala asignada";
@@ -105,6 +107,5 @@ namespace DoctorApp.ViewModels
             var TurnosWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);
             TurnosWindow?.Close();
         }
-
     }
 }

@@ -1,12 +1,18 @@
-﻿namespace DoctorApp.Models.DTOs
+﻿using Newtonsoft.Json;
+
+namespace DoctorApp.Models.DTOs
 {
     public class UsuarioDTO
     {
-        public int id { get; set; }
-
-        public string nombre { get; set; } = null!;
-        public string contraseña { get; set; } = null!;
-        public sbyte rol { get; set; }
-        public IEnumerable<SalaDTO> sala { get; set; } = null!;
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        [JsonProperty("nombre")]
+        public string Nombre { get; set; } = null!;
+        [JsonProperty("contraseña")]
+        public string Contraseña { get; set; } = null!;
+        [JsonProperty("rol")]
+        public sbyte Rol { get; set; }
+        [JsonProperty("sala")]
+        public IEnumerable<SalaDTO> Sala { get; set; } = null!;
     }
 }
