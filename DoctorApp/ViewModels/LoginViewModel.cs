@@ -23,7 +23,6 @@ namespace DoctorApp.ViewModels
         public LoginViewModel()
         {
             api = new ApiService();
-
         }
         public string Usuario
         {

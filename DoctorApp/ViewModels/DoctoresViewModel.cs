@@ -19,6 +19,7 @@ namespace DoctorApp.ViewModels
         {
             Iniciar();
         }
+
         private async void Iniciar()
         {
             await ActualizarLista();
