@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm ="clr-namespace:PacienteApp.ViewModels"
              x:Class="PacienteApp.Views.RegistroView"
              Title="RegistroView"
              Background="White">
+
+    <ContentPage.BindingContext>
+        <vm:PacienteViewModel></vm:PacienteViewModel>
+    </ContentPage.BindingContext>
+    
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
@@ -43,18 +49,20 @@
                            HorizontalOptions="Center"
                            Margin="0,10,0,10"/>
 
-                    <Entry Text=""
+                    <Entry Text="{Binding Paciente.Nombre}"
                            TextColor="Black"
                            BackgroundColor="Transparent"
                            HorizontalOptions="FillAndExpand"
                            Margin="0,0,0,20"/>
 
                     <Button Text="Continuar"
+                            Command="{Binding RegistrarUsuarioCommand}"
                             BackgroundColor="#0BDC54"
                             TextColor="White"
                             HorizontalOptions="FillAndExpand"
                             CornerRadius="5"
                             Margin="20,0"/>
+                    
                 </StackLayout>
             </Frame>
         <Frame Grid.Row="2" CornerRadius="0" BackgroundColor="#176428"></Frame>
