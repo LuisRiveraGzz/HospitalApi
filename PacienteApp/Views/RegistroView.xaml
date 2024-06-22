@@ -10,9 +10,6 @@
             <RowDefinition Height="85*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
-
-
-
         <Frame BackgroundColor="#176428"
                    HorizontalOptions="FillAndExpand"
                    CornerRadius="0"
@@ -27,7 +24,6 @@
                        VerticalOptions="Center"
                        Margin="0"/>
             </Frame>
-
             <Frame Grid.Row="1"
                    BackgroundColor="White"
                    Opacity="0.8"
@@ -61,9 +57,7 @@
                             Margin="20,0"/>
                 </StackLayout>
             </Frame>
-
         <Frame Grid.Row="2" CornerRadius="0" BackgroundColor="#176428"></Frame>
-       
         <Image Grid.Row="0" Grid.RowSpan="3" Source="/Assets/Logo.jpg" Aspect="AspectFill" >
         </Image>
     </Grid>

@@ -7,6 +7,7 @@
         xmlns:vm ="clr-namespace:DoctorApp.ViewModels"
         mc:Ignorable="d"
         Title="DoctoresView" Height="450" Width="800">
+
     <Window.DataContext>
         <vm:DoctoresViewModel></vm:DoctoresViewModel>
     </Window.DataContext>
@@ -36,17 +37,22 @@
             <Button Content="Agregar" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Image Source="Assets/VistasAdmin/Images/Agregar.png"/>
+                        <Image Source="/Assets/Vistasadmin/images/Agregar.png" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-
-            <ListView Margin="0,60,0,0" Name="DoctorList">
+            <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Doctores" Width="200" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Pacientes por atender" Width="150" DisplayMemberBinding="{Binding PatientsToSee}"/>
-                        <GridViewColumn Header="Pacientes atendidos" Width="150" DisplayMemberBinding="{Binding PatientsSeen}"/>
+                        <GridViewColumn Header="Doctores" Width="260" DisplayMemberBinding="{Binding Nombre}" />
+                        <GridViewColumn Header="Pacientes atendidos" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=DataContext.PacientesAtendidos[Id], RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Tiempo Promedio de espera del Paciente" Width="300" DisplayMemberBinding="{Binding PacientesAtendidos}" />
                     </GridView>
                 </ListView.View>
             </ListView>

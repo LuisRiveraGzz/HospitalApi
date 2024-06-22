@@ -11,6 +11,7 @@ namespace DoctorApp.ViewModels
     {
         #region Properties
         public ObservableCollection<UsuarioDTO> Usuarios { get; set; } = [];
+        public Dictionary<int, int> PacientesAtendidos { get; set; } = [];
         public UsuarioDTO Usuario { get; set; } = new();
         public string Error { get; set; } = "";
         #endregion
@@ -18,18 +19,19 @@ namespace DoctorApp.ViewModels
         public DoctoresViewModel()
         {
             Iniciar();
-        }
 
+        }
         private async void Iniciar()
         {
-            await ActualizarLista();
+            await ActualizarListas();
         }
-        private async Task ActualizarLista()
+        private async Task ActualizarListas()
         {
             Usuarios.Clear();
             foreach (var user in await UsuariosService.GetUsuarios())
             {
                 Usuarios.Add(user);
+                PacientesAtendidos.Add(user.Id, 0);
             }
             await Task.CompletedTask;
         }
@@ -72,5 +74,7 @@ namespace DoctorApp.ViewModels
             doctoresWindow?.Close();
             await Task.CompletedTask;
         }
+
+
     }
 }

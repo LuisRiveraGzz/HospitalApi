@@ -113,9 +113,7 @@ namespace DoctorApp.ViewModels
                     MessageBox.Show("Sin pacientes en la cola");
                 }
             }
-
             //Agregar id sala id paciente
-
         }
         [RelayCommand]
         public async Task CambiarEstado()

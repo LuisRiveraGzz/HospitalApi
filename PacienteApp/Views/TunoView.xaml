@@ -2,17 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PacienteApp.Views.TunoView"
+             xmlns:vm="clr-namespace:PacienteApp.ViewModels"
              Title="TurnoView"
              Background="White">
+    <ContentPage.BindingContext>
+        <vm:PacienteViewModel></vm:PacienteViewModel>
+    </ContentPage.BindingContext>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="85*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
-
-
-
         <Frame BackgroundColor="#176428"
                    HorizontalOptions="FillAndExpand"
                    CornerRadius="0"
@@ -27,14 +28,12 @@
                        VerticalOptions="Center"
                        Margin="0"/>
         </Frame>
-
         <Frame Grid.Row="1"
                    BackgroundColor="White"
                    Opacity="0.8"
                     BorderColor="Transparent"
                    Padding="20"
                    Margin="10,20,10,20"
-               
                    HasShadow="True">
             <Grid>
                 <Grid.RowDefinitions>
@@ -54,11 +53,7 @@
                 </StackLayout>
             </Grid>
         </Frame>
-
         <Frame Grid.Row="2" CornerRadius="0" BackgroundColor="#176428">
-           
         </Frame>
-
-        
     </Grid>
 </ContentPage>
