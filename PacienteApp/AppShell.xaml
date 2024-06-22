@@ -7,8 +7,11 @@
     Shell.FlyoutBehavior="Disabled"
     Title="PacienteApp"
     xmlns:views="clr-namespace:PacienteApp.Views">
-    
 
+    <ShellContent
+      Title="Registro"
+      ContentTemplate="{DataTemplate views:RegistroView}"
+      Route="Registro" />
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate views:TunoView}"

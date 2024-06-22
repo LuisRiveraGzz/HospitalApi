@@ -17,6 +17,7 @@ namespace PacienteApp.ViewModels
             {
                 //Mostrar el mensaje
                 Shell.Current.DisplayAlert("Notificacion", message, "Ok");
+                //Shell.Current.GoToAsync("Registro");
             });
 
         }
