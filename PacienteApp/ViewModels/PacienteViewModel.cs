@@ -13,11 +13,10 @@ namespace PacienteApp.ViewModels
                 .Build();
 
             //Aqui se recibe el mensaje
-            _hubConnection.On<int, string>("RecibirNotificacion", (user, message) =>
+            _hubConnection.On<string>("RecibirNotificacion", (message) =>
             {
-                var MensajeFormateado = $"{user}: {message}";
                 //Mostrar el mensaje
-                Shell.Current.DisplayAlert("Notificacion", MensajeFormateado, "Ok");
+                Shell.Current.DisplayAlert("Notificacion", message, "Ok");
             });
 
         }
