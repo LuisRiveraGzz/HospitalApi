@@ -19,16 +19,24 @@ namespace PacienteApp.ViewModels
         }
         public PacienteDTO Paciente { get; set; } = new();
         public string Error { get; set; } = "";
+        HubConnection NotificacionesHub { get; set; } = null!;
+        HubConnection EstadisticasHub { get; set; } = null!;
+        public TimeSpan TiempoEspera { get; set; } = new();
+        /// <summary>
+        /// Estadisticas:
+        /// Tiempo de espera promedio //Doctor
+        /// Tiempo de espera //Paciente 
+        /// Cantidad de pacientes atendidos // Doctor
+        /// </summary>
         public PacienteViewModel()
         {
-            //Conexion al Hub de SignalR
-            _hubConnection = new HubConnectionBuilder()
+            NotificacionesHub = new HubConnectionBuilder()
                 .WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
                 .Build();
 
             //Aqui se recibe el mensaje del hub cuando el usuario sea llamado,
             //este se identifica por un id de conexion y el hub se encarga de manejar eso
-            _hubConnection.On<string>("RecibirNotificacion", (message) =>
+            NotificacionesHub.On<string>("RecibirNotificacion", (message) =>
             {
                 //Mostrar el mensaje
                 Shell.Current.DisplayAlert("Notificacion", message, "Ok");
@@ -38,6 +46,18 @@ namespace PacienteApp.ViewModels
                 //Cambiar vista
                 Shell.Current.Navigation.PushAsync(new Views.RegistroView());
             });
+            EstadisticasHub = new HubConnectionBuilder()
+                .WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub")
+                .Build();
+
+            EstadisticasHub.SendAsync("Conectar", Paciente);
+
+            EstadisticasHub.On<TimeSpan>("RecibirEstadistica", (tiempo) =>
+            {
+                TiempoEspera = tiempo;
+                OnPropertyChanged(nameof(TiempoEspera));
+            });
+
         }
         [RelayCommand]
         public async Task RegistrarUsuario()
@@ -50,12 +70,13 @@ namespace PacienteApp.ViewModels
                 }
                 else
                 {
-                    //await service.AgregarPaciente(Paciente);
+                    await service.AgregarPaciente(Paciente);
                     await Shell.Current.Navigation.PushAsync(new Views.TunoView());
-                    OnPropertyChanged(nameof(Paciente));
                 }
+                OnPropertyChanged(nameof(Paciente));
             }
             catch { }
         }
+
     }
 }

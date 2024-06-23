@@ -44,12 +44,13 @@
                 <Frame Grid.Row="1" BackgroundColor="#0BDC54">
                     <StackLayout VerticalOptions="Center">
                         <Label Text="Turno" HorizontalOptions="Center" FontAttributes="Bold" FontSize="60"></Label>
-                        <Label Text="1" HorizontalOptions="Center" FontAttributes="Bold" FontSize="70"></Label>
+                        <Label Text="1" HorizontalOptions="Center" FontAttributes="Bold" FontSize="70"/>
                     </StackLayout>
                 </Frame>
                 <StackLayout Margin="0,10"  Grid.Row="2">
-                    <Label TextColor="Black" Text="Tiempo promedio de espera:"></Label>
-                    <Label TextColor="Black" FontSize="20" HorizontalOptions="Center" Text="5"></Label>
+                    <Label TextColor="Black" Text="Tiempo promedio de espera:"/>
+                    <Label TextColor="Black" FontSize="20" HorizontalOptions="Center" Text="{Binding TiempoEspera,StringFormat=MM:SS}"/>
+
                 </StackLayout>
             </Grid>
         </Frame>

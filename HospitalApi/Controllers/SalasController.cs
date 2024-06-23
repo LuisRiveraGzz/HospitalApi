@@ -4,14 +4,15 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> _hubContext) : ControllerBase
+        UsuariosRepository usuariosRepository, NotificacionHub _hubContext,
+        EstadisticasHub _estHub
+        ) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetSalas()
@@ -37,7 +38,7 @@ namespace HospitalApi.Controllers
                 Id = salabydoctor.Id,
                 NumeroSala = salabydoctor.NumeroSala,
                 Estado = salabydoctor.Estado,
-                Paciente = salabydoctor.Paciente??0
+                Paciente = salabydoctor.Paciente ?? 0
             };
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
@@ -182,11 +183,15 @@ namespace HospitalApi.Controllers
             {
                 if (sala.Paciente == null)
                 {
-                    sala.Paciente = idpaciente;
-                    await salasRepos.Update(sala);
-                    //Enviar notificación al cliente
-                    await _hubContext.Clients.User(paciente.Id.ToString()).
-                        SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
+                    int id = int.Parse(sala.Paciente.ToString() ?? "0");
+                    if (id != 0)
+                    {
+                        sala.Paciente = idpaciente;
+                        await salasRepos.Update(sala);
+                        //Enviar notificación al cliente
+                        _hubContext.EnviarNotificacion(idpaciente, sala.NumeroSala);
+                        _estHub.Conectar(id);
+                    }
                     return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
