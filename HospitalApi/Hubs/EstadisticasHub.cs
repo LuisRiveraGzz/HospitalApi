@@ -4,36 +4,64 @@ namespace HospitalApi.Hubs
 {
     public class EstadisticasHub : Hub
     {
-        static Dictionary<IClientProxy, TimeSpan> EstadisticaPaciente { get; set; } = [];
+        static Dictionary<IClientProxy, TimeSpan> EstadisticaPaciente { get; set; } = new Dictionary<IClientProxy, TimeSpan>();
+        int turno = 0;
+
         public EstadisticasHub()
         {
-            //Cada 1 segundo envia estadisticas
-            while (true)
+            // Cada 1 segundo envía estadísticas
+            Task.Run(async () =>
             {
-                Task.Delay(1000);
-                EnviarEstadisticas();
-            }
+                while (true)
+                {
+                    await Task.Delay(1000);
+                    EnviarEstadisticas();
+                }
+            });
         }
-        //Envia las estadisticas actualizadas
+
+        // Envía el número de pacientes que han esperado más que un tiempo específico
+        public void EnviarNumeroPaciente(TimeSpan tiempo)
+        {
+            var lista = EstadisticaPaciente.Where(x => x.Value > tiempo).ToList();
+            Clients.All.SendAsync("RecibirTiempoEspera", lista.Count);
+        }
+
+        // Envía las estadísticas actualizadas a todos los clientes conectados
         public void EnviarEstadisticas()
         {
-            foreach (var cliente in EstadisticaPaciente)
+            foreach (var cliente in EstadisticaPaciente.ToList())
             {
-                //Se le agrega 1 segundo a cada cliente cada segundo
-                cliente.Value.Add(new(1000));
+                // Añade 1 segundo al tiempo de espera de cada cliente
+                EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
                 cliente.Key.SendAsync("RecibirEstadistica", cliente.Value);
             }
         }
-        //Agrega el cliente a la lista
+
+        // Conecta un paciente con un ID específico
         public void Conectar(int id)
         {
-            EstadisticaPaciente.Add(Clients.User(id.ToString()), new());
-        }
-        //Elimina el cliente de la lista
-        public void Desconectar(int id)
-        {
-            EstadisticaPaciente.Remove(Clients.User(id.ToString()));
+            EstadisticaPaciente.Add(Clients.User(id.ToString()), TimeSpan.Zero);
+            ++turno;
         }
 
+        // Desconecta un paciente con un ID específico
+        public void Desconectar(int id)
+        {
+            var client = EstadisticaPaciente.FirstOrDefault(x => x.Key == Clients.User(id.ToString()));
+            EstadisticaPaciente.Remove(client.Key);
+        }
+
+        // Reinicia el contador de turnos
+        public void ReiniciarTurnos()
+        {
+            turno = 0;
+        }
+
+        // Envía el número de turno a todos los clientes
+        public void EnviarTurno()
+        {
+            Clients.All.SendAsync("RecibirTurno", turno);
+        }
     }
 }

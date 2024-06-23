@@ -8,7 +8,8 @@
     <ContentPage.BindingContext>
         <vm:PacienteViewModel></vm:PacienteViewModel>
     </ContentPage.BindingContext>
-    <Grid >
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="85*"></RowDefinition>
@@ -50,7 +51,6 @@
                 <StackLayout Margin="0,10"  Grid.Row="2">
                     <Label TextColor="Black" Text="Tiempo promedio de espera:"/>
                     <Label TextColor="Black" FontSize="20" HorizontalOptions="Center" Text="{Binding TiempoEspera,StringFormat=MM:SS}"/>
-
                 </StackLayout>
             </Grid>
         </Frame>
