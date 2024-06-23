@@ -36,22 +36,26 @@ namespace PacienteApp.ViewModels
                 Paciente.Id = 0;
                 Paciente.Nombre = "";
                 //Cambiar vista
-                Shell.Current.GoToAsync("Registro");
+                Shell.Current.Navigation.PushAsync(new Views.RegistroView());
             });
         }
         [RelayCommand]
         public async Task RegistrarUsuario()
         {
-            if (string.IsNullOrWhiteSpace(Paciente.Nombre))
+            try
             {
-                Error = "Ingrese su nombre";
+                if (string.IsNullOrWhiteSpace(Paciente.Nombre))
+                {
+                    Error = "Ingrese su nombre";
+                }
+                else
+                {
+                    //await service.AgregarPaciente(Paciente);
+                    await Shell.Current.Navigation.PushAsync(new Views.TunoView());
+                    OnPropertyChanged(nameof(Paciente));
+                }
             }
-            else
-            {
-                await service.AgregarPaciente(Paciente);
-                await Shell.Current.GoToAsync("MainPage");
-                OnPropertyChanged(nameof(Paciente));
-            }
+            catch { }
         }
     }
 }
