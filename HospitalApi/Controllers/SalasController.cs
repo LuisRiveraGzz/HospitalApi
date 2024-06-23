@@ -10,8 +10,8 @@ namespace HospitalApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, NotificacionHub _hubContext,
-        EstadisticasHub _estHub
+        UsuariosRepository usuariosRepository, NotificacionHub _hubContext
+
         ) : ControllerBase
     {
         [HttpGet]
@@ -181,17 +181,12 @@ namespace HospitalApi.Controllers
             }
             if (sala.Estado == 1)//Inactiva
             {
-                if (sala.Paciente == null)
+                if (paciente != null && paciente.Id > 0)
                 {
-                    int id = int.Parse(sala.Paciente.ToString() ?? "0");
-                    if (id != 0)
-                    {
-                        sala.Paciente = idpaciente;
-                        await salasRepos.Update(sala);
-                        //Enviar notificación al cliente
-                        _hubContext.EnviarNotificacion(idpaciente, sala.NumeroSala);
-                        _estHub.Conectar(id);
-                    }
+                    sala.Paciente = idpaciente;
+                    await salasRepos.Update(sala);
+                    //Enviar notificación al cliente
+                    _hubContext.EnviarNotificacion(idpaciente, sala.NumeroSala);
                     return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
@@ -211,7 +206,6 @@ namespace HospitalApi.Controllers
             int id = int.Parse(sala.Paciente.ToString() ?? "0");
             if (id > 0)
             {
-                _estHub.Desconectar(id);
                 sala.Paciente = null!;
                 await salasRepos.Update(sala);
 
