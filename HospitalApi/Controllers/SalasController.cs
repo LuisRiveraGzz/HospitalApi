@@ -208,9 +208,16 @@ namespace HospitalApi.Controllers
             {
                 return NotFound("No se ah encontrado la sala");
             }
-            sala.Paciente = null!;
-            await salasRepos.Update(sala);
-            return Ok("Se ah quitado al paciente de la sala.");
+            int id = int.Parse(sala.Paciente.ToString() ?? "0");
+            if (id > 0)
+            {
+                _estHub.Desconectar(id);
+                sala.Paciente = null!;
+                await salasRepos.Update(sala);
+
+                return Ok("Se ah quitado al paciente de la sala.");
+            }
+            return NotFound("no se ah encontrado un paciente");
         }
 
         [HttpDelete("Eliminar/{id:int}")]
