@@ -9,6 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Windows;
 using System.Windows.Media;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+
 
 namespace DoctorApp.ViewModels
 {
@@ -23,6 +26,7 @@ namespace DoctorApp.ViewModels
         public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
         public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
+        
         public string EstadoSala
         {
             get => estadoSala; set
@@ -36,9 +40,12 @@ namespace DoctorApp.ViewModels
         #endregion
         private readonly SalasService salasService = new();
         private readonly PacienteService pacienteService = new();
+        HubConnection hubConnection { get; set; } = null!;
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
+            hubConnection = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
+                .Build();
         }
         public string Nombre
         {
