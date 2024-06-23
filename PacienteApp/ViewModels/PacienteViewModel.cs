@@ -9,7 +9,7 @@ namespace PacienteApp.ViewModels
 {
     public partial class PacienteViewModel : INotifyPropertyChanged
     {
-        private HubConnection _hubConnection;
+        private readonly HubConnection _hubConnection;
         private readonly ApiService service = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -49,7 +49,7 @@ namespace PacienteApp.ViewModels
             else
             {
                 await service.AgregarPaciente(Paciente);
-                await Shell.Current.GoToAsync("MainView");
+                await Shell.Current.GoToAsync("MainPage");
                 OnPropertyChanged(nameof(Paciente));
             }
         }
