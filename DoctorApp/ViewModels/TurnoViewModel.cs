@@ -40,12 +40,19 @@ namespace DoctorApp.ViewModels
         #endregion
         private readonly SalasService salasService = new();
         private readonly PacienteService pacienteService = new();
-        HubConnection hubConnection { get; set; } = null!;
+        HubConnection NotificacionesHub { get; set; } = null!;
         public TurnoViewModel()
         {
             _ = ObtenerUsuario();
-            hubConnection = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
+            NotificacionesHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
                 .Build();
+            NotificacionesHub.On<string>("RecibirNotificacion", (message) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                       Turno = message
+                );
+            });
+            _= ConectarHub();
         }
         public string Nombre
         {
@@ -61,6 +68,17 @@ namespace DoctorApp.ViewModels
         public string BotonSalaText => EstadoSala == "Activa" ? "Desactivar Sala" : "Activar Sala";
         public Brush? BotonSalaBackground => (EstadoSala == "Activa") ? (Brushes.Red) : (Brushes.Green);
 
+        private async Task ConectarHub()
+        {
+            try
+            {
+                await NotificacionesHub.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al conectar con SignalR: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         public async Task<SalaDTO> ObtenerSala()
         {
             var token = Settings.Default.Token;
@@ -72,6 +90,7 @@ namespace DoctorApp.ViewModels
             var salabydoc = await salasService.GetSalaByDoctor(iduser);
             return salabydoc;
         }
+
 
         public async Task ObtenerUsuario()
         {
