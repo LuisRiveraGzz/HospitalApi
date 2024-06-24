@@ -17,30 +17,14 @@ namespace PacienteApp.ViewModels
         }
         public PacienteDTO Paciente { get; set; } = new();
         public string Error { get; set; } = "";
-        HubConnection NotificacionesHub { get; set; } = null!;
+
         HubConnection EstadisticasHub { get; set; } = null!;
         public TimeSpan TiempoEspera { get; set; } = new();
         public int Turno { get; set; } = 0;
         public int NumPacientes { get; set; } = 0;
+        NotificacionesService notificaciones = new();
         public PacienteViewModel()
         {
-            #region Notificaciones Hub
-            //Conexion al hub de la api
-            NotificacionesHub = new HubConnectionBuilder()
-                .WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
-                .Build();
-
-            NotificacionesHub.On<string>("RecibirNotificacion", (message) =>
-            {
-                //Mostrar el mensaje
-                Shell.Current.DisplayAlert("Notificacion", message, "Ok");
-                Task.Delay(2000);
-                Paciente.Id = 0;
-                Paciente.Nombre = "";
-                //Cambiar vista
-                Shell.Current.Navigation.PushAsync(new Views.RegistroView());
-            });
-            #endregion
             #region Estadisticas Hub
             EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
             EstadisticasHub.On<TimeSpan>("RecibirEstadistica", (tiempo) =>
@@ -60,16 +44,9 @@ namespace PacienteApp.ViewModels
                     NumPacientes = num;
             });
             #endregion
-            ConectarHubs();
+            EstadisticasHub.StartAsync();
         }
-        private async void ConectarHubs()
-        {
-            try
-            {
-                await EstadisticasHub.StartAsync();
-            }
-            catch { }
-        }
+
         [RelayCommand]
         public async Task RegistrarUsuario()
         {
