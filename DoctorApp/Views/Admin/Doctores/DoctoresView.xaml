@@ -25,24 +25,14 @@
             <Image Source="/Assets/Logo.jpg" Height="50" VerticalAlignment="Center" Margin="10"/>
             <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" 
-                    Background="Transparent" Grid.ColumnSpan="2"
-                    Margin="10,10,10,-10">
-            <Button Content="Usuarios" Command="{Binding VerUsuariosCommand}" Margin="0,0,10,0"/>
-            <Button Content="Salas" Command="{Binding VerSalasCommand}" Margin="0,0,10,0"/>
+
+        <StackPanel Orientation="Horizontal" Background="#0BDC54" Grid.Row="1">
+            <Button Content="Usuarios" Background="#0BDC54" Foreground="White" Command="{Binding VerUsuariosCommand }" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
+            <Button Content="Salas" Command="{Binding VerSalasCommand}" Background="#0BDC54" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
+            <Button Content="Agregar" Command="{Binding VerAgregarCommand}" Margin="450,0,0,0" Background="#0BDC54" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
         </StackPanel>
 
         <Grid Grid.Row="2" Margin="10,10,9,10">
-            <Button Content="Agregar" Command="{Binding VerAgregarCommand}"
-                    Width="50" Height="50" VerticalAlignment="Top"
-                    HorizontalAlignment="Right" 
-                    Margin="10,0,0,0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Image Source="/Assets/Vistasadmin/images/Agregar.png" />
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
             <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}" 
                       SelectedItem="{Binding UsuarioSeleccionado}">
                 <ListView.View>

@@ -4,7 +4,7 @@ namespace HospitalApi.Hubs
 {
     public class EstadisticasHub : Hub
     {
-        static Dictionary<IClientProxy, TimeSpan> EstadisticaPaciente { get; set; } = new Dictionary<IClientProxy, TimeSpan>();
+        static Dictionary<IClientProxy, TimeSpan> EstadisticaPaciente { get; set; } = [];
         int turno = 0;
 
         public EstadisticasHub()
