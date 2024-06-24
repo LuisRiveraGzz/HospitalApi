@@ -25,25 +25,19 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Error));
             }
         }
-
-
         private readonly UsuariosService usuariosService = new();
         private readonly SalasService salasService = new();
         private readonly SalaValidator salaValidator = new();
-
         public event PropertyChangedEventHandler? PropertyChanged;
-
         public SalasViewModel()
         {
             Iniciar();
         }
-
         private async void Iniciar()
         {
             await ObtenerSalas();
             await ObtenerDoctores();
         }
-
         private async Task ObtenerDoctores()
         {
             Doctores.Clear();
@@ -52,7 +46,6 @@ namespace DoctorApp.ViewModels
                 Doctores.Add(item);
             }
         }
-
         private async Task ObtenerSalas()
         {
             Salas.Clear();
@@ -61,7 +54,6 @@ namespace DoctorApp.ViewModels
                 Salas.Add(item);
             }
         }
-
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -76,7 +68,6 @@ namespace DoctorApp.ViewModels
             currentWindow?.Close();
             await Task.CompletedTask;
         }
-
         [RelayCommand]
         public async Task VerSalas()
         {
@@ -88,7 +79,6 @@ namespace DoctorApp.ViewModels
             await ObtenerSalas();
             await Task.CompletedTask;
         }
-
         [RelayCommand]
         public async Task VerAgregar()
         {
@@ -103,7 +93,6 @@ namespace DoctorApp.ViewModels
             currentWindow?.Close();
             await Task.CompletedTask;
         }
-
         [RelayCommand]
         public async Task VerEditar(SalaDTO sala)
         {
@@ -119,7 +108,6 @@ namespace DoctorApp.ViewModels
             currentWindow?.Close();
             await Task.CompletedTask;
         }
-
         [RelayCommand]
         public async Task VerEliminar(SalaDTO sala)
         {
@@ -134,7 +122,6 @@ namespace DoctorApp.ViewModels
             currentWindow?.Close();
             await Task.CompletedTask;
         }
-
         [RelayCommand]
         public static async Task Cancelar()
         {
@@ -145,7 +132,6 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         #endregion
-
         #region CRUD Methods
         [RelayCommand]
         public async Task Agregar()

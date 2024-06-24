@@ -37,11 +37,11 @@ namespace HospitalApi.Hubs
                 user.SendAsync("RecibirEstadistica", cliente.Value);
             }
         }
-
         // Conecta un paciente con un ID específico
         public void Conectar(int id)
         {
             EstadisticaPaciente.Add(id, TimeSpan.Zero);
+            turno++;
         }
 
         // Desconecta un paciente con un ID específico

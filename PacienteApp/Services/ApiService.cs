@@ -1,4 +1,5 @@
-﻿using PacienteApp.Models.DTOs;
+﻿using Newtonsoft.Json;
+using PacienteApp.Models.DTOs;
 using System.Net.Http.Json;
 
 namespace PacienteApp.Services
@@ -20,6 +21,19 @@ namespace PacienteApp.Services
             {
                 await Shell.Current.DisplayAlert("Error", ex.Message, "Ok");
             }
+        }
+        public async Task<PacienteDTO> BuscarPaciente(string paciente)
+        {
+            try
+            {
+                var response = await Client.GetAsync($"{paciente}");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var pacient = JsonConvert.DeserializeObject<PacienteDTO>(json);
+                return pacient ?? new();
+            }
+            catch { }
+            return new();
         }
     }
 }

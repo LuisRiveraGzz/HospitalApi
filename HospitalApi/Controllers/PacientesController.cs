@@ -15,10 +15,10 @@ namespace HospitalApi.Controllers
             var pacientes = await pacientesRepos.GetPacientes();
             return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
         }
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetPacientebyName(int id)
+        [HttpGet("{Nombre}")]
+        public async Task<IActionResult> GetPacientebyName(string Nombre)
         {
-            var paciente = await pacientesRepos.Get(id);
+            var paciente = await pacientesRepos.GetPaciente(Nombre);
             return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
         [HttpPost("Agregar")]

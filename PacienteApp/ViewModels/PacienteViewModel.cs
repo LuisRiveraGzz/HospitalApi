@@ -26,6 +26,7 @@ namespace PacienteApp.ViewModels
         public PacienteViewModel()
         {
             #region Estadisticas Hub
+            //EstadisticasHub = new HubConnectionBuilder().WithUrl("https://localhost:7095/EstadisticasHub").Build();
             EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
             EstadisticasHub.On<TimeSpan>("RecibirEstadistica", (tiempo) =>
             {
@@ -45,7 +46,6 @@ namespace PacienteApp.ViewModels
             });
             #endregion
             EstadisticasHub.StartAsync();
-
         }
 
         [RelayCommand]
@@ -59,12 +59,22 @@ namespace PacienteApp.ViewModels
                 }
                 else
                 {
-                    await service.AgregarPaciente(Paciente);
-                    await Shell.Current.Navigation.PushAsync(new Views.TunoView());
-                    Thread hilo = new(new ThreadStart(ObtenerNumeroUsuarios))
+                    var anterior = await service.BuscarPaciente(Paciente.Nombre);
+                    if (anterior.Id == 0)
                     {
-                        IsBackground = true
-                    };
+                        await service.AgregarPaciente(Paciente);
+                        var actual = await service.BuscarPaciente(Paciente.Nombre);
+                        await Shell.Current.Navigation.PushAsync(new Views.TunoView());
+                        await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
+                        Thread hilo = new(new ThreadStart(ObtenerNumeroUsuarios))
+                        {
+                            IsBackground = true
+                        };
+                    }
+                    else
+                    {
+                        Error = "Ya se ah registrado un usuario con el mismo nombre";
+                    }
                 }
                 OnPropertyChanged(nameof(Paciente));
             }
@@ -76,7 +86,7 @@ namespace PacienteApp.ViewModels
             {
                 //Enviar cada 3 segundos
                 Task.Delay(3000);
-                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", TiempoEspera);
+                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
             }
         }
     }
