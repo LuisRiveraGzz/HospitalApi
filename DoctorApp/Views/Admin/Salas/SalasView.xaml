@@ -41,11 +41,11 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding NumeroSala}" VerticalAlignment="Center"/>
-                                <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
-                                    <Image Source="/Assets/Vistasadmin/images/editar.png" Width="20" Height="20"/>
+                                <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.VerEditarCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding .}">
+                                    <Image Height="30" Width="30" Source="/Assets/Vistasadmin/images/editar.png"/>
                                 </Button>
-                                <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
-                                    <Image Source="/Assets/Vistasadmin/images/eliminar.png" Width="20" Height="20"/>
+                                <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.VerEliminarCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding .}">
+                                    <Image Height="30" Width="30" Source="/Assets/Vistasadmin/images/eliminar.png" />
                                 </Button>
                             </StackPanel>
 
