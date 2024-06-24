@@ -1,6 +1,6 @@
 ﻿namespace DoctorApp.ViewModels
 {
-    public class SalaViewModel
+    public partial class SalaViewModel
     {
 
     }

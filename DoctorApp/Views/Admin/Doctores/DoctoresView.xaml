@@ -11,6 +11,7 @@
     <Window.DataContext>
         <vm:DoctoresViewModel></vm:DoctoresViewModel>
     </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="799*"/>
@@ -24,17 +25,16 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFEEEEEE" Grid.ColumnSpan="2">
             <Image Source="/Assets/Logo.jpg" Height="50" VerticalAlignment="Center" Margin="10"/>
-
             <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FFDDDDDD" Grid.ColumnSpan="2" Margin="0,0,0,344" Grid.RowSpan="2">
-            <Button Content="Usuarios" Margin="0,0,10,0"/>
-            <Button Content="Salas" Margin="0,0,10,0"/>
+            <Button Content="Usuarios" Command="{Binding VerUsuariosCommand}" Margin="0,0,10,0"/>
+            <Button Content="Salas" Command="{Binding VerSalasCommand}" Margin="0,0,10,0"/>
         </StackPanel>
 
         <Grid Grid.Row="2" Margin="10,10,9,10">
-            <Button Content="Agregar" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0">
+            <Button Content="Agregar" Command="{Binding VerAgregarCommand}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Image Source="/Assets/Vistasadmin/images/Agregar.png" />
@@ -53,6 +53,17 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Tiempo Promedio de espera del Paciente" Width="300" DisplayMemberBinding="{Binding PacientesAtendidos}" />
+                        <GridViewColumn Header="Acciones" Width="300" 
+                                        DisplayMemberBinding="{Binding PacientesAtendidos}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Button Content="Editar" Command="{Binding DataContext.VerEditarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                                        <Button Grid.Column="1" Content="Eliminar" Command="{Binding DataContext.VerEliminarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                                    </Grid>
+                                 </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

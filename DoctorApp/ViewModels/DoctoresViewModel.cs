@@ -1,25 +1,31 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Services;
 using DoctorApp.Views.Admin.Doctores;
+using DoctorApp.Views.Admin.Salas;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
 {
-    public partial class DoctoresViewModel
+    public partial class DoctoresViewModel : ObservableObject
     {
         #region Properties
-        public ObservableCollection<UsuarioDTO> Usuarios { get; set; } = [];
-        public Dictionary<int, int> PacientesAtendidos { get; set; } = [];
-        public UsuarioDTO Usuario { get; set; } = new();
-        public string Error { get; set; } = "";
+
+        [ObservableProperty]
+        public ObservableCollection<UsuarioDTO> usuarios = [];
+        [ObservableProperty]
+        public Dictionary<int, int> pacientesAtendidos = [];
+        [ObservableProperty]
+        public UsuarioDTO usuario = new();
+        [ObservableProperty]
+        public string error = "";
         #endregion
         UsuariosService UsuariosService { get; set; } = new();
         public DoctoresViewModel()
         {
             Iniciar();
-
         }
         private async void Iniciar()
         {
@@ -36,6 +42,30 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         [RelayCommand]
+        public async Task VerUsuarios()
+        {
+            //Crea un usuario
+            Usuario = new();
+            //Limpia errores
+            Error = "";
+            await ActualizarListas();
+            await Task.CompletedTask;
+        }
+        [RelayCommand]
+        public async Task VerActividades()
+        {
+            //Limpia errores
+            Error = "";
+            SalasView salasView = new();
+            salasView.Show();
+            DoctoresView view = new();
+            view.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            doctoresWindow?.Close();
+            await Task.CompletedTask;
+        }
+        [RelayCommand]
         public async Task VerAgregar()
         {
             //Crea un usuario
@@ -43,7 +73,7 @@ namespace DoctorApp.ViewModels
             //Limpia errores
             Error = "";
             //Muestra la nueva ventana
-            AgregarView agregarView = new();
+            Views.Admin.Doctores.AgregarView agregarView = new();
             agregarView.Show();
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
@@ -55,7 +85,7 @@ namespace DoctorApp.ViewModels
         {
             Error = "";
             //Muestra la nueva ventana
-            EditarView editarView = new();
+            Views.Admin.Doctores.EditarView editarView = new();
             editarView.Show();
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
@@ -74,7 +104,15 @@ namespace DoctorApp.ViewModels
             doctoresWindow?.Close();
             await Task.CompletedTask;
         }
-
+        [RelayCommand]
+        public async Task Cancelar()
+        {
+            DoctoresView dv = new();
+            dv.Show();
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            doctoresWindow?.Close();
+            await Task.CompletedTask;
+        }
 
     }
 }
