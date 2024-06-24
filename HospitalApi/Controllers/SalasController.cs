@@ -4,14 +4,14 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, NotificacionHub _hubContext
-
+         UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> _hubContext
         ) : ControllerBase
     {
         [HttpGet]

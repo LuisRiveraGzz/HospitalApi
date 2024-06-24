@@ -3,7 +3,6 @@ using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -17,13 +16,10 @@ namespace HospitalApi.Controllers
             var pacientes = await pacientesRepos.GetPacientes();
             return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
         }
-        [HttpGet("Paciente/{nombre}")]
-        public async Task<IActionResult> GetPacientebyName(string nombre)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetPacientebyName(int id)
         {
-            var paciente = await pacientesRepos.GetAll()
-                .FirstOrDefaultAsync(x => x.Nombre
-.Equals
-(nombre, StringComparison.CurrentCultureIgnoreCase));
+            var paciente = await pacientesRepos.Get(id);
             return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
         [HttpPost("Agregar")]

@@ -21,7 +21,6 @@ namespace DoctorApp.ViewModels
         public UsuarioDTO UsuarioSeleccionado { get; set; } = new();
         public string Error { get; set; } = "";
         #endregion
-
         private readonly UsuarioDTOValidator validador = new();
         public event PropertyChangedEventHandler? PropertyChanged;
         UsuariosService UsuariosService { get; set; } = new();

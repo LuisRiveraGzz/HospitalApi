@@ -31,7 +31,6 @@ namespace DoctorApp.Services
             login.Show();
             await Task.CompletedTask;
         }
-
         public async Task<IEnumerable<PacienteDTO>> GetPacientes()
         {
             try
@@ -54,11 +53,11 @@ namespace DoctorApp.Services
             }
             return [];
         }
-        public async Task<PacienteDTO> GetPaciente(string NumSala)
+        public async Task<PacienteDTO> GetPaciente(int id)
         {
             try
             {
-                var response = await Client.GetAsync($"{NumSala}");
+                var response = await Client.GetAsync($"{id}");
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 var pacientes = JsonConvert.DeserializeObject<PacienteDTO>(json);
