@@ -65,7 +65,7 @@ namespace HospitalApi.Controllers
             {
                 return BadRequest();
             }
-            var paciente = await pacientesRepos.GetPaciente(dto.Id);
+            var paciente = await pacientesRepos.GetPaciente(dto.Nombre);
 
             if (paciente != null)
             {
