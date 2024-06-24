@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Models.Validators;
 using DoctorApp.Services;
@@ -106,7 +105,10 @@ namespace DoctorApp.ViewModels
         public async Task VerEditar()
         {
             Error = "";
-            Views.Admin.Salas.EditarView editarView = new();
+            Views.Admin.Salas.EditarView editarView = new()
+            {
+                DataContext = this
+            };
             editarView.Show();
             var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
             currentWindow?.Close();
@@ -117,7 +119,10 @@ namespace DoctorApp.ViewModels
         public async Task VerEliminar()
         {
             Error = "";
-            Views.Admin.Salas.EliminarSala eliminarView = new();
+            Views.Admin.Salas.EliminarSala eliminarView = new()
+            {
+                DataContext = this
+            };
             eliminarView.Show();
             var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
             currentWindow?.Close();
