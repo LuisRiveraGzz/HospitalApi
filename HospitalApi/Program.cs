@@ -21,7 +21,6 @@ builder.Services.AddCors();
 #region Services
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
-
 #region Swagger con JWT
 builder.Services.AddSwaggerGen(c =>
 {
@@ -71,7 +70,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 #endregion
 #region SignalR
 builder.Services.AddSignalR();
-
 #endregion
 #region Singleton
 builder.Services.AddSingleton<JwtHelper>();
