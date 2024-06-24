@@ -11,8 +11,7 @@ namespace HospitalApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-         UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> _hubContext
-        ) : ControllerBase
+        UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> hubContext) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetSalas()
@@ -186,7 +185,7 @@ namespace HospitalApi.Controllers
                     sala.Paciente = idpaciente;
                     await salasRepos.Update(sala);
                     //Enviar notificación al cliente
-                    _hubContext.EnviarNotificacion(idpaciente, sala.NumeroSala);
+                    await hubContext.Clients.User(idpaciente.ToString()).SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
                     return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
