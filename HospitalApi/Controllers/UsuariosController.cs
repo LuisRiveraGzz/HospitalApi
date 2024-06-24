@@ -3,12 +3,14 @@ using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrador")]
     public class UsuariosController(UsuariosRepository usuariosRepos) : ControllerBase
     {
         [HttpGet]
