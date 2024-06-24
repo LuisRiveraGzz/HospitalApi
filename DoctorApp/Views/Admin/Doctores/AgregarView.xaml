@@ -4,8 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoctorApp.Views.Admin.Doctores"
+        xmlns:vm="clr-namespace:DoctorApp.ViewModels"
         mc:Ignorable="d"
         Title="AgregarView" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:DoctoresViewModel></vm:DoctoresViewModel>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,9 +23,10 @@
         <StackPanel Grid.Row="1" Margin="20">
             <TextBlock Text="Agregar usuario" FontSize="20" Margin="0,0,0,10"/>
             <TextBlock Text="Nombre de usuario:" Margin="0,0,0,5"/>
-            <TextBox Name="" Text="Juan Pablo Filomento" Margin="0,0,0,10"/>
+            <TextBox Text="{Binding Usuario.Nombre}" Margin="0,0,0,10"/>
             <TextBlock Text="Contraseña:" Margin="0,0,0,5"/>
-            <PasswordBox Name="password" Password="contraseña123" Margin="0,0,0,10"/>
+            <PasswordBox Password="" 
+                         Margin="0,0,0,10"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
                 <Button Content="Confirmar" Width="100" Margin="0,0,10,0"/>
                 <Button Content="Cancelar" Width="100"/>
