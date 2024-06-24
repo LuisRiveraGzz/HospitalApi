@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="EliminarView" Height="450" Width="800">
     <Grid>
-        <TextBlock>Eliminar</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>¿Esta seguro de eliminar el doctor</TextBlock>
+            <Label Content="{Binding Usuario.Nombre}"></Label>
+            <TextBlock>?</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button />
+        </StackPanel>
     </Grid>
 </Window>

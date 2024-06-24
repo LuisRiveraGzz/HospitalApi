@@ -14,11 +14,14 @@ namespace DoctorApp.ViewModels
     {
         #region Properties
         public ObservableCollection<UsuarioDTO> Usuarios { get; set; } = [];
+        public ObservableCollection<SalaDTO> Salas { get; set; } = [];
+        public SalaDTO SalaSeleccionada { get; set; } = new();
         public Dictionary<int, int> PacientesAtendidos { get; set; } = [];
         public UsuarioDTO Usuario { get; set; } = new();
         public UsuarioDTO UsuarioSeleccionado { get; set; } = new();
         public string Error { get; set; } = "";
         #endregion
+
         private readonly UsuarioDTOValidator validador = new();
         public event PropertyChangedEventHandler? PropertyChanged;
         UsuariosService UsuariosService { get; set; } = new();
@@ -29,23 +32,43 @@ namespace DoctorApp.ViewModels
         }
         private async void Iniciar()
         {
-            await ActualizarListas();
+            await ObtenerPacientes();
         }
-        private async Task ActualizarListas()
+        private async Task ObtenerPacientes()
         {
             Usuarios.Clear();
             PacientesAtendidos.Clear();
             foreach (var user in await UsuariosService.GetUsuarios())
             {
                 Usuarios.Add(user);
+                //Agrega como llave el id del usuario y
+                //asigna la cantidad de pacientes que atendió
+                //como 0, si este no estaba en el diccionario 
+                if (PacientesAtendidos.ContainsKey(user.Id))
+                {
+                    //Saltar doctor si ya estaba en el diccionario
+                    continue;
+                }
                 PacientesAtendidos.Add(user.Id, 0);
             }
-            await Task.CompletedTask;
+            OnPropertyChanged(nameof(Usuarios));
+            OnPropertyChanged(nameof(PacientesAtendidos));
+        }
+        private async Task ObtenerSalas()
+        {
+            Salas.Clear();
+            foreach (var sala in await SalasService.GetSalas())
+            {
+                Salas.Add(sala);
+            }
+            OnPropertyChanged(nameof(Salas));
         }
         private async void OnPropertyChanged(string PropertyName = null!)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            await Task.CompletedTask;
         }
+
         #region Vistas
         [RelayCommand]
         public async Task VerSalas()
@@ -59,7 +82,7 @@ namespace DoctorApp.ViewModels
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
             doctoresWindow?.Close();
-            await ActualizarListas();
+            await ObtenerPacientes();
             await Task.CompletedTask;
         }
         [RelayCommand]
@@ -74,7 +97,7 @@ namespace DoctorApp.ViewModels
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
             doctoresWindow?.Close();
-            await ActualizarListas();
+            await ObtenerPacientes();
             await Task.CompletedTask;
         }
         [RelayCommand]
@@ -107,20 +130,22 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         [RelayCommand]
-        public async Task VerEditar()
+        public async Task VerEditar(UsuarioDTO user)
         {
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            doctoresWindow?.Close();
+            Usuario = user;
             Error = "";
             //Muestra la nueva ventana
             Views.Admin.Doctores.EditarView editarView = new();
             editarView.Show();
-            //Cierra la antigua
-            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
-            doctoresWindow?.Close();
             await Task.CompletedTask;
         }
         [RelayCommand]
-        public async Task VerEliminar()
+        public async Task VerEliminar(UsuarioDTO user)
         {
+            Usuario = user;
             Error = "";
             //Muestra la nueva ventana
             EliminarView agregarView = new();
@@ -140,6 +165,7 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         #endregion
+
         #region CRUD
         #region Create
         [RelayCommand]
@@ -160,18 +186,36 @@ namespace DoctorApp.ViewModels
         }
         #endregion
         #region Update
-        public async Task Editar()
+        public async Task Editar(UsuarioDTO user)
         {
             try
             {
-                var result = validador.Validate(UsuarioSeleccionado);
+                var result = validador.Validate(user);
                 if (result.IsValid)
                 {
-                    await UsuariosService.Editar(UsuarioSeleccionado);
-                    await VerUsuarios();
+                    if (user != null)
+                    {
+                        Usuario.Id = user.Id;
+                        Usuario.Nombre = user.Nombre;
+                        Usuario.Contraseña = user.Contraseña;
+                        if (string.IsNullOrWhiteSpace(Usuario.Nombre) || string.IsNullOrWhiteSpace(Usuario.Contraseña))
+                        {
+                            await UsuariosService.Editar(Usuario);
+                            await VerUsuarios();
+                        }
+                        Error = "Ingrese el usuario y la contraseña";
+                    }
+                    else
+                    {
+                        Error = "Seleccione una sala";
+                    }
                 }
             }
-            catch { }
+            catch
+            {
+                Error = "Ingresa los datos solicitados";
+            }
+            OnPropertyChanged(nameof(Error));
         }
         #endregion
         #region Delete

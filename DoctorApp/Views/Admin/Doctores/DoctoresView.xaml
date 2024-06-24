@@ -39,27 +39,32 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}" SelectedItem="{Binding UsuarioSeleccionado}">
+            <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}" 
+                      SelectedItem="{Binding UsuarioSeleccionado}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Doctores" Width="260" DisplayMemberBinding="{Binding Nombre}" />
-                        <GridViewColumn Header="Pacientes atendidos" Width="200">
+                        <GridViewColumn Header="Doctores" Width="200" 
+                                        DisplayMemberBinding="{Binding Nombre}" />
+                        <GridViewColumn Header="Pacientes atendidos" Width="160">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=DataContext.PacientesAtendidos[Id], RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Tiempo Promedio de espera del Paciente" Width="300" DisplayMemberBinding="{Binding PacientesAtendidos}" />
-                        <GridViewColumn Header="Acciones" Width="300" 
-                                        DisplayMemberBinding="{Binding PacientesAtendidos}">
+                        <GridViewColumn Header="Tiempo Promedio de espera promedio" Width="230" DisplayMemberBinding="{Binding PacientesAtendidos}" />
+                        <GridViewColumn Header="Acciones" Width="180">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <Button Content="Editar" Command="{Binding DataContext.VerEditarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
-                                        <Button Grid.Column="1" Content="Eliminar" Command="{Binding DataContext.VerEliminarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
-                                    </Grid>
-                                 </DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="10">
+                                        <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.VerEditarCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding .}">
+                                            <Image Height="30" Width="30" Source="/Assets/Vistasadmin/images/editar.png"/>
+                                        </Button>
+                                        <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.VerEliminarCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding .}">
+                                            <Image Height="30" Width="30" Source="/Assets/Vistasadmin/images/eliminar.png" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                     </GridView>
