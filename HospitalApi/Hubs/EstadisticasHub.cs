@@ -14,7 +14,7 @@ namespace HospitalApi.Hubs
                 while (true)
                 {
                     await Task.Delay(1000);
-                    EnviarEstadisticas();
+                    ActualizarEstadisticas();
                 }
             });
         }
@@ -27,14 +27,25 @@ namespace HospitalApi.Hubs
         }
 
         // Envía las estadísticas actualizadas a todos los clientes conectados
-        public void EnviarEstadisticas()
+        public void ActualizarEstadisticas()
         {
             foreach (var cliente in EstadisticaPaciente.ToList())
             {
                 // Añade 1 segundo al tiempo de espera de cada cliente
                 EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
-                var user = Clients.User(cliente.Key.ToString());
-                user.SendAsync("RecibirEstadistica", cliente.Value);
+            }
+        }
+        public void EnviarEstadisticas()
+        {
+            foreach (var paciente in EstadisticaPaciente)
+            {
+                int idpaciente = paciente.Key;
+                var usuario = Clients.User(idpaciente.ToString());
+                if (usuario != null)
+                {
+                    int numpacientes = EstadisticaPaciente.Where(x => x.Key < idpaciente).Count();
+                    usuario.SendAsync("RecibirNumeroPacientes", numpacientes);
+                }
             }
         }
         // Conecta un paciente con un ID específico

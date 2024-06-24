@@ -15,12 +15,14 @@ namespace HospitalApi.Controllers
             var pacientes = await pacientesRepos.GetPacientes();
             return pacientes != null ? Ok(pacientes) : NotFound("No hay pacientes");
         }
+
         [HttpGet("{Nombre}")]
         public async Task<IActionResult> GetPacientebyName(string Nombre)
         {
             var paciente = await pacientesRepos.GetPaciente(Nombre);
             return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
+
         [HttpPost("Agregar")]
         public async Task<IActionResult> Post(PacienteDTO dto)
         {
@@ -40,6 +42,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
+
         [HttpPut("Editar")]
         public async Task<IActionResult> Put(PacienteDTO dto)
         {
@@ -58,6 +61,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingrese su nombre");
         }
+
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Delete(PacienteDTO dto)
         {
@@ -65,8 +69,7 @@ namespace HospitalApi.Controllers
             {
                 return BadRequest();
             }
-            var paciente = await pacientesRepos.GetPaciente(dto.Id);
-
+            var paciente = await pacientesRepos.GetPaciente(dto.Nombre);
             if (paciente != null)
             {
                 if (paciente.Sala.Count > 0)

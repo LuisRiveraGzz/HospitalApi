@@ -17,12 +17,12 @@ namespace PacienteApp.ViewModels
         }
         public PacienteDTO Paciente { get; set; } = new();
         public string Error { get; set; } = "";
-
         HubConnection EstadisticasHub { get; set; } = null!;
         public TimeSpan TiempoEspera { get; set; } = new();
         public int Turno { get; set; } = 0;
         public int NumPacientes { get; set; } = 0;
-        NotificacionesService notificaciones = new();
+
+        private readonly NotificacionesService notificaciones = new();
         public PacienteViewModel()
         {
             #region Estadisticas Hub
@@ -66,10 +66,7 @@ namespace PacienteApp.ViewModels
                         var actual = await service.BuscarPaciente(Paciente.Nombre);
                         await Shell.Current.Navigation.PushAsync(new Views.TunoView());
                         await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
-                        Thread hilo = new(new ThreadStart(ObtenerNumeroUsuarios))
-                        {
-                            IsBackground = true
-                        };
+                        await EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
                     }
                     else
                     {
@@ -80,14 +77,6 @@ namespace PacienteApp.ViewModels
             }
             catch { }
         }
-        void ObtenerNumeroUsuarios()
-        {
-            while (true)
-            {
-                //Enviar cada 3 segundos
-                Task.Delay(3000);
-                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
-            }
-        }
+
     }
 }
