@@ -4,11 +4,11 @@
         Title="Hospital General de la Región Carbonífera" Height="450" Width="850"
         xmlns:vm="clr-namespace:DoctorApp.ViewModels"
         WindowStyle="None"
-
         Background="#EFEFEF">
-    
+    <Window.DataContext>
+        <vm:TurnoViewModel></vm:TurnoViewModel>
+    </Window.DataContext>
     <DockPanel>
-
         <Grid DockPanel.Dock="Top" Background="#176428">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
@@ -46,7 +46,11 @@
             <Border Background="#ffffff" BorderBrush="Gray" BorderThickness="1" Padding="20">
                 <Grid>
 
-                    <TextBlock Text="{Binding Sala}" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#176428" Margin="0,0,0,10">
+                    <TextBlock Text="{Binding Sala}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="24" FontWeight="Bold" 
+                               Foreground="#176428" Margin="0,0,0,10"
+                               >
                       
                     </TextBlock>
 

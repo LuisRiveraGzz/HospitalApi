@@ -3,12 +3,13 @@ using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PacientesController(PacientesRepository pacientesRepos, EstadisticasHub _estHub) : ControllerBase
+    public class PacientesController(PacientesRepository pacientesRepos, IHubContext<EstadisticasHub> _estHub) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetPacientes()

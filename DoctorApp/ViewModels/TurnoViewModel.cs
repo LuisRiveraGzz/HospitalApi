@@ -46,9 +46,8 @@ namespace DoctorApp.ViewModels
             EstadisticasHub.On<int>("RecibirEstadisticas", (turno) =>
             {
                 Turno = turno;
-
-            }
-            );
+            });
+            EstadisticasHub.StartAsync();
         }
         public string Nombre
         {
@@ -80,7 +79,6 @@ namespace DoctorApp.ViewModels
             {
                 Sala = "El doctor no tiene ninguna sala asignada";
             }
-
         }
         [RelayCommand]
         public async Task Siguiente()
