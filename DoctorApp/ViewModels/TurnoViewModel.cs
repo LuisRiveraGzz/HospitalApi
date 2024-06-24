@@ -5,12 +5,11 @@ using DoctorApp.Properties;
 using DoctorApp.Services;
 using DoctorApp.Views;
 using DoctorApp.Views.Doctor;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Windows;
 using System.Windows.Media;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 
 
 namespace DoctorApp.ViewModels
@@ -26,7 +25,7 @@ namespace DoctorApp.ViewModels
         public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
         public int Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
-        
+
         public string EstadoSala
         {
             get => estadoSala; set
@@ -47,7 +46,7 @@ namespace DoctorApp.ViewModels
             EstadisticasHub.On<int>("RecibirEstadisticas", (turno) =>
             {
                 Turno = turno;
-             
+
             }
             );
         }
@@ -59,13 +58,8 @@ namespace DoctorApp.ViewModels
                 OnPropertyChanged(nameof(Nombre));
             }
         }
-
-
-
         public string BotonSalaText => EstadoSala == "Activa" ? "Desactivar Sala" : "Activar Sala";
         public Brush? BotonSalaBackground => (EstadoSala == "Activa") ? (Brushes.Red) : (Brushes.Green);
-
-       
         public async Task<SalaDTO> ObtenerSala()
         {
             var token = Settings.Default.Token;
@@ -77,8 +71,6 @@ namespace DoctorApp.ViewModels
             var salabydoc = await salasService.GetSalaByDoctor(iduser);
             return salabydoc;
         }
-
-
         public async Task ObtenerUsuario()
         {
             var salabyDoct = await ObtenerSala();
@@ -107,7 +99,7 @@ namespace DoctorApp.ViewModels
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            EstadisticasHub.InvokeAsync("RecibirTurno", turno);
+                            await EstadisticasHub.InvokeAsync("RecibirTurno", turno);
                         }
                     }
                     else
@@ -119,7 +111,7 @@ namespace DoctorApp.ViewModels
                             await pacienteService.Eliminar(pacienteAsignar);
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            EstadisticasHub.InvokeAsync("RecibirTurno", turno);
+                            await EstadisticasHub.InvokeAsync("RecibirTurno", turno);
                         }
                     }
                 }
@@ -146,10 +138,7 @@ namespace DoctorApp.ViewModels
                 await salasService.DesactivarSala(salabyDoct.Id);
                 EstadoSala = "Inactiva";
             }
-
-
         }
-
         [RelayCommand]
         public async Task CerrarSesion()
         {

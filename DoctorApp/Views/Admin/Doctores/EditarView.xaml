@@ -4,9 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DoctorApp.Views.Admin.Doctores"
+        xmlns:vm ="clr-namespace:DoctorApp.ViewModels"
         mc:Ignorable="d"
         Title="EditarView" Height="450" Width="800">
     <Grid>
-        <TextBlock>Editar</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="#FFDDDDDD">
+            <Image Source="/Assets/Logo.jpg"  Width="40" Margin="10"/>
+            <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Margin="20">
+            <TextBlock Text="Editar usuario" FontSize="20" Margin="0,0,0,10"/>
+            <TextBlock Text="Nombre de usuario:" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Usuario.Nombre}" Margin="0,0,0,10"/>
+            <TextBlock Text="Contraseña:" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Usuario.Contraseña}" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+                <Button Content="Confirmar" Command="{Binding EditarCommand}" Width="100" Margin="0,0,10,0"/>
+                <Button Content="Cancelar" Command="{Binding VerUsuariosCommand}" Width="100"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
