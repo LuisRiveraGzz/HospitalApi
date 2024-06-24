@@ -4,15 +4,14 @@ using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, NotificacionHub _hubContext
-
-        ) : ControllerBase
+        UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> hubContext) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetSalas()
@@ -20,14 +19,12 @@ namespace HospitalApi.Controllers
             var salas = await salasRepos.GetSalas();
             return salas != null ? Ok(salas) : NotFound("No hay salas disponibles");
         }
-
         [HttpGet("{numerosala}")]
         public async Task<IActionResult> GetSala(string numerosala)
         {
             var sala = await salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
-
         [HttpGet("{iddoctor:int}")]
         public async Task<IActionResult> GetSala(int iddoctor)
         {
@@ -42,7 +39,6 @@ namespace HospitalApi.Controllers
             };
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
-
         [HttpPost("Agregar")]
         public async Task<IActionResult> PostSala(SalaDTO dto)
         {
@@ -66,7 +62,6 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("La sala no es valida");
         }
-
         [HttpPut("Editar")]
         public async Task<IActionResult> PutSala(SalaDTO dto)
         {
@@ -106,7 +101,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah encontrado la sala");
         }
-
         [HttpPut("InutilizarSala/{id}")]
         public async Task<IActionResult> InutilizarSala(int id)
         {
@@ -123,7 +117,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah encontrado la sala");
         }
-
         [HttpPut("{idSala:int}/AsignarDoctor/{doctor:int}")]
         public async Task<IActionResult> AsignarDoctor(int idSala, int doctor)
         {
@@ -148,7 +141,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah asignado el doctor a la sala");
         }
-
         [HttpPut("QuitarDoctor/{id:int}")]
         public async Task<IActionResult> QuitarDoctor(int id)
         {
@@ -165,7 +157,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No hay doctor en la sala");
         }
-
         [HttpPut("{idsala:int}/AsignarPaciente/{idpaciente:int}")]
         public async Task<IActionResult> AsignarPaciente(int idsala, int idpaciente)
         {
@@ -186,7 +177,7 @@ namespace HospitalApi.Controllers
                     sala.Paciente = idpaciente;
                     await salasRepos.Update(sala);
                     //Enviar notificación al cliente
-                    _hubContext.EnviarNotificacion(idpaciente, sala.NumeroSala);
+                    await hubContext.Clients.User(idpaciente.ToString()).SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
                     return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")
@@ -194,7 +185,6 @@ namespace HospitalApi.Controllers
             }
             return Conflict("La sala está cerrada");
         }
-
         [HttpPut("QuitarPaciente/{idsala:int}")]
         public async Task<IActionResult> QuitarPaciente(int idsala)
         {
@@ -213,7 +203,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("no se ah encontrado un paciente");
         }
-
         [HttpDelete("Eliminar/{id:int}")]
         public async Task<IActionResult> DeleteSala(int id)
         {

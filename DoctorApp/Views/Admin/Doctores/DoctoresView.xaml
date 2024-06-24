@@ -20,12 +20,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#176428" Grid.ColumnSpan="2">
             <Image Source="/Assets/Logo.jpg" Height="50" VerticalAlignment="Center" Margin="10"/>
             <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </StackPanel>
-
         <StackPanel Orientation="Horizontal" Background="#0BDC54" Grid.Row="1">
             <Button Content="Usuarios" Background="#0BDC54" Foreground="White" Command="{Binding VerUsuariosCommand }" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
             <Button Content="Salas" Command="{Binding VerSalasCommand}" Background="#0BDC54" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
@@ -37,17 +35,9 @@
                       SelectedItem="{Binding UsuarioSeleccionado}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Doctores" Width="200" 
+                        <GridViewColumn Header="Doctores" Width="500" 
                                         DisplayMemberBinding="{Binding Nombre}" />
-                        <GridViewColumn Header="Pacientes atendidos" Width="160">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=DataContext.PacientesAtendidos[Id], RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Tiempo Promedio de espera promedio" Width="230" DisplayMemberBinding="{Binding PacientesAtendidos}" />
-                        <GridViewColumn Header="Acciones" Width="180">
+                        <GridViewColumn Header="Acciones" Width="280">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="10">
