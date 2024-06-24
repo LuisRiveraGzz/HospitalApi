@@ -1,17 +1,15 @@
-﻿using HospitalApi.Hubs;
-using HospitalApi.Models.DTOs;
+﻿using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
-        UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> hubContext) : ControllerBase
+        UsuariosRepository usuariosRepository) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetSalas()
@@ -60,7 +58,6 @@ namespace HospitalApi.Controllers
                 {
                     return Conflict("El doctor ya esta asignado a otra sala");
                 }
-
                 Sala newSala = new()
                 {
                     Id = 0,
@@ -186,8 +183,6 @@ namespace HospitalApi.Controllers
                 {
                     sala.Paciente = idpaciente;
                     await salasRepos.Update(sala);
-                    //Enviar notificación al cliente
-                    await hubContext.Clients.User(idpaciente.ToString()).SendAsync("RecibirNotificacion", $"Has sido asignado a la sala {sala.NumeroSala}");
                     return Ok("El paciente ah sido asignado correctamente.");
                 }
                 return sala.Paciente == idpaciente ? Conflict("El paciente ya esta asignado a la sala")

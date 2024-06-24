@@ -7,9 +7,6 @@
         xmlns:vm ="clr-namespace:DoctorApp.ViewModels"
         mc:Ignorable="d"
         Title="AgregarView" Height="450" Width="800">
-    <Window.DataContext>
-        <vm:SalasViewModel></vm:SalasViewModel>
-    </Window.DataContext>
     <Grid Background="#f9f9f9">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

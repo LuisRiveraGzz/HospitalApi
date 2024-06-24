@@ -94,7 +94,10 @@ namespace DoctorApp.ViewModels
         {
             Sala = new();
             Error = "";
-            Views.Admin.Salas.AgregarView agregarView = new();
+            Views.Admin.Salas.AgregarView agregarView = new()
+            {
+                DataContext = this
+            };
             agregarView.Show();
             var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
             currentWindow?.Close();
@@ -104,7 +107,7 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerEditar(SalaDTO sala)
         {
-            SalaSeleccionada  = sala;
+            SalaSeleccionada = sala;
             Error = "";
 
             Views.Admin.Salas.EditarView editarView = new()
