@@ -51,6 +51,11 @@ namespace HospitalApi.Controllers
                 {
                     return Conflict("Ya hay una sala con el mismo numero de sala");
                 }
+                var doctor = await usuariosRepository.Get(dto.Doctor);
+                if (doctor == null)
+                {
+                    return NotFound("No se ah encontrado al doctor");
+                }
                 Sala newSala = new()
                 {
                     Id = 0,

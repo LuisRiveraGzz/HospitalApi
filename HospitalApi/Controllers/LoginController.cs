@@ -11,7 +11,6 @@ namespace HospitalApi.Controllers
     public class LoginController(UsuariosRepository usuariosRepository, JwtHelper helper) : Controller
     {
         public UsuariosRepository UsuariosRepos { get; } = usuariosRepository;
-
         [HttpPost]
         public IActionResult Login(LoginDTO login)
         {
@@ -21,7 +20,6 @@ namespace HospitalApi.Controllers
             {
                 var user = UsuariosRepos.GetAll().FirstOrDefault(x => x.Nombre == login.Usuario
                             && x.Contraseña == Encriptacion.StringToSHA512(login.Contraseña));
-
                 if (user != null)
                 {
                     var token = helper.GetToken(user.Nombre, (user.Rol == 1 ? "Administrador" : "Doctor"), user.Id);

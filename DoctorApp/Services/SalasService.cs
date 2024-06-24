@@ -121,8 +121,8 @@ namespace DoctorApp.Services
                     MessageBox.Show("Credenciales Expiradas", "Han expirado sus credenciales, inicia sesion nuevamente", MessageBoxButton.OK);
             }
         }
-        //Put: /api/Salas/1/paciente/1
-        public async Task AsignarPaciente(int idSala, int idPaciente)
+        p  //Put: /api/Salas/1/paciente/1
+        ublic async Task AsignarPaciente(int idSala, int idPaciente)
         {
             try
             {
