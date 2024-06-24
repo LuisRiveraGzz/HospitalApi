@@ -7,11 +7,9 @@
         xmlns:vm ="clr-namespace:DoctorApp.ViewModels"
         mc:Ignorable="d"
         Title="DoctoresView" Height="450" Width="800">
-
     <Window.DataContext>
         <vm:DoctoresViewModel></vm:DoctoresViewModel>
     </Window.DataContext>
-    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="799*"/>
@@ -41,7 +39,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}">
+            <ListView Margin="0,60,0,0" Name="DoctorList" ItemsSource="{Binding Usuarios}" SelectedItem="{Binding UsuarioSeleccionado}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Doctores" Width="260" DisplayMemberBinding="{Binding Nombre}" />

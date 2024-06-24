@@ -4,12 +4,7 @@ using DoctorApp.Models.DTOs;
 using DoctorApp.Services;
 
 using DoctorApp.Views.Admin.Salas;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
@@ -19,9 +14,7 @@ namespace DoctorApp.ViewModels
         public ObservableCollection<SalaDTO> Salas { get; set; } = new();
         public ObservableCollection<UsuarioDTO> Doctores { get; set; } = new();
         public SalaDTO Sala { get; set; } = new();
-
         string error = "";
-
         public string Error
         {
             get => error; set
@@ -64,7 +57,7 @@ namespace DoctorApp.ViewModels
         {
             Sala = new();
             Error = "";
-            AgregarView agregarView = new();
+            Views.Admin.Salas.AgregarView agregarView = new();
             agregarView.Show();
             //Cierra la antigua
             var agregarsala = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
