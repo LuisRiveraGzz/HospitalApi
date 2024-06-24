@@ -1,6 +1,7 @@
 ﻿using DoctorApp.Models.DTOs;
 using DoctorApp.Properties;
 using DoctorApp.Views;
+using DoctorApp.Views.Doctor;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,6 +30,9 @@ namespace DoctorApp.Services
             //Mostrar Login
             LoginView login = new();
             login.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is TurnosView);
+            doctoresWindow?.Close();
             await Task.CompletedTask;
         }
         public async Task<IEnumerable<PacienteDTO>> GetPacientes()

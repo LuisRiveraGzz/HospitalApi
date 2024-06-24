@@ -92,6 +92,7 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPut("UtilizarSala/{id}")]
         public async Task<IActionResult> UtilizarSala(int id)
         {
@@ -108,6 +109,7 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah encontrado la sala");
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPut("InutilizarSala/{id}")]
         public async Task<IActionResult> InutilizarSala(int id)
         {
@@ -164,6 +166,7 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No hay doctor en la sala");
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPut("{idsala:int}/AsignarPaciente/{idpaciente:int}")]
         public async Task<IActionResult> AsignarPaciente(int idsala, int idpaciente)
         {
@@ -192,6 +195,7 @@ namespace HospitalApi.Controllers
             }
             return Conflict("La sala está cerrada");
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPut("QuitarPaciente/{idsala:int}")]
         public async Task<IActionResult> QuitarPaciente(int idsala)
         {

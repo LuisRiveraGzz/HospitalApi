@@ -45,6 +45,7 @@ namespace PacienteApp.ViewModels
             });
             #endregion
             EstadisticasHub.StartAsync();
+
         }
 
         [RelayCommand]
