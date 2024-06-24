@@ -5,8 +5,6 @@ using DoctorApp.Models.Validators;
 using DoctorApp.Services;
 using DoctorApp.Views.Admin.Doctores;
 using DoctorApp.Views.Admin.Salas;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices.ActiveDirectory;
@@ -24,7 +22,6 @@ namespace DoctorApp.ViewModels
         public SalaDTO Sala { get; set; } = new();
         public SalaDTO SalaSeleccionada { get; set; } = new();  
         string error = "";
-
         public string Error
         {
             get => error; set

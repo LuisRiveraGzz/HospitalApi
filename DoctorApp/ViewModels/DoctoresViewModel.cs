@@ -1,33 +1,28 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
 using DoctorApp.Models.Validators;
 using DoctorApp.Services;
 using DoctorApp.Views.Admin.Doctores;
 using DoctorApp.Views.Admin.Salas;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
 {
-    public partial class DoctoresViewModel : ObservableObject
+    public partial class DoctoresViewModel : INotifyPropertyChanged
     {
         #region Properties
-
-        [ObservableProperty]
-        public ObservableCollection<UsuarioDTO> usuarios = [];
-        [ObservableProperty]
-        public Dictionary<int, int> pacientesAtendidos = [];
-        [ObservableProperty]
-        public UsuarioDTO usuario = new();
-        [ObservableProperty]
-        public UsuarioDTO usuarioSeleccionado = new();
-        [ObservableProperty]
-        public string error = "";
+        public ObservableCollection<UsuarioDTO> Usuarios { get; set; } = [];
+        public Dictionary<int, int> PacientesAtendidos { get; set; } = [];
+        public UsuarioDTO Usuario { get; set; } = new();
+        public UsuarioDTO UsuarioSeleccionado { get; set; } = new();
+        public string Error { get; set; } = "";
         #endregion
-
-        UsuarioDTOValidator validador = new();
+        private readonly UsuarioDTOValidator validador = new();
+        public event PropertyChangedEventHandler? PropertyChanged;
         UsuariosService UsuariosService { get; set; } = new();
+        public SalasService SalasService { get; set; } = new();
         public DoctoresViewModel()
         {
             Iniciar();
@@ -47,7 +42,26 @@ namespace DoctorApp.ViewModels
             }
             await Task.CompletedTask;
         }
+        private async void OnPropertyChanged(string PropertyName = null!)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
         #region Vistas
+        [RelayCommand]
+        public async Task VerSalas()
+        {
+            //Crea un usuario
+            Usuario = new();
+            //Limpia errores
+            Error = "";
+            SalasView view = new();
+            view.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            doctoresWindow?.Close();
+            await ActualizarListas();
+            await Task.CompletedTask;
+        }
         [RelayCommand]
         public async Task VerUsuarios()
         {
@@ -117,7 +131,7 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         [RelayCommand]
-        public async Task Cancelar()
+        public static async Task Cancelar()
         {
             DoctoresView dv = new();
             dv.Show();
