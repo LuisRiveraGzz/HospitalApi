@@ -54,8 +54,7 @@
                                     <Image Source="Images/eliminar.png" Width="20" Height="20"/>
                                 </Button>
                             </StackPanel>
-                            <TextBlock Text="{Binding TiempoEspera}" Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding PacientesAtendidos}" Grid.Column="2" VerticalAlignment="Center"/>
+                         
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

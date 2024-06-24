@@ -13,5 +13,7 @@ public partial class Usuario
 
     public sbyte Rol { get; set; }
 
+    public virtual ICollection<Estadistica> Estadistica { get; set; } = new List<Estadistica>();
+
     public virtual ICollection<Sala> Sala { get; set; } = new List<Sala>();
 }
