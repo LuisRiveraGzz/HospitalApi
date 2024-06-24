@@ -4,9 +4,8 @@ namespace HospitalApi.Hubs
 {
     public class EstadisticasHub : Hub
     {
-        static Dictionary<IClientProxy, TimeSpan> EstadisticaPaciente { get; set; } = [];
+        static Dictionary<int, TimeSpan> EstadisticaPaciente { get; set; } = [];
         int turno = 0;
-
         public EstadisticasHub()
         {
             // Cada 1 segundo envía estadísticas
@@ -21,10 +20,10 @@ namespace HospitalApi.Hubs
         }
 
         // Envía el número de pacientes que han esperado más que un tiempo específico
-        public void EnviarNumeroPaciente(TimeSpan tiempo)
+        public void EnviarNumeroPaciente(int id)
         {
-            var lista = EstadisticaPaciente.Where(x => x.Value > tiempo).ToList();
-            Clients.All.SendAsync("RecibirTiempoEspera", lista.Count);
+            var lista = EstadisticaPaciente.Keys.Where(x => x < id);
+            Clients.All.SendAsync("RecibirTiempoEspera", lista.Count());
         }
 
         // Envía las estadísticas actualizadas a todos los clientes conectados
@@ -34,21 +33,21 @@ namespace HospitalApi.Hubs
             {
                 // Añade 1 segundo al tiempo de espera de cada cliente
                 EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
-                cliente.Key.SendAsync("RecibirEstadistica", cliente.Value);
+                var user = Clients.User(cliente.Key.ToString());
+                user.SendAsync("RecibirEstadistica", cliente.Value);
             }
         }
 
         // Conecta un paciente con un ID específico
         public void Conectar(int id)
         {
-            EstadisticaPaciente.Add(Clients.User(id.ToString()), TimeSpan.Zero);
-            ++turno;
+            EstadisticaPaciente.Add(id, TimeSpan.Zero);
         }
 
         // Desconecta un paciente con un ID específico
         public void Desconectar(int id)
         {
-            var client = EstadisticaPaciente.FirstOrDefault(x => x.Key == Clients.User(id.ToString()));
+            var client = EstadisticaPaciente.FirstOrDefault(x => x.Key == id);
             EstadisticaPaciente.Remove(client.Key);
         }
 

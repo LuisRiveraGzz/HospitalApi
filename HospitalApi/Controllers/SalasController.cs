@@ -27,6 +27,7 @@ namespace HospitalApi.Controllers
             var sala = await salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
+        [Authorize(Roles = "Doctor")]
         [HttpGet("{iddoctor:int}")]
         public async Task<IActionResult> GetSala(int iddoctor)
         {

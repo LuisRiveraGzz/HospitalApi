@@ -24,12 +24,15 @@ namespace DoctorApp.Services
         public async Task CerrarSesion()
         {
             //Quitar token el token a la configuración
-            Settings.Default.Token = null;
+            Settings.Default.Reset();
             //Quitar token al cliente http
             Client.DefaultRequestHeaders.Authorization = null;
             //Mostrar Login
             LoginView login = new();
             login.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is not LoginView);
+            doctoresWindow?.Close();
             await Task.CompletedTask;
         }
         //Get: /

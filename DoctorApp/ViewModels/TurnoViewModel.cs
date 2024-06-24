@@ -88,28 +88,32 @@ namespace DoctorApp.ViewModels
             {
                 //Obtener pacientes
                 var pacientes = await pacienteService.GetPacientes();
-                if (pacientes != null)
+                if (pacientes.Any())
                 {
                     var pacienteAsignar = pacientes.FirstOrDefault();
-                    if (salabyDoct.Paciente == 0)
+                    if (pacienteAsignar != null)
                     {
-                        if (pacienteAsignar != null)
+                        if (salabyDoct.Paciente == 0)
                         {
-                            await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
-                            Paciente = pacienteAsignar.Nombre;
-                            await EstadisticasHub.InvokeAsync("RecibirTurno", turno);
+                            if (pacienteAsignar != null)
+                            {
+                                await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
+                                Paciente = pacienteAsignar.Nombre;
+                            }
                         }
-                    }
-                    else
-                    {
-                        pacienteAsignar = pacientes.FirstOrDefault();
-                        await salasService.QuitarPaciente(salabyDoct.Id);
-                        if (pacienteAsignar != null)
+                        else
                         {
+                            await salasService.QuitarPaciente(salabyDoct.Id);
                             await pacienteService.Eliminar(pacienteAsignar);
-                            await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
-                            await EstadisticasHub.InvokeAsync("RecibirTurno", turno);
+                            if (salabyDoct.Paciente == 0)
+                            {
+                                if (pacienteAsignar != null)
+                                {
+                                    await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
+                                    Paciente = pacienteAsignar.Nombre;
+                                }
+                            }
                         }
                     }
                 }
