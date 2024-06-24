@@ -26,18 +26,8 @@ namespace PacienteApp.ViewModels
         public PacienteViewModel()
         {
             #region Estadisticas Hub
-            //EstadisticasHub = new HubConnectionBuilder().WithUrl("https://localhost:7095/EstadisticasHub").Build();
-            EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
-            EstadisticasHub.On<int>("RecibirNumPacientes", (num) =>
-            {
-                NumPacientes = num;
-                OnPropertyChanged(nameof(NumPacientes));
-            });
-            EstadisticasHub.On<int>("RecibirEstadistica", (turno) =>
-            {
-                Turno = turno;
-                OnPropertyChanged(nameof(TiempoEspera));
-            });
+            EstadisticasHub = new HubConnectionBuilder().WithUrl("https://localhost:7095/EstadisticasHub").Build();
+            //EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
             EstadisticasHub.On<int>("RecibirNumeroPacientes", (num) =>
             {
                 //num es el numero de pacientes antes que esperaron mas que el paciente actual
@@ -64,15 +54,20 @@ namespace PacienteApp.ViewModels
                     {
                         await service.AgregarPaciente(Paciente);
                         var actual = await service.BuscarPaciente(Paciente.Nombre);
-                        await Shell.Current.Navigation.PushAsync(new Views.TunoView()
+                        if (actual.Id > 0)
                         {
-                            BindingContext = this
-                        });
-                        await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
-                        Thread hilo = new(new ThreadStart(ObtenerNum))
-                        {
-                            IsBackground = true
-                        };
+                            await Shell.Current.Navigation.PushAsync(new Views.TunoView()
+                            {
+                                BindingContext = this
+                            });
+                            await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
+                            Paciente.Id = actual.Id;
+                            Thread hilo = new(new ThreadStart(ObtenerNum))
+                            {
+                                IsBackground = true
+                            };
+                            hilo.Start();
+                        }
                     }
                     else
                     {

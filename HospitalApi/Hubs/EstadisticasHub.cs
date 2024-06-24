@@ -8,32 +8,28 @@ namespace HospitalApi.Hubs
         int turno = 0;
         public EstadisticasHub()
         {
-            // Cada 1 segundo envía estadísticas
-            Task.Run(async () =>
+            Thread hilo = new(new ThreadStart(ActualizarEstadisticas))
             {
-                while (true)
-                {
-                    await Task.Delay(1000);
-                    ActualizarEstadisticas();
-                }
-            });
+                IsBackground = true
+            };
+            hilo.Start();
         }
-
-        // Envía el número de pacientes que han esperado más que un tiempo específico
+        public void ActualizarEstadisticas()
+        {
+            while (true)
+            {
+                foreach (var cliente in EstadisticaPaciente.ToList())
+                {
+                    // Añade 1 segundo al tiempo de espera de cada cliente
+                    EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
+                }
+            }
+        }
         public void EnviarNumeroPaciente(int id)
         {
             var lista = EstadisticaPaciente.Keys.Where(x => x < id);
-            Clients.All.SendAsync("RecibirNumPacientes", lista.Count());
-        }
-
-        // Envía las estadísticas actualizadas a todos los clientes conectados
-        public void ActualizarEstadisticas()
-        {
-            foreach (var cliente in EstadisticaPaciente.ToList())
-            {
-                // Añade 1 segundo al tiempo de espera de cada cliente
-                EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
-            }
+            var num = lista.Count();
+            Clients.User(id.ToString()).SendAsync("RecibirNumeroPacientes", num);
         }
         public void EnviarEstadisticas()
         {
@@ -61,7 +57,6 @@ namespace HospitalApi.Hubs
             var client = EstadisticaPaciente.FirstOrDefault(x => x.Key == id);
             EstadisticaPaciente.Remove(client.Key);
         }
-
         // Reinicia el contador de turnos
         public void ReiniciarTurnos()
         {
