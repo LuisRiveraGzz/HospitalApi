@@ -10,7 +10,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 #region Conexion a DB
 string? Db = builder.Configuration.GetConnectionString("DbConnectionString");
 builder.Services.AddDbContext<WebsitosHospitalbdContext>(x =>
@@ -101,6 +100,7 @@ app.UseCors(x =>
     x.AllowAnyOrigin();
 });
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapHub<NotificacionHub>("/NotificacionHub");
 app.MapHub<EstadisticasHub>("/EstadisticasHub");
