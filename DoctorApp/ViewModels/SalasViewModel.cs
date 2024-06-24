@@ -104,7 +104,9 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerEditar(SalaDTO sala)
         {
+            Sala = sala;
             Error = "";
+
             Views.Admin.Salas.EditarView editarView = new()
             {
                 DataContext = this
