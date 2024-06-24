@@ -35,7 +35,7 @@ namespace DoctorApp.Services
         {
             try
             {
-                var response = await Client.GetAsync("");
+                var response = await Client.GetAsync("Doctores");
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 var usuarios = JsonConvert.DeserializeObject<IEnumerable<UsuarioDTO>>(json);
