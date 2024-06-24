@@ -1,5 +1,4 @@
-﻿using HospitalApi.Hubs;
-using HospitalApi.Models.DTOs;
+﻿using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PacientesController(PacientesRepository pacientesRepos, EstadisticasHub _estHub) : ControllerBase
+    public class PacientesController(PacientesRepository pacientesRepos) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetPacientes()
@@ -36,8 +35,6 @@ namespace HospitalApi.Controllers
                     };
                     //se le asigna un id automáticamente
                     await pacientesRepos.Insert(paciente);
-
-                    _estHub.Conectar(paciente.Id);
                     return Ok("Paciente Agregado");
                 }
             }
@@ -76,7 +73,6 @@ namespace HospitalApi.Controllers
                 {
                     return BadRequest("No puedes eliminar un paciente que esta siendo atendido");
                 }
-                _estHub.Desconectar(paciente.Id);
                 await pacientesRepos.Delete(paciente);
 
                 return Ok("Paciente eliminado");
