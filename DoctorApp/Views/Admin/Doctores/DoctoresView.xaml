@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFEEEEEE" Grid.ColumnSpan="2">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#176428" Grid.ColumnSpan="2">
             <Image Source="/Assets/Logo.jpg" Height="50" VerticalAlignment="Center" Margin="10"/>
             <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </StackPanel>

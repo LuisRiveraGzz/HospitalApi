@@ -25,7 +25,6 @@ namespace DoctorApp.ViewModels
         private readonly UsuarioDTOValidator validador = new();
         public event PropertyChangedEventHandler? PropertyChanged;
         UsuariosService UsuariosService { get; set; } = new();
-        public SalasService SalasService { get; set; } = new();
         public DoctoresViewModel()
         {
             Iniciar();
@@ -53,15 +52,6 @@ namespace DoctorApp.ViewModels
             }
             OnPropertyChanged(nameof(Usuarios));
             OnPropertyChanged(nameof(PacientesAtendidos));
-        }
-        private async Task ObtenerSalas()
-        {
-            Salas.Clear();
-            foreach (var sala in await SalasService.GetSalas())
-            {
-                Salas.Add(sala);
-            }
-            OnPropertyChanged(nameof(Salas));
         }
         private async void OnPropertyChanged(string PropertyName = null!)
         {
@@ -173,7 +163,6 @@ namespace DoctorApp.ViewModels
             await Task.CompletedTask;
         }
         #endregion
-
         #region CRUD
         #region Create
         [RelayCommand]
@@ -194,29 +183,16 @@ namespace DoctorApp.ViewModels
         }
         #endregion
         #region Update
-        public async Task Editar(UsuarioDTO user)
+        [RelayCommand]
+        public async Task Editar()
         {
             try
             {
-                var result = validador.Validate(user);
+                var result = validador.Validate(Usuario);
                 if (result.IsValid)
                 {
-                    if (user != null)
-                    {
-                        Usuario.Id = user.Id;
-                        Usuario.Nombre = user.Nombre;
-                        Usuario.Contraseña = user.Contraseña;
-                        if (string.IsNullOrWhiteSpace(Usuario.Nombre) || string.IsNullOrWhiteSpace(Usuario.Contraseña))
-                        {
-                            await UsuariosService.Editar(Usuario);
-                            await VerUsuarios();
-                        }
-                        Error = "Ingrese el usuario y la contraseña";
-                    }
-                    else
-                    {
-                        Error = "Seleccione una sala";
-                    }
+                    await UsuariosService.Editar(Usuario);
+                    await VerUsuarios();
                 }
             }
             catch
@@ -227,11 +203,13 @@ namespace DoctorApp.ViewModels
         }
         #endregion
         #region Delete
+        [RelayCommand]
         public async Task Eliminar()
         {
             try
             {
                 await UsuariosService.Eliminar(UsuarioSeleccionado);
+                PacientesAtendidos.Remove(UsuarioSeleccionado.Id);
                 await VerUsuarios();
             }
             catch { }
