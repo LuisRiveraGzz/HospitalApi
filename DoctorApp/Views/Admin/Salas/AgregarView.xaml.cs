@@ -23,5 +23,7 @@ namespace DoctorApp.Views.Admin.Salas
         {
             InitializeComponent();
         }
+
+      
     }
 }

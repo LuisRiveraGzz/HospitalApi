@@ -24,12 +24,8 @@
             <TextBox FontSize="24" Width="350" Margin="0,0,0,10" Text="Sala 1"/>
 
             <TextBlock Text="Doctor asignado:" FontSize="24" Margin="0,10"/>
-            <ComboBox FontSize="24" Width="350" Margin="0,0,0,20">
-                <ComboBoxItem Content="Dr. Juan Pérez"/>
-                <ComboBoxItem Content="Dr. Ana García"/>
-                <ComboBoxItem Content="Dr. Luis Martínez"/>
-                <ComboBoxItem Content="Dr. María Rodríguez"/>
-                <ComboBoxItem Content="Dr. Pedro Sánchez"/>
+            <ComboBox FontSize="24" Width="350" Margin="0,0,0,20" ItemsSource="{Binding Doctores}">
+               
             </ComboBox>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="350">
