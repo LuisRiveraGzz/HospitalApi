@@ -104,7 +104,7 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerEditar(SalaDTO sala)
         {
-            Sala = sala;
+            SalaSeleccionada  = sala;
             Error = "";
 
             Views.Admin.Salas.EditarView editarView = new()
@@ -118,9 +118,10 @@ namespace DoctorApp.ViewModels
         }
 
         [RelayCommand]
-        public async Task VerEliminar()
+        public async Task VerEliminar(SalaDTO sala)
         {
             Error = "";
+            SalaSeleccionada = sala;
             Views.Admin.Salas.EliminarSala eliminarView = new()
             {
                 DataContext = this
@@ -193,6 +194,7 @@ namespace DoctorApp.ViewModels
         {
             try
             {
+                SalaSeleccionada.Doctor = null;
                 await salasService.Eliminar(SalaSeleccionada);
                 await VerSalas();
             }

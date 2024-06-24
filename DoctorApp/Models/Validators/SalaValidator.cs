@@ -8,7 +8,7 @@ namespace DoctorApp.Models.Validators
         public SalaValidator()
         {
             RuleFor(x => x.NumeroSala).NotEmpty().WithMessage("El número de la sala no puede estar vacío");
-            RuleFor(x => x.Doctor).NotEmpty().WithMessage("El doctor no puede estar vacío");
+          
         }
     }
 }
