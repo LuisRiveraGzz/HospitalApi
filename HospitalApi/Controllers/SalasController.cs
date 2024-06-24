@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
                 {
                     return NotFound("No se ah encontrado al doctor");
                 }
-                if (doctor.Sala.Any())
+                if (doctor.Sala.Count != 0)
                 {
                     return Conflict("El doctor ya esta asignado a otra sala");
                 }
