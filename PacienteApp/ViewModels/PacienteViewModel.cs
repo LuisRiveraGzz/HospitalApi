@@ -10,7 +10,6 @@ namespace PacienteApp.ViewModels
     public partial class PacienteViewModel : INotifyPropertyChanged
     {
         private readonly ApiService service = new();
-
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string PropertyName)
         {
@@ -26,6 +25,7 @@ namespace PacienteApp.ViewModels
         public PacienteViewModel()
         {
             #region Notificaciones Hub
+            //Conexion al hub de la api
             NotificacionesHub = new HubConnectionBuilder()
                 .WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
                 .Build();
@@ -60,6 +60,7 @@ namespace PacienteApp.ViewModels
             });
             #endregion
         }
+
         [RelayCommand]
         public async Task RegistrarUsuario()
         {
@@ -82,13 +83,14 @@ namespace PacienteApp.ViewModels
             }
             catch { }
         }
+
         void ObtenerNumeroUsuarios()
         {
             while (true)
             {
                 //Enviar cada 3 segundos
                 Task.Delay(3000);
-                EstadisticasHub.SendAsync("EnviarNumeroPaciente", TiempoEspera);
+                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", TiempoEspera);
             }
         }
     }

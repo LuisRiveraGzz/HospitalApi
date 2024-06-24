@@ -7,6 +7,24 @@
         mc:Ignorable="d"
         Title="AgregarView" Height="450" Width="800">
     <Grid>
-        <TextBlock>Agregar</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="#FFDDDDDD">
+           <Image Source="/Assets/Logo.jpg"  Width="40" Margin="10"/>
+ <TextBlock Text="Hospital General de la Región Carbonífera" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Margin="20">
+            <TextBlock Text="Agregar usuario" FontSize="20" Margin="0,0,0,10"/>
+            <TextBlock Text="Nombre de usuario:" Margin="0,0,0,5"/>
+            <TextBox Name="username" Text="Juan Pablo Filomento" Margin="0,0,0,10"/>
+            <TextBlock Text="Contraseña:" Margin="0,0,0,5"/>
+            <PasswordBox Name="password" Password="contraseña123" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+                <Button Content="Confirmar" Width="100" Margin="0,0,10,0"/>
+                <Button Content="Cancelar" Width="100"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
