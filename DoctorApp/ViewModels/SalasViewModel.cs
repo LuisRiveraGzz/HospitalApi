@@ -149,6 +149,7 @@ namespace DoctorApp.ViewModels
                 var result = salaValidator.Validate(Sala);
                 if (result.IsValid)
                 {
+
                     await salasService.Agregar(Sala);
                     await VerSalas();
                 }
