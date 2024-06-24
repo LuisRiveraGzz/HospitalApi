@@ -161,7 +161,7 @@ namespace DoctorApp.ViewModels
         }
         #endregion
         #region Delete
-        public async Task Editar()
+        public async Task Eliminar()
         {
             try
             {
@@ -170,6 +170,7 @@ namespace DoctorApp.ViewModels
             }
             catch { }
         }
+        #endregion
         #endregion
     }
 }
