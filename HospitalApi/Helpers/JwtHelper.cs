@@ -29,8 +29,8 @@ namespace HospitalApi.Helpers
                     issuer,
                     audience,
                     basicas,
-                    DateTime.Now,
-                    DateTime.Now.AddDays(1),
+                    DateTime.UtcNow,
+                    DateTime.UtcNow.AddDays(1),
                     new SigningCredentials
                     (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret ?? "")),
                     SecurityAlgorithms.HmacSha256)
