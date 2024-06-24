@@ -66,7 +66,6 @@ namespace DoctorApp.ViewModels
             var result = LoginValidator.Validate(dto);
             if (result.IsValid)
             {
-
                 var token = await api.Login(dto);
                 if (!string.IsNullOrWhiteSpace(token))
                 {
