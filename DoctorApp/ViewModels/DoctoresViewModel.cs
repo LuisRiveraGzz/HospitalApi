@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DoctorApp.Models.DTOs;
+using DoctorApp.Models.Validators;
 using DoctorApp.Services;
 using DoctorApp.Views.Admin.Doctores;
 using DoctorApp.Views.Admin.Salas;
@@ -20,8 +21,12 @@ namespace DoctorApp.ViewModels
         [ObservableProperty]
         public UsuarioDTO usuario = new();
         [ObservableProperty]
+        public UsuarioDTO usuarioSeleccionado = new();
+        [ObservableProperty]
         public string error = "";
         #endregion
+
+        UsuarioDTOValidator validador = new();
         UsuariosService UsuariosService { get; set; } = new();
         public DoctoresViewModel()
         {
@@ -34,6 +39,7 @@ namespace DoctorApp.ViewModels
         private async Task ActualizarListas()
         {
             Usuarios.Clear();
+            PacientesAtendidos.Clear();
             foreach (var user in await UsuariosService.GetUsuarios())
             {
                 Usuarios.Add(user);
@@ -41,6 +47,7 @@ namespace DoctorApp.ViewModels
             }
             await Task.CompletedTask;
         }
+        #region Vistas
         [RelayCommand]
         public async Task VerUsuarios()
         {
@@ -48,6 +55,11 @@ namespace DoctorApp.ViewModels
             Usuario = new();
             //Limpia errores
             Error = "";
+            DoctoresView view = new();
+            view.Show();
+            //Cierra la antigua
+            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            doctoresWindow?.Close();
             await ActualizarListas();
             await Task.CompletedTask;
         }
@@ -113,6 +125,51 @@ namespace DoctorApp.ViewModels
             doctoresWindow?.Close();
             await Task.CompletedTask;
         }
-
+        #endregion
+        #region CRUD
+        #region Create
+        [RelayCommand]
+        public async Task Agregar()
+        {
+            try
+            {
+                var result = validador.Validate(Usuario);
+                if (result.IsValid)
+                {
+                    //Agregar doctores únicamente
+                    Usuario.Rol = 2;
+                    await UsuariosService.Agregar(Usuario);
+                    await VerUsuarios();
+                }
+            }
+            catch { }
+        }
+        #endregion
+        #region Update
+        public async Task Editar()
+        {
+            try
+            {
+                var result = validador.Validate(UsuarioSeleccionado);
+                if (result.IsValid)
+                {
+                    await UsuariosService.Editar(UsuarioSeleccionado);
+                    await VerUsuarios();
+                }
+            }
+            catch { }
+        }
+        #endregion
+        #region Delete
+        public async Task Editar()
+        {
+            try
+            {
+                await UsuariosService.Eliminar(UsuarioSeleccionado);
+                await VerUsuarios();
+            }
+            catch { }
+        }
+        #endregion
     }
 }

@@ -31,7 +31,6 @@ namespace DoctorApp.Services
             login.Show();
             await Task.CompletedTask;
         }
-
         public async Task<IEnumerable<UsuarioDTO>> GetUsuarios()
         {
             try
