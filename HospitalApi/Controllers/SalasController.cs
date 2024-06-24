@@ -3,6 +3,7 @@ using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -10,6 +11,7 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrador,Doctor")]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
         UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> hubContext) : ControllerBase
     {
@@ -50,6 +52,11 @@ namespace HospitalApi.Controllers
                 if (anterior != null)
                 {
                     return Conflict("Ya hay una sala con el mismo numero de sala");
+                }
+                var doctor = await usuariosRepository.Get(dto.Doctor);
+                if (doctor == null)
+                {
+                    return NotFound("No se ah encontrado al doctor");
                 }
                 Sala newSala = new()
                 {

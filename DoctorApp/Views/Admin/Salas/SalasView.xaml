@@ -16,25 +16,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <StackPanel Orientation="Horizontal" Background="#176428" Height="70" VerticalAlignment="Top">
             <Image Source="/Assets/VistasAdmin/images/Logo.jpg" Width="50" Height="50" Margin="20,10,10,10"/>
             <TextBlock Text="Hospital General de la Región Carbonífera" Foreground="White" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
         </StackPanel>
-
         <StackPanel Orientation="Horizontal" Background="#0BDC54" Grid.Row="1">
             <Button Content="Usuarios" Background="#0BDC54" Foreground="White" Command="{Binding VerDoctoresCommand }" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
             <Button Content="Salas" Command="{Binding VerSalasCommand}" Background="#0BDC54" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
             <Button Content="Agregar" Command="{Binding VerAgregarCommand}" Margin="450,0,0,0" Background="#0BDC54" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="100" Height="50"/>
         </StackPanel>
-
         <Grid Grid.Row="2" Background="#e6e6e6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-
-
             <ListView ItemsSource="{Binding Salas}" Margin="10,10,10,10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -53,7 +48,7 @@
                                     <Image Source="/Assets/Vistasadmin/images/eliminar.png" Width="20" Height="20"/>
                                 </Button>
                             </StackPanel>
-                         
+
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
