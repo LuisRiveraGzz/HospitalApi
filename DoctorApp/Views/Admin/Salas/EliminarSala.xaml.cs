@@ -15,15 +15,13 @@ using System.Windows.Shapes;
 namespace DoctorApp.Views.Admin.Salas
 {
     /// <summary>
-    /// Interaction logic for SalasView.xaml
+    /// Interaction logic for EliminarSala.xaml
     /// </summary>
-    public partial class SalasView : Window
+    public partial class EliminarSala : Window
     {
-        public SalasView()
+        public EliminarSala()
         {
             InitializeComponent();
         }
-
-       
     }
 }

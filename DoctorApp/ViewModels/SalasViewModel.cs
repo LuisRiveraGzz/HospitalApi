@@ -6,31 +6,34 @@ using DoctorApp.Services;
 using DoctorApp.Views.Admin.Doctores;
 using DoctorApp.Views.Admin.Salas;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.DirectoryServices.ActiveDirectory;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 
 namespace DoctorApp.ViewModels
 {
-    public partial class SalasViewModel : ObservableObject
+    public partial class SalasViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<SalaDTO> Salas { get; set; } = new();
         public ObservableCollection<UsuarioDTO> Doctores { get; set; } = new();
         public SalaDTO Sala { get; set; } = new();
-        public SalaDTO SalaSeleccionada { get; set; } = new();  
-        string error = "";
+        public SalaDTO SalaSeleccionada { get; set; } = new();
+        private string error = "";
         public string Error
         {
             get => error; set
             {
-                error = value; OnPropertyChanged(nameof(Error));
+                error = value;
+                OnPropertyChanged(nameof(Error));
             }
         }
-        UsuariosService usuariosService { get; set; } = new();
-        SalasService salasService { get; set; } = new();
+
+
+        private readonly UsuariosService usuariosService = new();
+        private readonly SalasService salasService = new();
+        private readonly SalaValidator salaValidator = new();
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public SalasViewModel()
         {
             Iniciar();
@@ -41,36 +44,8 @@ namespace DoctorApp.ViewModels
             await ObtenerSalas();
             await ObtenerDoctores();
         }
-        [RelayCommand]
-        public async Task VerActividades()
-        {
-            //Limpia errores
-            Error = "";
-            SalasView salasView = new();
-            salasView.Show();
-            DoctoresView view = new();
-            view.Show();
-            //Cierra la antigua
-            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
-            doctoresWindow?.Close();
-            await Task.CompletedTask;
-        }
-        [RelayCommand]
-        public async Task VerSalas()
-        {
-            //Crea una sala
-            Sala = new();
-            //Limpia errores
-            Error = "";
-            SalasView view = new();
-            view.Show();
-            //Cierra la antigua
-            var Salawindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
-            Salawindow?.Close();
-            await ObtenerSalas();
-            await Task.CompletedTask;
-        }
-        public async Task ObtenerDoctores()
+
+        private async Task ObtenerDoctores()
         {
             Doctores.Clear();
             foreach (var item in await usuariosService.GetUsuarios())
@@ -78,6 +53,7 @@ namespace DoctorApp.ViewModels
                 Doctores.Add(item);
             }
         }
+
         private async Task ObtenerSalas()
         {
             Salas.Clear();
@@ -85,8 +61,35 @@ namespace DoctorApp.ViewModels
             {
                 Salas.Add(item);
             }
+        }
+
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        #region Navigation Methods
+        [RelayCommand]
+        public async Task VerDoctores()
+        {
+            Error = "";
+            DoctoresView view = new();
+            view.Show();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            currentWindow?.Close();
             await Task.CompletedTask;
         }
+
+        [RelayCommand]
+        public async Task VerSalas()
+        {
+            Error = "";
+            SalasView view = new();
+            view.Show();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            currentWindow?.Close();
+            await ObtenerSalas();
+            await Task.CompletedTask;
+        }
+
         [RelayCommand]
         public async Task VerAgregar()
         {
@@ -94,43 +97,51 @@ namespace DoctorApp.ViewModels
             Error = "";
             Views.Admin.Salas.AgregarView agregarView = new();
             agregarView.Show();
-            //Cierra la antigua
-            var agregarsala = Application.Current.Windows.OfType<Window>().FirstOrDefault();
-            agregarsala?.Close();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
+            currentWindow?.Close();
             await Task.CompletedTask;
         }
+
         [RelayCommand]
         public async Task VerEditar()
         {
             Error = "";
-            //Muestra la nueva ventana
             Views.Admin.Salas.EditarView editarView = new();
             editarView.Show();
-            //Cierra la antigua
-            var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
-            doctoresWindow?.Close();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
+            currentWindow?.Close();
             await Task.CompletedTask;
         }
+
         [RelayCommand]
         public async Task VerEliminar()
         {
             Error = "";
+            Views.Admin.Salas.EliminarSala eliminarView = new();
+            eliminarView.Show();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is SalasView);
+            currentWindow?.Close();
+            await Task.CompletedTask;
         }
+
         [RelayCommand]
         public async Task Cancelar()
         {
-            SalasView dv = new();
-            dv.Show();
-            var salasWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
-            salasWindow?.Close();
+            SalasView salasView = new();
+            salasView.Show();
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
+            currentWindow?.Close();
             await Task.CompletedTask;
         }
+        #endregion
+
+        #region CRUD Methods
         [RelayCommand]
         public async Task Agregar()
         {
             try
             {
-                var result = SalaValidator.Validate(Sala);
+                var result = salaValidator.Validate(Sala);
                 if (result.IsValid)
                 {
                     await salasService.Agregar(Sala);
@@ -141,29 +152,47 @@ namespace DoctorApp.ViewModels
                     Error = string.Join("\n", result.Errors.Select(x => x.ErrorMessage));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Error = ex.Message;
             }
         }
+
         [RelayCommand]
         public async Task Editar()
         {
             try
             {
-                var results = SalaValidator.Validate(SalaSeleccionada);
-                if (results.IsValid)
+                var result = salaValidator.Validate(SalaSeleccionada);
+                if (result.IsValid)
                 {
                     await salasService.Editar(SalaSeleccionada);
                     await VerSalas();
                 }
+                else
+                {
+                    Error = string.Join("\n", result.Errors.Select(x => x.ErrorMessage));
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Error = ex.Message;
             }
         }
+
+        [RelayCommand]
+        public async Task Eliminar()
+        {
+            try
+            {
+                await salasService.Eliminar(SalaSeleccionada);
+                await VerSalas();
+            }
+            catch (Exception ex)
+            {
+                Error = ex.Message;
+            }
+        }
+        #endregion
     }
 }

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DoctorApp.Models.Validators
 {
-    public static class SalaValidator
+    public  class SalaValidator
     {
-        public static ValidationResult Validate(SalaDTO dTO)
+        public  ValidationResult Validate(SalaDTO dTO)
         {
             var validator = new InlineValidator<SalaDTO>();
             validator.RuleFor(x => x.NumeroSala).NotEmpty().WithMessage("El número de la sala no puede estar vacío");
