@@ -20,11 +20,11 @@ namespace DoctorApp.ViewModels
         #region Propiedades
         string nombre = "";
         string sala = "";
-        string turno = "";
+        int turno;
         string paciente = "";
         string estadoSala = "";
         public string Sala { get => sala; set { sala = value; OnPropertyChanged(nameof(Sala)); } }
-        public string Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
+        public int Turno { get => turno; set { turno = value; OnPropertyChanged(nameof(Turno)); } }
         public string Paciente { get => paciente; set { paciente = value; OnPropertyChanged(nameof(Paciente)); } }
         
         public string EstadoSala
@@ -44,11 +44,7 @@ namespace DoctorApp.ViewModels
         public TurnoViewModel()
         {
             EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
-            EstadisticasHub.On<int>("RecibirEstadistica", (turno) =>
-            {
-                Turno = turno.ToString();
-                OnPropertyChanged(nameof(Turno));
-            }); 
+           
         }
         public string Nombre
         {
@@ -106,6 +102,7 @@ namespace DoctorApp.ViewModels
                         {
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
+                            EstadisticasHub.InvokeAsync("RecibirTurno", turno);
                         }
                     }
                     else
@@ -117,6 +114,7 @@ namespace DoctorApp.ViewModels
                             await pacienteService.Eliminar(pacienteAsignar);
                             await salasService.AsignarPaciente(salabyDoct.Id, pacienteAsignar.Id);
                             Paciente = pacienteAsignar.Nombre;
+                            EstadisticasHub.InvokeAsync("RecibirTurno", turno);
                         }
                     }
                 }
