@@ -16,22 +16,23 @@ namespace HospitalApi.Hubs
         }
         public void ActualizarEstadisticas()
         {
-            while (true)
+            while (EstadisticaPaciente.Count > 0)
             {
-                foreach (var cliente in EstadisticaPaciente.ToList())
+                foreach (var cliente in EstadisticaPaciente)
                 {
                     // Añade 1 segundo al tiempo de espera de cada cliente
                     EstadisticaPaciente[cliente.Key] = cliente.Value.Add(TimeSpan.FromSeconds(1));
                 }
             }
+
         }
-        public void EnviarNumeroPaciente(int id)
+        public async Task EnviarNumeroPaciente(int id)
         {
             var lista = EstadisticaPaciente.Keys.Where(x => x < id);
             var num = lista.Count();
-            Clients.User(id.ToString()).SendAsync("RecibirNumeroPacientes", num);
+            await Clients.User(id.ToString()).SendAsync("RecibirNumeroPacientes", num);
         }
-        public void EnviarEstadisticas()
+        public async Task EnviarEstadisticas()
         {
             foreach (var paciente in EstadisticaPaciente)
             {
@@ -40,33 +41,35 @@ namespace HospitalApi.Hubs
                 if (usuario != null)
                 {
                     int numpacientes = EstadisticaPaciente.Where(x => x.Key < idpaciente).Count();
-                    usuario.SendAsync("RecibirNumeroPacientes", numpacientes);
+                    await usuario.SendAsync("RecibirNumeroPacientes", numpacientes);
                 }
             }
         }
         // Conecta un paciente con un ID específico
-        public void Conectar(int id)
+        public async Task Conectar(int id)
         {
             EstadisticaPaciente.Add(id, TimeSpan.Zero);
             turno++;
+            await Task.CompletedTask;
         }
-
         // Desconecta un paciente con un ID específico
-        public void Desconectar(int id)
+        public async Task Desconectar(int id)
         {
             var client = EstadisticaPaciente.FirstOrDefault(x => x.Key == id);
             EstadisticaPaciente.Remove(client.Key);
+            await Task.CompletedTask;
         }
         // Reinicia el contador de turnos
-        public void ReiniciarTurnos()
+        public async Task ReiniciarTurnos()
         {
             turno = 0;
+            await Task.CompletedTask;
         }
 
         // Envía el número de turno a todos los clientes
-        public void EnviarTurno()
+        public async Task EnviarTurno()
         {
-            Clients.All.SendAsync("RecibirTurno", turno);
+            await Clients.All.SendAsync("RecibirTurno", turno);
         }
     }
 }

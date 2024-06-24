@@ -21,7 +21,6 @@ namespace PacienteApp.ViewModels
         public TimeSpan TiempoEspera { get; set; } = new();
         public int Turno { get; set; } = 0;
         public int NumPacientes { get; set; } = 0;
-
         private readonly NotificacionesService notificaciones = new();
         public PacienteViewModel()
         {
@@ -61,6 +60,7 @@ namespace PacienteApp.ViewModels
                                 BindingContext = this
                             });
                             await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
+
                             Paciente.Id = actual.Id;
                             Thread hilo = new(new ThreadStart(ObtenerNum))
                             {
@@ -79,12 +79,12 @@ namespace PacienteApp.ViewModels
             catch { }
         }
 
-        private void ObtenerNum()
+        private async void ObtenerNum()
         {
             while (true)
             {
-                Task.Delay(1000);
-                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
+                await Task.Delay(1000);
+                await EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
             }
         }
     }
