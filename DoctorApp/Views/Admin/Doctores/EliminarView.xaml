@@ -6,14 +6,29 @@
         xmlns:local="clr-namespace:DoctorApp.Views.Admin.Doctores"
         mc:Ignorable="d"
         Title="EliminarView" Height="450" Width="800">
-    <Grid>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>¿Esta seguro de eliminar el doctor</TextBlock>
-            <Label Content="{Binding Usuario.Nombre}"></Label>
-            <TextBlock>?</TextBlock>
+    <Grid Background="#f9f9f9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Background="#176428" Height="70" VerticalAlignment="Top">
+            <Image Source="/Assets/Vistasadmin/Images/Logo.jpg" Width="50" Height="50" Margin="20,10,0,10"/>
+            <TextBlock Text="Hospital General de la Región Carbonífera" Foreground="White" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button />
+
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="400" Height="364">
+            <TextBlock Text="Eliminar Usuario" FontSize="40" Margin="0,20"/>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Text="¿Esta seguro de eliminar el siguente usuario?" FontSize="24" Margin="0,10"/>
+            <TextBox FontSize="24"  Width="350" Margin="0,0,0,10" IsEnabled="False" Text="{Binding Usuario.Nombre}"/>
+
+
+
+            <StackPanel Orientation="Horizontal" Margin="0,50,0,0" HorizontalAlignment="Center" Width="350">
+                <Button Content="Confirmar" Command="{Binding EliminarCommand}" Background="#0BDC54" Foreground="White" Width="150" Height="40" Margin="10"/>
+                <Button Content="Cancelar" Background="Red" Command="{Binding CancelarCommand}" Foreground="White" Width="150" Height="40" Margin="10"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

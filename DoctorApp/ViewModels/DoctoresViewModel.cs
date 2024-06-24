@@ -132,14 +132,19 @@ namespace DoctorApp.ViewModels
         [RelayCommand]
         public async Task VerEditar(UsuarioDTO user)
         {
+            Usuario = user;
+            //Quitar la contraseña
+            Usuario.Contraseña = "";
+            Error = "";
+            //Muestra la nueva ventana
+            Views.Admin.Doctores.EditarView editarView = new()
+            {
+                DataContext = this
+            };
+            editarView.Show();
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
             doctoresWindow?.Close();
-            Usuario = user;
-            Error = "";
-            //Muestra la nueva ventana
-            Views.Admin.Doctores.EditarView editarView = new();
-            editarView.Show();
             await Task.CompletedTask;
         }
         [RelayCommand]
@@ -148,8 +153,11 @@ namespace DoctorApp.ViewModels
             Usuario = user;
             Error = "";
             //Muestra la nueva ventana
-            EliminarView agregarView = new();
-            agregarView.Show();
+            EliminarView View = new()
+            {
+                DataContext = this
+            };
+            View.Show();
             //Cierra la antigua
             var doctoresWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is DoctoresView);
             doctoresWindow?.Close();
