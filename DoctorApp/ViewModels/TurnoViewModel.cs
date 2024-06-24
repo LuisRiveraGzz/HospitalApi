@@ -44,7 +44,12 @@ namespace DoctorApp.ViewModels
         public TurnoViewModel()
         {
             EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
-           
+            EstadisticasHub.On<int>("RecibirEstadisticas", (turno) =>
+            {
+                Turno = turno;
+             
+            }
+            );
         }
         public string Nombre
         {
