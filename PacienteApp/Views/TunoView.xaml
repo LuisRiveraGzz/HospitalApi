@@ -5,10 +5,6 @@
              xmlns:vm="clr-namespace:PacienteApp.ViewModels"
              Title="TurnoView"
              Background="White">
-    <ContentPage.BindingContext>
-        <vm:PacienteViewModel></vm:PacienteViewModel>
-    </ContentPage.BindingContext>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height=".15*"></RowDefinition>

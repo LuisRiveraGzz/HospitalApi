@@ -28,10 +28,10 @@ namespace PacienteApp.ViewModels
             #region Estadisticas Hub
             //EstadisticasHub = new HubConnectionBuilder().WithUrl("https://localhost:7095/EstadisticasHub").Build();
             EstadisticasHub = new HubConnectionBuilder().WithUrl("https://hospitalapi.websitos256.com/EstadisticasHub").Build();
-            EstadisticasHub.On<TimeSpan>("RecibirEstadistica", (tiempo) =>
+            EstadisticasHub.On<int>("RecibirNumPacientes", (num) =>
             {
-                TiempoEspera = tiempo;
-                OnPropertyChanged(nameof(TiempoEspera));
+                NumPacientes = num;
+                OnPropertyChanged(nameof(NumPacientes));
             });
             EstadisticasHub.On<int>("RecibirEstadistica", (turno) =>
             {
@@ -64,9 +64,15 @@ namespace PacienteApp.ViewModels
                     {
                         await service.AgregarPaciente(Paciente);
                         var actual = await service.BuscarPaciente(Paciente.Nombre);
-                        await Shell.Current.Navigation.PushAsync(new Views.TunoView());
+                        await Shell.Current.Navigation.PushAsync(new Views.TunoView()
+                        {
+                            BindingContext = this
+                        });
                         await EstadisticasHub.InvokeAsync("Conectar", actual.Id);
-                        await EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
+                        Thread hilo = new(new ThreadStart(ObtenerNum))
+                        {
+                            IsBackground = true
+                        };
                     }
                     else
                     {
@@ -78,5 +84,13 @@ namespace PacienteApp.ViewModels
             catch { }
         }
 
+        private void ObtenerNum()
+        {
+            while (true)
+            {
+                Task.Delay(1000);
+                EstadisticasHub.InvokeAsync("EnviarNumeroPaciente", Paciente.Id);
+            }
+        }
     }
 }

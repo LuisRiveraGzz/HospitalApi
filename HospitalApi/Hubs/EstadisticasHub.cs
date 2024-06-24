@@ -23,7 +23,7 @@ namespace HospitalApi.Hubs
         public void EnviarNumeroPaciente(int id)
         {
             var lista = EstadisticaPaciente.Keys.Where(x => x < id);
-            Clients.All.SendAsync("RecibirTiempoEspera", lista.Count());
+            Clients.All.SendAsync("RecibirNumPacientes", lista.Count());
         }
 
         // Envía las estadísticas actualizadas a todos los clientes conectados
