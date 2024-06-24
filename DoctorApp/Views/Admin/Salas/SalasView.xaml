@@ -45,12 +45,12 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Nombre}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding NumeroSala}" VerticalAlignment="Center"/>
                                 <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
-                                    <Image Source="Images/editar.png" Width="20" Height="20"/>
+                                    <Image Source="/Assets/Vistasadmin/images/editar.png" Width="20" Height="20"/>
                                 </Button>
                                 <Button Background="Transparent" BorderBrush="Transparent" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
-                                    <Image Source="Images/eliminar.png" Width="20" Height="20"/>
+                                    <Image Source="/Assets/Vistasadmin/images/eliminar.png" Width="20" Height="20"/>
                                 </Button>
                             </StackPanel>
                          
