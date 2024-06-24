@@ -29,6 +29,7 @@ namespace PacienteApp.ViewModels
             NotificacionesHub = new HubConnectionBuilder()
                 .WithUrl("https://hospitalapi.websitos256.com/NotificacionHub")
                 .Build();
+
             NotificacionesHub.On<string>("RecibirNotificacion", (message) =>
             {
                 //Mostrar el mensaje
@@ -59,8 +60,16 @@ namespace PacienteApp.ViewModels
                     NumPacientes = num;
             });
             #endregion
+            ConectarHubs();
         }
-
+        private async void ConectarHubs()
+        {
+            try
+            {
+                await EstadisticasHub.StartAsync();
+            }
+            catch { }
+        }
         [RelayCommand]
         public async Task RegistrarUsuario()
         {
@@ -83,7 +92,6 @@ namespace PacienteApp.ViewModels
             }
             catch { }
         }
-
         void ObtenerNumeroUsuarios()
         {
             while (true)
