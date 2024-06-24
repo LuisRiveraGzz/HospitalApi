@@ -3,7 +3,6 @@ using HospitalApi.Models.DTOs;
 using HospitalApi.Models.Entities;
 using HospitalApi.Models.Validators;
 using HospitalApi.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -11,7 +10,6 @@ namespace HospitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrador,Doctor")]
     public class SalasController(SalasRepository salasRepos, Repository<Paciente> pacientesRepos,
         UsuariosRepository usuariosRepository, IHubContext<NotificacionHub> hubContext) : ControllerBase
     {
@@ -27,7 +25,6 @@ namespace HospitalApi.Controllers
             var sala = await salasRepos.GetSala(numerosala);
             return sala != null ? Ok(sala) : NotFound("No existe la sala");
         }
-        [Authorize(Roles = "Doctor")]
         [HttpGet("{iddoctor:int}")]
         public async Task<IActionResult> GetSala(int iddoctor)
         {
@@ -93,7 +90,6 @@ namespace HospitalApi.Controllers
             }
             return BadRequest("Ingresa el doctor a la sala");
         }
-        [Authorize(Roles = "Doctor")]
         [HttpPut("UtilizarSala/{id}")]
         public async Task<IActionResult> UtilizarSala(int id)
         {
@@ -110,7 +106,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No se ah encontrado la sala");
         }
-        [Authorize(Roles = "Doctor")]
         [HttpPut("InutilizarSala/{id}")]
         public async Task<IActionResult> InutilizarSala(int id)
         {
@@ -167,7 +162,6 @@ namespace HospitalApi.Controllers
             }
             return NotFound("No hay doctor en la sala");
         }
-        [Authorize(Roles = "Doctor")]
         [HttpPut("{idsala:int}/AsignarPaciente/{idpaciente:int}")]
         public async Task<IActionResult> AsignarPaciente(int idsala, int idpaciente)
         {
@@ -196,7 +190,6 @@ namespace HospitalApi.Controllers
             }
             return Conflict("La sala está cerrada");
         }
-        [Authorize(Roles = "Doctor")]
         [HttpPut("QuitarPaciente/{idsala:int}")]
         public async Task<IActionResult> QuitarPaciente(int idsala)
         {
