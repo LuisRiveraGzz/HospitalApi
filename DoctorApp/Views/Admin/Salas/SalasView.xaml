@@ -20,7 +20,6 @@
         <StackPanel Orientation="Horizontal" Background="#176428" Height="70" VerticalAlignment="Top">
             <Image Source="/Assets/VistasAdmin/images/Logo.jpg" Width="50" Height="50" Margin="20,10,10,10"/>
             <TextBlock Text="Hospital General de la Región Carbonífera" Foreground="White" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
-
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Background="#0BDC54" Grid.Row="1">

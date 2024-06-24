@@ -12,8 +12,8 @@ namespace DoctorApp.ViewModels
 {
     public partial class SalasViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<SalaDTO> Salas { get; set; } = new();
-        public ObservableCollection<UsuarioDTO> Doctores { get; set; } = new();
+        public ObservableCollection<SalaDTO> Salas { get; set; } = [];
+        public ObservableCollection<UsuarioDTO> Doctores { get; set; } = [];
         public SalaDTO Sala { get; set; } = new();
         public SalaDTO SalaSeleccionada { get; set; } = new();
         private string error = "";
@@ -130,7 +130,7 @@ namespace DoctorApp.ViewModels
         }
 
         [RelayCommand]
-        public async Task Cancelar()
+        public static async Task Cancelar()
         {
             SalasView salasView = new();
             salasView.Show();

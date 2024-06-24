@@ -22,7 +22,8 @@ namespace HospitalApi.Controllers
         {
             var paciente = await pacientesRepos.GetAll()
                 .FirstOrDefaultAsync(x => x.Nombre
-                == nombre.ToUpper());
+.Equals
+(nombre, StringComparison.CurrentCultureIgnoreCase));
             return paciente != null ? Ok(paciente) : NotFound("No se encontró el paciente");
         }
         [HttpPost("Agregar")]
