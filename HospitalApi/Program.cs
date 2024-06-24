@@ -103,6 +103,7 @@ app.UseCors(x =>
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapHub<NotificacionHub>("/NotificacionHub");
+app.MapHub<EstadisticasHub>("/EstadisticasHub");
 app.MapControllers();
 app.Run();
 #endregion
